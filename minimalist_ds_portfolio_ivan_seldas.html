@@ -16,7 +16,15 @@
     /* ======================================
        THEME TOKENS & GLOBAL RESET
        ====================================== */
-    :root { --bg:#0c0c0c; --fg:#fff; --muted:#888; --accent:#7dd3fc; --card:#1a1a1a; --border:#2c2c2c; }
+    :root {
+      --bg:#0c0c0c; --fg:#fff; --muted:#888; --accent:#7dd3fc; --card:#1a1a1a; --border:#2c2c2c;
+      /* Typography scale (5 sizes max) */
+      --fs-xs:.7rem;      /* micro: tags, meta, microcopy */
+      --fs-sm:.85rem;     /* small: section titles, footer */
+      --fs-base:1rem;     /* body / paragraphs */
+      --fs-lg:1.25rem;    /* subheads, card titles */
+      --fs-xl:clamp(2.2rem,4.5vw,3rem); /* hero headline */
+    }
     * { box-sizing:border-box; scroll-behavior:smooth; }
     html,body {
       margin:0; padding:0; font-family:'Epilogue',sans-serif; background:var(--bg); color:var(--fg);
@@ -34,7 +42,7 @@
        ====================================== */
     header { position:fixed; top:0; width:100%; background:rgba(12,12,12,.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); z-index:1000; }
     nav { display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
-    .logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+  .logo { font-family:'Playfair Display',serif; font-size:var(--fs-lg); font-weight:700; }
     .nav-links a { margin-left:20px; color:var(--muted); }
     .nav-links a:hover { color:var(--fg); text-decoration:underline; }
 
@@ -45,19 +53,68 @@
        HERO / INTRO
        ====================================== */
     .hero { padding:160px 0 40px; text-align:center; }
-    .hero img.profile-pic { width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid var(--border); margin-bottom:24px; }
-    .hero h1 { font-family:'Playfair Display',serif; font-size:3.2rem; line-height:1.1; margin:0 0 20px; }
-    .hero p { color:var(--muted); font-size:1.1rem; max-width:680px; margin:0 auto 28px; }
-    .cta-buttons a { border:1px solid var(--border); padding:12px 18px; border-radius:8px; background:#111; margin:0 6px; transition:.2s; }
+    .hero img.profile-pic { width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid var(--border); margin:0 auto 28px; display:block; }
+  .hero h1 { font-family:'Playfair Display',serif; font-size:var(--fs-xl); line-height:1.15; letter-spacing:.5px; margin:0 auto 26px; max-width:880px; font-weight:700; }
+  .hero p { color:var(--muted); font-size:var(--fs-base); max-width:700px; line-height:1.5; margin:0 auto 32px; }
+  .hero p.subhead { font-size:var(--fs-lg); line-height:1.5; }
+  .hero .pre-head { font-size:var(--fs-xs); letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:0 auto 18px; max-width:860px; font-weight:600; }
+    .cta-buttons { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:0 auto 22px; max-width:760px; }
+    .cta-buttons a { border:1px solid var(--border); padding:12px 20px; border-radius:10px; background:#111; transition:.2s; position:relative; }
     .cta-buttons a:hover { background:#191919; }
+  .trust-microcopy { margin:4px auto 0; font-size:var(--fs-xs); letter-spacing:.6px; text-transform:uppercase; color:var(--muted); max-width:880px; line-height:1.4; }
+    @media (max-width:680px){
+      .hero { padding:140px 0 36px; }
+  .hero h1 { font-size:clamp(2rem,6vw,2.4rem); margin-bottom:24px; }
+  .hero p { font-size:var(--fs-base); margin-bottom:28px; }
+      .cta-buttons { gap:10px; margin-bottom:20px; }
+    }
 
     /* ======================================
        GENERIC SECTION STYLES
        ====================================== */
     section { padding:80px 0; border-top:1px solid var(--border); }
-    .section-title { font-size:.85rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:20px; }
+  .section-title { font-size:var(--fs-sm); text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:20px; }
   /* Condensed height just for Skills section */
-  #skills { padding:40px 0 30px; }
+  #skills { padding:28px 0 18px; }
+  /* Clear skills button */
+  .clear-skills-btn { margin:12px 0 0; font-size:var(--fs-xs); background:transparent; border:1px dashed var(--border); padding:6px 14px; border-radius:999px; color:var(--muted); cursor:pointer; transition:.2s; display:none; }
+  .clear-skills-btn.visible { display:inline-block; }
+  .clear-skills-btn:hover { border-color:var(--accent); color:#000; background:var(--accent); }
+  /* Skills grouping */
+  .skill-intro { color:var(--muted); font-size:var(--fs-base); max-width:820px; line-height:1.45; margin:4px 0 18px; }
+  .skill-groups { display:grid; gap:16px; }
+  .skill-group { border:1px solid var(--border); padding:10px 12px 10px; border-radius:10px; background:#111; position:relative; }
+  .skill-group h4 { margin:0 0 4px; font-size:var(--fs-xs); letter-spacing:.75px; text-transform:uppercase; color:#c0c0c0; font-weight:600; display:flex; align-items:center; gap:6px; }
+  .skill-group .icon { width:15px; height:15px; stroke:var(--accent); stroke-width:1.4; fill:none; opacity:.85; flex-shrink:0; }
+  .skill-group .tags { margin-top:4px; }
+  /* Compact card style per category */
+  .skill-groups.compact-cards { display:grid; gap:10px; }
+  .skill-groups.compact-cards { grid-template-columns:1fr; }
+  @media (min-width:640px){ .skill-groups.compact-cards { grid-template-columns:1fr 1fr; } }
+  @media (min-width:1000px){ .skill-groups.compact-cards { grid-template-columns:repeat(3,1fr); } }
+  .skill-group.card-compact { background:#111; border:1px solid var(--border); border-radius:10px; padding:10px 12px 8px; }
+  .skill-group.card-compact h4 { margin:0 0 4px; font-size:var(--fs-xs); letter-spacing:.75px; text-transform:uppercase; color:#bdbdbd; font-weight:600; }
+  .skill-group.card-compact .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
+  .skill-group.card-compact .tags .tag { font-size:var(--fs-xs); padding:4px 8px; }
+  /* Six-column layout */
+  .skill-columns { display:grid; gap:10px 28px; align-items:start; grid-auto-rows:minmax(0,auto); }
+  .skill-columns .skill-col { padding:0; background:transparent; border:none; display:flex; flex-direction:column; gap:6px; }
+  .skill-columns .skill-col h4 { margin:0; font-size:var(--fs-xs); letter-spacing:.75px; color:#a0a0a0; font-weight:600; line-height:1.2; }
+  .skill-columns .skill-col h4::after { content:''; display:block; width:100%; height:1px; background:linear-gradient(90deg,var(--border),transparent); margin-top:4px; opacity:.8; }
+  .skill-columns .skill-col .tags { align-self:flex-start; }
+  .skill-columns .tags { display:flex; flex-wrap:wrap; gap:6px; }
+  .skill-columns .tag { font-size:var(--fs-xs); padding:4px 8px; }
+  @media (min-width:680px){ .skill-columns { grid-template-columns:repeat(2,1fr); } }
+  @media (min-width:960px){ .skill-columns { grid-template-columns:repeat(3,1fr); } }
+  @media (min-width:1280px){ .skill-columns { grid-template-columns:repeat(6,1fr); } }
+  @media (min-width:860px){ .skill-groups.compact-cards { grid-template-columns:repeat(2,1fr); } }
+  @media (min-width:1180px){ .skill-groups.compact-cards { grid-template-columns:repeat(3,1fr); } }
+  .skill-group .tags { margin-top:4px; }
+  .recruiter-note { margin-top:20px; font-size:var(--fs-xs); letter-spacing:.45px; text-transform:uppercase; color:var(--muted); line-height:1.3; }
+  /* Compact tags inside skills only */
+  #skills .tag { padding:4px 8px; font-size:var(--fs-xs); }
+  @media (min-width:800px){ .skill-groups { grid-template-columns:repeat(2,1fr); } }
+  @media (min-width:1150px){ .skill-groups { grid-template-columns:repeat(3,1fr); } }
 
     /* ======================================
        SELECTED WORK — CARD LAYOUT
@@ -73,14 +130,14 @@
     .card:hover { transform:translateY(-2px); border-color:#2a2a2a; }
     .card .row { display:flex; gap:18px; flex-direction:column; }
     .card img { width:100%; border-radius:12px; border:1px solid var(--border); will-change:transform; transition:transform .3s ease; }
-    .card h3 { margin:6px 0 8px; font-size:20px; }
-    .card p { color:#c9c9c9; margin:0 0 10px; }
+  .card h3 { margin:6px 0 8px; font-size:var(--fs-lg); }
+  .card p { color:#c9c9c9; margin:0 0 10px; font-size:var(--fs-base); line-height:1.5; }
     .tags { display:flex; gap:8px; flex-wrap:wrap; }
-  .tag { padding:6px 10px; border-radius:999px; border:1px solid var(--border); color:#bdbdbd; font-size:12px; background:var(--card); transition:all .2s ease; cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" stroke="white" stroke-width="6" fill="none"/></svg>') 20 20, auto; }
+  .tag { padding:6px 10px; border-radius:999px; border:1px solid var(--border); color:#bdbdbd; font-size:var(--fs-xs); background:var(--card); transition:all .2s ease; cursor:url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"20\" stroke=\"white\" stroke-width=\"6\" fill=\"none\"/></svg>') 20 20, auto; }
     .tag:hover { transform:scale(1.05); background:var(--accent); color:#000; border-color:var(--accent); }
     /* Selected state for multi-select skills */
     .tag.selected { background:var(--accent); color:#000; border-color:var(--accent); }
-    .card .meta { color:var(--muted); font-size:13px; }
+  .card .meta { color:var(--muted); font-size:var(--fs-xs); }
     @media(min-width:900px){ .card .row{flex-direction:row} .card .col{flex:1} .card .media{flex:1.2} }
 
     /* Two-column helper */
@@ -94,7 +151,7 @@
     .photo-collage img { width:100%; border-radius:8px; object-fit:cover; aspect-ratio:4/3; border:1px solid var(--border); }
 
     /* Footer */
-    footer { padding:40px 0; text-align:center; color:var(--muted); font-size:.9rem; border-top:1px solid var(--border); }
+  footer { padding:40px 0; text-align:center; color:var(--muted); font-size:var(--fs-sm); border-top:1px solid var(--border); }
 
     /* ======================================
        CLICK RIPPLE (CSS-only animation; JS appends/removes node)
@@ -122,41 +179,86 @@
   <section class="hero section" id="home">
     <div class="container">
       <!-- Replace this src with your real portrait -->
-      <img src="your-profile-photo.jpg" alt="Iván Seldas" class="profile-pic" />
-      <h1>AI with purpose,<br>storytelling with data.</h1>
-      <p>Architect-turned-Data Scientist building ML projects in NLP, forecasting, and recommender systems. I create tools that help people and businesses make decisions, simply and clearly.</p>
-      <div class="cta-buttons">
-        <a href="#projects">See projects</a>
-        <a href="mailto:hello@example.com">Hire me</a>
+      <!-- Foto de perfil optimizada (reducción de peso y srcset para pantallas retina) -->
+      <img 
+        src="./images/optimized/profile_pic_480.jpg" 
+        srcset="./images/optimized/profile_pic_480.jpg 1x, ./images/profile_pic.jpg 2x" 
+        width="140" height="140"
+        alt="Foto de perfil de Iván Seldas" 
+        class="profile-pic" 
+        loading="lazy"
+      />
+  <div class="pre-head">JUNIOR DATA SCIENTIST · NLP · FORECASTING · RECOMMENDER SYSTEMS</div>
+  <h1>NEED A DATA SCIENTIST WHO SPEAKS YOUR CLIENT'S LANGUAGE?</h1>
+  <p class="subhead">I build end-to-end ML projects that clients understand – ensuring results are business-relevant.</p>
+      <div class="cta-buttons" aria-label="Primary call to action">
+        <a href="#projects">SEE HOW I DELIVER RESULTS</a>
       </div>
+  <div class="trust-microcopy">Available for freelance projects & full-time roles · Business-ready impact · Live demos & repos</div>
     </div>
   </section>
 
   <!-- SKILLS (chips) — names must match project data-skill to link properly -->
   <section class="section" id="skills">
     <div class="container">
-      <div class="section-title">Skills</div>
-      <div class="tags">
-        <span class="tag" data-skill="Python">Python</span>
-        <span class="tag" data-skill="SQL">SQL</span>
-        <span class="tag" data-skill="PySpark">PySpark</span>
-        <span class="tag" data-skill="scikit-learn">scikit-learn</span>
-        <span class="tag" data-skill="XGBoost">XGBoost</span>
-        <span class="tag" data-skill="Statsmodels">Statsmodels</span>
-        <span class="tag" data-skill="FastAPI">FastAPI</span>
-        <span class="tag" data-skill="Streamlit">Streamlit</span>
-        <span class="tag" data-skill="Docker">Docker</span>
-        <span class="tag" data-skill="Hugging Face">Hugging Face</span>
-        <span class="tag" data-skill="spaCy">spaCy</span>
-        <span class="tag" data-skill="Transformers">Transformers</span>
-        <span class="tag" data-skill="CLIP">CLIP</span>
-        <span class="tag" data-skill="ControlNet">ControlNet</span>
-        <span class="tag" data-skill="OpenCV">OpenCV</span>
-        <span class="tag" data-skill="GCP">GCP</span>
-        <span class="tag" data-skill="AWS">AWS</span>
-        <span class="tag" data-skill="BigQuery">BigQuery</span>
-        <span class="tag" data-skill="Airflow">Airflow</span>
+      <div class="section-title">Skills That Deliver Business Impact</div>
+      <p class="skill-intro">Beyond technical know-how, these are the tools and frameworks I use to turn complex datasets into decisions your clients can act on.</p>
+      <div class="skill-columns" id="skill-groups">
+        <div class="skill-col" data-group="languages">
+          <h4>LANGUAGES</h4>
+          <div class="tags">
+            <span class="tag" data-skill="Python">Python</span>
+            <span class="tag" data-skill="SQL">SQL</span>
+            <span class="tag" data-skill="PySpark">PySpark</span>
+          </div>
+        </div>
+        <div class="skill-col" data-group="ml-modeling">
+          <h4>MACHINE LEARNING & MODELING</h4>
+          <div class="tags">
+            <span class="tag" data-skill="scikit-learn">scikit-learn</span>
+            <span class="tag" data-skill="XGBoost">XGBoost</span>
+            <span class="tag" data-skill="Random Forest">Random Forest</span>
+            <span class="tag" data-skill="K-Means">K-means</span>
+            <span class="tag" data-skill="DBScan">DBScan</span>
+            <span class="tag" data-skill="Statsmodels">Statsmodels</span>
+          </div>
+        </div>
+        <div class="skill-col" data-group="nlp-ai">
+          <h4>NLP & AI</h4>
+          <div class="tags">
+            <span class="tag" data-skill="Hugging Face">Hugging Face</span>
+            <span class="tag" data-skill="Transformers">Transformers</span>
+            <span class="tag" data-skill="RoBERTa">RoBERTa</span>
+          </div>
+        </div>
+        <div class="skill-col" data-group="cloud">
+          <h4>CLOUD & BIG DATA</h4>
+          <div class="tags">
+            <span class="tag" data-skill="AWS">AWS</span>
+            <span class="tag" data-skill="GCP">GCP</span>
+            <span class="tag" data-skill="Airflow">AirFlow</span>
+          </div>
+        </div>
+        <div class="skill-col" data-group="deployment">
+          <h4>DEPLOYMENT & APIS</h4>
+          <div class="tags">
+            <span class="tag" data-skill="FastAPI">Fast API</span>
+            <span class="tag" data-skill="Streamlit">Streamlit</span>
+            <span class="tag" data-skill="Docker">Docker</span>
+          </div>
+        </div>
+        <div class="skill-col" data-group="specialized">
+          <h4>SPECIALIZED TECHNIQUES</h4>
+          <div class="tags">
+            <span class="tag" data-skill="Time Series">Time Series</span>
+            <span class="tag" data-skill="SARIMA">SARIMA</span>
+            <span class="tag" data-skill="Recommender Systems">Recomender Systems</span>
+            <span class="tag" data-skill="Feature Store">Feature Stores</span>
+            <span class="tag" data-skill="Hyperparameter Tuning">Hyperparameter Tuning</span>
+          </div>
+        </div>
       </div>
+  <button id="clear-skills-btn" type="button" class="clear-skills-btn" aria-hidden="true" aria-label="Clear selected skills">Clear selected skills ✕ <span id="skill-match-count" style="display:none;opacity:.8;font-weight:500;">(0 matches)</span></button>
     </div>
   </section>
 
@@ -173,7 +275,10 @@
             <p>Hybrid recommender that blends <strong>TF-IDF content similarity</strong>, <strong>sentiment analysis</strong> of comments, and <strong>K-Means clusters</strong> to score the “next best video”. Includes a FastAPI service and Dockerized deploy.</p>
             <div class="tags">
               <span class="tag" data-skill="Python">Python</span>
+              <span class="tag" data-skill="PySpark">PySpark</span>
               <span class="tag" data-skill="NLP">NLP</span>
+              <span class="tag" data-skill="GCP">GCP</span>
+              <span class="tag" data-skill="FastAPI">FastAPI</span>
               <span class="tag" data-skill="TF-IDF">TF-IDF</span>
               <span class="tag" data-skill="Hugging Face">Hugging Face</span>
               <span class="tag" data-skill="K-Means">K-Means</span>
@@ -415,7 +520,7 @@
       };
 
       // Wire up skill chips
-      document.querySelectorAll('#skills .tag').forEach(skillTag=>{
+  document.querySelectorAll('#skills .tag').forEach(skillTag=>{
         const skill = getSkill(skillTag);
 
         // Hover: temporary highlight
@@ -429,8 +534,46 @@
           else { selectedSkills.add(skill); skillTag.classList.add('selected'); }
           updateHighlights();
           updateOrdering();
+          updateClearButton();
         });
       });
+
+      // Clear selection button logic
+      const clearBtn = document.getElementById('clear-skills-btn');
+      const updateClearButton = () => {
+        if(!clearBtn) return;
+        if(selectedSkills.size > 0){
+          clearBtn.classList.add('visible');
+          clearBtn.setAttribute('aria-hidden','false');
+        } else {
+          clearBtn.classList.remove('visible');
+          clearBtn.setAttribute('aria-hidden','true');
+        }
+        // Update match counter
+        const counterEl = document.getElementById('skill-match-count');
+        if(counterEl){
+          if(selectedSkills.size===0){
+            counterEl.style.display='none';
+          } else {
+            // Count cards with at least one selected skill
+            const matched = projectCards.filter(card=> scoreCard(card) > 0 ).length;
+            counterEl.textContent = `(${matched} match${matched===1?'':'es'})`;
+            counterEl.style.display='inline';
+          }
+        }
+      };
+      if(clearBtn){
+        clearBtn.addEventListener('click', ()=>{
+          selectedSkills.clear();
+          document.querySelectorAll('#skills .tag.selected').forEach(t=> t.classList.remove('selected'));
+          hoveredSkill = null;
+          updateHighlights();
+          updateOrdering();
+          updateClearButton();
+        });
+      }
+      // Initialize state
+      updateClearButton();
     })();
 
     /* Click ripple feedback (aligned with pointer using clientX/Y) */
