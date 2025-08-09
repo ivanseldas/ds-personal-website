@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Basic meta for rendering & SEO -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iván Seldas — Data Scientist</title>
+  <meta name="description" content="Architect-turned-Data Scientist in Madrid. Projects in NLP, forecasting, and recommender systems. Minimal, story-driven portfolio with real impact." />
+
+  <!-- Fonts: serif for headlines, geometric sans for UI -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Epilogue:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ======================================
+       THEME TOKENS & GLOBAL RESET
+       ====================================== */
+    :root { --bg:#0c0c0c; --fg:#fff; --muted:#888; --accent:#7dd3fc; --card:#1a1a1a; --border:#2c2c2c; }
+    * { box-sizing:border-box; scroll-behavior:smooth; }
+    html,body {
+      margin:0; padding:0; font-family:'Epilogue',sans-serif; background:var(--bg); color:var(--fg);
+      /* Custom cursor (outlined circle) */
+      cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" stroke="white" stroke-width="6" fill="none"/></svg>') 20 20, auto;
+    }
+    a {
+      color:inherit; text-decoration:none;
+      cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" stroke="white" stroke-width="6" fill="none"/></svg>') 20 20, auto;
+    }
+    .container { max-width:1024px; margin:0 auto; padding:0 20px; }
+
+    /* ======================================
+       HEADER / NAV (sticky)
+       ====================================== */
+    header { position:fixed; top:0; width:100%; background:rgba(12,12,12,.85); backdrop-filter:blur(8px); border-bottom:1px solid var(--border); z-index:1000; }
+    nav { display:flex; justify-content:space-between; align-items:center; padding:20px 0; }
+    .logo { font-family:'Playfair Display',serif; font-size:20px; font-weight:700; }
+    .nav-links a { margin-left:20px; color:var(--muted); }
+    .nav-links a:hover { color:var(--fg); text-decoration:underline; }
+
+    /* Sections offset so anchors aren't hidden under header */
+    .section { scroll-margin-top:100px; position:relative; z-index:1; }
+
+    /* ======================================
+       HERO / INTRO
+       ====================================== */
+    .hero { padding:160px 0 40px; text-align:center; }
+    .hero img.profile-pic { width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid var(--border); margin-bottom:24px; }
+    .hero h1 { font-family:'Playfair Display',serif; font-size:3.2rem; line-height:1.1; margin:0 0 20px; }
+    .hero p { color:var(--muted); font-size:1.1rem; max-width:680px; margin:0 auto 28px; }
+    .cta-buttons a { border:1px solid var(--border); padding:12px 18px; border-radius:8px; background:#111; margin:0 6px; transition:.2s; }
+    .cta-buttons a:hover { background:#191919; }
+
+    /* ======================================
+       GENERIC SECTION STYLES
+       ====================================== */
+    section { padding:80px 0; border-top:1px solid var(--border); }
+    .section-title { font-size:.85rem; text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:20px; }
+  /* Condensed height just for Skills section */
+  #skills { padding:40px 0 30px; }
+
+    /* ======================================
+       SELECTED WORK — CARD LAYOUT
+       + reveal-on-scroll and light parallax
+       ====================================== */
+    .card {
+      grid-column:span 12; border:1px solid var(--border); background:var(--card);
+      border-radius:16px; padding:18px; margin-bottom:10px;
+      transition:transform .15s ease, border-color .2s ease, opacity .6s ease;
+      opacity:0; transform:translateY(24px); will-change: transform;
+    }
+    .card.visible { opacity:1; transform:translateY(0); }
+    .card:hover { transform:translateY(-2px); border-color:#2a2a2a; }
+    .card .row { display:flex; gap:18px; flex-direction:column; }
+    .card img { width:100%; border-radius:12px; border:1px solid var(--border); will-change:transform; transition:transform .3s ease; }
+    .card h3 { margin:6px 0 8px; font-size:20px; }
+    .card p { color:#c9c9c9; margin:0 0 10px; }
+    .tags { display:flex; gap:8px; flex-wrap:wrap; }
+  .tag { padding:6px 10px; border-radius:999px; border:1px solid var(--border); color:#bdbdbd; font-size:12px; background:var(--card); transition:all .2s ease; cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" stroke="white" stroke-width="6" fill="none"/></svg>') 20 20, auto; }
+    .tag:hover { transform:scale(1.05); background:var(--accent); color:#000; border-color:var(--accent); }
+    /* Selected state for multi-select skills */
+    .tag.selected { background:var(--accent); color:#000; border-color:var(--accent); }
+    .card .meta { color:var(--muted); font-size:13px; }
+    @media(min-width:900px){ .card .row{flex-direction:row} .card .col{flex:1} .card .media{flex:1.2} }
+
+    /* Two-column helper */
+    .two-cols { display:grid; gap:24px; grid-template-columns:1fr; }
+    @media(min-width:768px){ .two-cols{ grid-template-columns:1fr 1fr; } }
+
+    /* ======================================
+       CONTACT — Lifestyle collage grid
+       ====================================== */
+    .photo-collage { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:20px; }
+    .photo-collage img { width:100%; border-radius:8px; object-fit:cover; aspect-ratio:4/3; border:1px solid var(--border); }
+
+    /* Footer */
+    footer { padding:40px 0; text-align:center; color:var(--muted); font-size:.9rem; border-top:1px solid var(--border); }
+
+    /* ======================================
+       CLICK RIPPLE (CSS-only animation; JS appends/removes node)
+       ====================================== */
+    .click-feedback { position:fixed; width:40px; height:40px; border:3px solid var(--accent); border-radius:50%; pointer-events:none; opacity:.7; transform:scale(0); animation:clickRipple .4s ease-out forwards; z-index:9999; }
+    @keyframes clickRipple { 0%{transform:scale(0);opacity:.7} 100%{transform:scale(2);opacity:0} }
+  </style>
+</head>
+<body>
+  <!-- Sticky header with simple nav -->
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Iván Seldas</div>
+        <div class="nav-links">
+          <a href="#projects">Work</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- HERO / INTRO -->
+  <section class="hero section" id="home">
+    <div class="container">
+      <!-- Replace this src with your real portrait -->
+      <img src="your-profile-photo.jpg" alt="Iván Seldas" class="profile-pic" />
+      <h1>AI with purpose,<br>storytelling with data.</h1>
+      <p>Architect-turned-Data Scientist building ML projects in NLP, forecasting, and recommender systems. I create tools that help people and businesses make decisions, simply and clearly.</p>
+      <div class="cta-buttons">
+        <a href="#projects">See projects</a>
+        <a href="mailto:hello@example.com">Hire me</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SKILLS (chips) — names must match project data-skill to link properly -->
+  <section class="section" id="skills">
+    <div class="container">
+      <div class="section-title">Skills</div>
+      <div class="tags">
+        <span class="tag" data-skill="Python">Python</span>
+        <span class="tag" data-skill="SQL">SQL</span>
+        <span class="tag" data-skill="PySpark">PySpark</span>
+        <span class="tag" data-skill="scikit-learn">scikit-learn</span>
+        <span class="tag" data-skill="XGBoost">XGBoost</span>
+        <span class="tag" data-skill="Statsmodels">Statsmodels</span>
+        <span class="tag" data-skill="FastAPI">FastAPI</span>
+        <span class="tag" data-skill="Streamlit">Streamlit</span>
+        <span class="tag" data-skill="Docker">Docker</span>
+        <span class="tag" data-skill="Hugging Face">Hugging Face</span>
+        <span class="tag" data-skill="spaCy">spaCy</span>
+        <span class="tag" data-skill="Transformers">Transformers</span>
+        <span class="tag" data-skill="CLIP">CLIP</span>
+        <span class="tag" data-skill="ControlNet">ControlNet</span>
+        <span class="tag" data-skill="OpenCV">OpenCV</span>
+        <span class="tag" data-skill="GCP">GCP</span>
+        <span class="tag" data-skill="AWS">AWS</span>
+        <span class="tag" data-skill="BigQuery">BigQuery</span>
+        <span class="tag" data-skill="Airflow">Airflow</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- SELECTED WORK -->
+  <section class="section" id="projects">
+    <div class="container">
+      <div class="section-title">Selected Work</div>
+
+      <!-- PROJECT 1 -->
+      <article class="card">
+        <div class="row">
+          <div class="col">
+            <h3>Emotion-Powered Video Recommendations</h3>
+            <p>Hybrid recommender that blends <strong>TF-IDF content similarity</strong>, <strong>sentiment analysis</strong> of comments, and <strong>K-Means clusters</strong> to score the “next best video”. Includes a FastAPI service and Dockerized deploy.</p>
+            <div class="tags">
+              <span class="tag" data-skill="Python">Python</span>
+              <span class="tag" data-skill="NLP">NLP</span>
+              <span class="tag" data-skill="TF-IDF">TF-IDF</span>
+              <span class="tag" data-skill="Hugging Face">Hugging Face</span>
+              <span class="tag" data-skill="K-Means">K-Means</span>
+              <span class="tag" data-skill="FastAPI">FastAPI</span>
+              <span class="tag" data-skill="Docker">Docker</span>
+            </div>
+            <div class="meta">Impact: +12% watch-through on test set · Repo & demo on request</div>
+            <div class="chips">
+              <a class="btn" href="#">Live Demo</a>
+              <a class="btn" href="#">GitHub</a>
+              <a class="btn" href="#">Case Study</a>
+            </div>
+          </div>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1600&auto=format&fit=crop" alt="Recommender system UI preview" />
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 2 -->
+      <article class="card">
+        <div class="row">
+          <div class="col">
+            <h3>Barcelona Noise Forecasting</h3>
+            <p>Time-series pipeline predicting urban noise with <strong>SARIMA</strong> and <strong>Gradient Boosting</strong>. Explored <em>COVID-19</em> as a shock, plus spatial interpolation to estimate unmonitored areas.</p>
+            <div class="tags">
+              <span class="tag" data-skill="Time Series">Time Series</span>
+              <span class="tag" data-skill="SARIMA">SARIMA</span>
+              <span class="tag" data-skill="XGBoost">XGBoost</span>
+              <span class="tag" data-skill="Geo">Geo</span>
+              <span class="tag" data-skill="MAPE / RMSE">MAPE / RMSE</span>
+            </div>
+            <div class="meta">Impact: baseline → −18% RMSE; dashboard for city insights</div>
+            <div class="chips">
+              <a class="btn" href="#">Notebook</a>
+              <a class="btn" href="#">Report</a>
+            </div>
+          </div>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1451188502541-13943edb6acb?q=80&w=1600&auto=format&fit=crop" alt="Time-series charts" />
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 3 -->
+      <article class="card">
+        <div class="row">
+          <div class="col">
+            <h3>Telecom Churn Prediction</h3>
+            <p>Production-style project with <strong>feature store</strong>, <strong>ML pipeline</strong>, experiment tracking and a simple web UI. Models compared: Logistic, Random Forest, XGBoost.</p>
+            <div class="tags">
+              <span class="tag" data-skill="ML">ML</span>
+              <span class="tag" data-skill="MLOps">MLOps</span>
+              <span class="tag" data-skill="Feature Store">Feature Store</span>
+              <span class="tag" data-skill="XGBoost">XGBoost</span>
+              <span class="tag" data-skill="Streamlit">Streamlit</span>
+            </div>
+            <div class="meta">Impact: >95% accuracy on holdout; SHAP to explain drivers</div>
+            <div class="chips">
+              <a class="btn" href="#">Demo</a>
+              <a class="btn" href="#">GitHub</a>
+            </div>
+          </div>
+          <div class="media">
+            <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop" alt="Model dashboard" />
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- ABOUT — Education & Achievements -->
+  <section class="section" id="about">
+    <div class="container">
+      <div class="section-title">About</div>
+      <div class="two-cols">
+        <div>
+          <h3>Education & Certifications</h3>
+          <ul>
+            <li>MSc Data Science — Institution Name (Year)</li>
+            <li>Bootcamp Data Science & Machine Learning — Ironhack (2024)</li>
+            <li>Bachelor of Architecture — Institution Name (Year)</li>
+            <li>Certifications — AWS / GCP (Year)</li>
+          </ul>
+          <h3>Achievements</h3>
+          <ul>
+            <li>Emotion-Powered Recommender (TF-IDF + Sentiment + K-Means)</li>
+            <li>Led interior design teams for senior-living projects (Madrid & Sydney)</li>
+            <li>Production-ready ML pipelines with MLOps best practices</li>
+          </ul>
+        </div>
+        <div>
+          <p>I’m Iván — architect turned data scientist. I merge creative design thinking with analytical problem-solving, focusing on AI solutions that make complex decisions clear and actionable.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT — Info + Lifestyle Collage -->
+  <section class="section" id="contact">
+    <div class="container">
+      <div class="section-title">Contact</div>
+      <div class="two-cols">
+        <div>
+          <p>Email: <a href="mailto:hello@example.com">hello@example.com</a></p>
+          <p>LinkedIn · <a href="https://linkedin.com/in/ivanseldasp">ivanseldasp</a></p>
+          <p>GitHub · <a href="https://github.com/ivanseldas">@ivanseldas</a></p>
+          <p>Portfolio · <a href="https://www.datascienceportfol.io/ivanseldas">datascienceportfol.io</a></p>
+        </div>
+        <div>
+          <p><strong>Resume</strong></p>
+          <a class="cta" href="#">Download PDF</a>
+        </div>
+      </div>
+      <div class="photo-collage">
+        <!-- Replace with your lifestyle photos -->
+        <img src="lifestyle1.jpg" alt="Lifestyle 1" />
+        <img src="lifestyle2.jpg" alt="Lifestyle 2" />
+        <img src="lifestyle3.jpg" alt="Lifestyle 3" />
+        <img src="lifestyle4.jpg" alt="Lifestyle 4" />
+        <img src="lifestyle5.jpg" alt="Lifestyle 5" />
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p>© <span id="year"></span> Iván Seldas. Data science with empathy.</p>
+    </div>
+  </footer>
+
+  <script>
+    /* Year in footer (guarded) */
+    const yearEl = document.getElementById('year');
+    if (yearEl) yearEl.textContent = new Date().getFullYear();
+
+    /* Reveal cards as they enter viewport */
+    const observer = new IntersectionObserver((entries)=>{
+      entries.forEach(entry=>{
+        if(entry.isIntersecting){ entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+      });
+    }, { threshold:0.2 });
+    document.querySelectorAll('.card').forEach(el=>observer.observe(el));
+
+    /* Light parallax on project images */
+    window.addEventListener('scroll', ()=>{
+      document.querySelectorAll('.card img').forEach(img=>{
+        const rect = img.getBoundingClientRect();
+        const offset = (window.innerHeight - rect.top) * 0.02; // 2% factor
+        img.style.transform = `translateY(${offset}px)`;
+      });
+    });
+
+    /* ======================================
+       SKILLS ↔ PROJECT TAGS LINKING + MULTI-SELECT & SORTING
+       - Click skills to toggle selection (multi-select)
+       - Projects reorder by number of selected-skill matches (desc)
+       - Hover highlights (temporary) without changing selection
+       ====================================== */
+    (()=>{
+      // Cache container & capture original order for stable sorting
+      const projectContainer = document.querySelector('#projects .container');
+      const projectCards = Array.from(document.querySelectorAll('#projects .card'));
+      projectCards.forEach((card, idx)=> card.dataset.originalIndex = String(idx));
+
+      // State
+      const selectedSkills = new Set();
+      let hoveredSkill = null;
+
+      const getSkill = el => (el.dataset.skill || el.textContent || '').trim();
+
+      const scoreCard = (card)=>{
+        if(selectedSkills.size===0) return 0;
+        const skills = Array.from(card.querySelectorAll('.tag')).map(getSkill);
+        return skills.reduce((acc, s)=> acc + (selectedSkills.has(s) ? 1 : 0), 0);
+      };
+
+      const updateHighlights = ()=>{
+        // Reset
+        document.querySelectorAll('#projects .card .tag').forEach(t=>{
+          t.style.backgroundColor = 'var(--card)';
+          t.style.color = '#bdbdbd';
+          t.style.borderColor = 'var(--border)';
+        });
+        // Selected
+        selectedSkills.forEach(skill=>{
+          document.querySelectorAll(`#projects .card .tag[data-skill='${skill}']`).forEach(t=>{
+            t.style.backgroundColor = 'var(--accent)';
+            t.style.color = '#000';
+            t.style.borderColor = 'var(--accent)';
+          });
+        });
+        // Hovered (if not already selected)
+        if(hoveredSkill && !selectedSkills.has(hoveredSkill)){
+          document.querySelectorAll(`#projects .card .tag[data-skill='${hoveredSkill}']`).forEach(t=>{
+            t.style.backgroundColor = 'var(--accent)';
+            t.style.color = '#000';
+            t.style.borderColor = 'var(--accent)';
+          });
+        }
+      };
+
+      // FLIP animation on reorder (satisfying but subtle)
+      const updateOrdering = ()=>{
+        const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // 1) FIRST: capture current positions
+        const first = new Map();
+        projectCards.forEach(card => first.set(card, card.getBoundingClientRect()));
+
+        // 2) DOM MUTATION: sort & append in new order
+        const scored = projectCards.map(card=>({ card, score:scoreCard(card), original:Number(card.dataset.originalIndex) }));
+        scored.sort((a,b)=> b.score - a.score || a.original - b.original); // desc by score, stable by original
+        scored.forEach(({card})=> projectContainer.appendChild(card)); // appending reorders
+
+        if (prefersReduced) return; // respect reduced motion
+
+        // 3) LAST: capture new positions and FLIP
+        const animDuration = 450; // ms
+        projectCards.forEach(card => {
+          const last = card.getBoundingClientRect();
+          const f = first.get(card);
+          const dx = (f?.left ?? last.left) - last.left;
+          const dy = (f?.top  ?? last.top)  - last.top;
+
+          if (dx || dy) {
+            card.style.transition = 'none';
+            card.style.transform = `translate(${dx}px, ${dy}px)`;
+            // Force reflow
+            card.getBoundingClientRect();
+            // Animate back to natural position
+            card.style.transition = `transform ${animDuration}ms cubic-bezier(0.22, 1, 0.36, 1)`;
+            card.style.transform = 'translate(0, 0)';
+            const onEnd = () => { card.style.transition = ''; card.removeEventListener('transitionend', onEnd); };
+            card.addEventListener('transitionend', onEnd);
+          }
+        });
+      };
+
+      // Wire up skill chips
+      document.querySelectorAll('#skills .tag').forEach(skillTag=>{
+        const skill = getSkill(skillTag);
+
+        // Hover: temporary highlight
+        skillTag.addEventListener('mouseenter', ()=>{ hoveredSkill = skill; updateHighlights(); });
+        skillTag.addEventListener('mouseleave', ()=>{ hoveredSkill = null; updateHighlights(); });
+
+        // Click: toggle selection and reorder
+        skillTag.addEventListener('click', (e)=>{
+          e.preventDefault();
+          if(selectedSkills.has(skill)){ selectedSkills.delete(skill); skillTag.classList.remove('selected'); }
+          else { selectedSkills.add(skill); skillTag.classList.add('selected'); }
+          updateHighlights();
+          updateOrdering();
+        });
+      });
+    })();
+
+    /* Click ripple feedback (aligned with pointer using clientX/Y) */
+    document.addEventListener('click',(e)=>{
+      const ripple = document.createElement('div');
+      ripple.className = 'click-feedback';
+      ripple.style.left = (e.clientX - 20) + 'px';
+      ripple.style.top = (e.clientY - 20) + 'px';
+      document.body.appendChild(ripple);
+      setTimeout(()=> ripple.remove(), 500);
+    });
+  </script>
+</body>
+</html>

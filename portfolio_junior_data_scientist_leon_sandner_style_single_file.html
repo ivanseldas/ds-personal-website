@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Iván Seldas — Data Scientist</title>
+  <meta name="description" content="Junior Data Scientist portfolio. Projects, writing, and contact." />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Iván Seldas — Data Scientist" />
+  <meta property="og:description" content="Projects, writing, and contact." />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/000/fff.png&text=Iv%C3%A1n+Seldas+—+Data+Scientist" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Epilogue:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='68' x='12' font-size='72'%3EIS%3C/text%3E%3C/svg%3E" />
+  <style>
+    :root{
+      --bg:#0b0b0b; --fg:#eaeaea; --muted:#b7b7b7; --accent:#8ef0a9; --card:#141414; --link:#a5e1ff;
+      --max: 1080px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:'Epilogue',system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;line-height:1.6;}
+    .grain:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.08;mix-blend-mode:soft-light;background-image:url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABgElEQVRoge2YvUoDQRSGv1oIpaWJcQq8gk0U4r2Qm0G1oKk0qGkJbW1i6C0i3r7m1Dk8m8t5JwzYbq4iG1th8J0mXxkq0M0uVh7w6Qy3k4w8lq8y+f0f2J2gO2m3tC2Qw3o0M3m3cD3iB0eG1n0wB1h7zqCk9E1v9aV6b2D1y2aqD2wC4l3s7O7qH5QpQmQdJ2kqg+0s3n7O1q4n0gQjKXbQ7w0p6WZQ2sQ7Qv8r0K9Vg8I9qVt5FQwzq1Ew1k2f6C5mYp0F0KpWJ0S3e6gq8ZCw0D9x4C1m0r2c3fQm8l9Sk7kq8G3r7oB3lQ0qf0o0g8f6m8l2g0m5o3C7m3Q2H8yGm1vZC+qfM3k2kS3Z1y8Z0o1n7lqz9lO3sP0y0iM1qg0s5wH8pP2k5fZyS3zqv3n+Yd4p3m1kZs0nQm5G6YqN5k6kqYvLk0W2i8+2q2yq7r8K2mQ0l6m6T4mS3eHqv8G1mP4Qq3yDg2b3C6o7A1o7w4wQeV3r1gBYs1nWv9wH3Q6b5c+zE1wAAAABJRU5ErkJggg==');animation:grain 1s steps(6) infinite}
+    @keyframes grain{0%{transform:translate(0,0)}10%{transform:translate(-2%, -2%)}20%{transform:translate(2%, -1%)}30%{transform:translate(-1%,2%)}40%{transform:translate(1%,-2%)}50%{transform:translate(-1%,1%)}60%{transform:translate(2%,2%)}70%{transform:translate(-2%,1%)}80%{transform:translate(1%,-1%)}90%{transform:translate(-1%,-2%)}100%{transform:translate(0,0)}}
+    a{color:var(--link);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header{position:sticky;top:0;backdrop-filter:saturate(130%) blur(6px);background:linear-gradient(180deg,rgba(11,11,11,.9),rgba(11,11,11,.4) 70%,rgba(11,11,11,0));z-index:2;border-bottom:1px solid rgba(255,255,255,.06)}
+    .nav{max-width:var(--max);margin:0 auto;display:flex;align-items:center;gap:18px;padding:14px 18px}
+    .nav a{font-weight:600;color:var(--fg)}
+    .spacer{flex:1}
+    .pill{border:1px solid rgba(255,255,255,.12);padding:8px 14px;border-radius:999px;color:var(--fg)}
+
+    .hero{max-width:var(--max);margin:0 auto;padding:12vh 18px 8vh;display:grid;gap:18px}
+    .eyebrow{letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-size:.8rem}
+    h1{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(40px,9vw,92px);line-height:1.05;margin:6px 0}
+    .tagline{font-size:clamp(18px,2.2vw,22px);color:var(--muted);max-width:900px}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:6px}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,.2);padding:10px 16px;border-radius:14px;color:var(--fg);font-weight:600}
+    .btn:hover{transform:translateY(-1px)}
+
+    .section{max-width:var(--max);margin:0 auto;padding:6vh 18px 2vh}
+    .section h2{font-family:'Playfair Display',serif;font-size:clamp(28px,4vw,40px);margin:0 0 18px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .card{background:var(--card);border:1px solid rgba(255,255,255,.06);padding:18px;border-radius:16px;transition:transform .15s ease, background .2s}
+    .card:hover{transform:translateY(-2px);}
+    .card h3{margin:0 0 8px;font-size:18px}
+    .card p{margin:0;color:var(--muted)}
+    .meta{font-size:.9rem;color:var(--muted)}
+    .list{display:grid;gap:10px}
+
+    .about{display:grid;grid-template-columns:1fr;gap:18px}
+    .about p{margin:0;color:var(--muted)}
+    .about h3{margin:0}
+
+    @media(min-width:900px){
+      .about{grid-template-columns:1.2fr .8fr;align-items:start}
+    }
+    footer{max-width:var(--max);margin:0 auto;padding:8vh 18px 12vh;color:var(--muted)}
+    .footgrid{display:grid;grid-template-columns:1fr;gap:16px}
+    @media(min-width:760px){.footgrid{grid-template-columns:1fr auto}}
+    .footlinks{display:flex;gap:14px;flex-wrap:wrap}
+    .kicker{font-size:.9rem;color:var(--muted)}
+  </style>
+</head>
+<body class="grain">
+  <header>
+    <nav class="nav" aria-label="Primary">
+      <a href="#top" class="pill" aria-label="Home">IS</a>
+      <div class="spacer"></div>
+      <a href="#projects" class="pill">Projects</a>
+      <a href="#writing" class="pill">Writing</a>
+      <a href="#about" class="pill">About</a>
+      <a href="#contact" class="pill">Contact</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero" aria-labelledby="intro-title">
+      <span class="eyebrow">Junior Data Scientist</span>
+      <h1 id="intro-title">Building useful AI for everyday decisions.</h1>
+      <p class="tagline">Hi, I'm <strong>Iván Seldas</strong>. I turn messy data into simple stories and small products. I like NLP, recommender systems, and time series. Currently open to roles in Madrid or remote.</p>
+      <div class="cta" role="group" aria-label="Primary actions">
+        <a class="btn" href="mailto:hello@ivanseldas.dev">Email</a>
+        <a class="btn" href="https://github.com/ivanseldas" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn" href="https://www.linkedin.com/in/ivanseldas" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="btn" href="#cv">Download CV</a>
+      </div>
+    </section>
+
+    <section id="projects" class="section" aria-labelledby="projects-title">
+      <h2 id="projects-title">Selected Projects</h2>
+      <div class="grid">
+        <article class="card" aria-labelledby="p1-title">
+          <h3 id="p1-title">Emotion‑Powered Video Recommender</h3>
+          <p>Hybrid content + sentiment engine. TF‑IDF + cosine similarity, comment polarity reweighting, and k‑means clusters. FastAPI demo API and Dockerized deployment.</p>
+          <p class="meta">Python • FastAPI • Hugging Face • PySpark</p>
+        </article>
+        <article class="card" aria-labelledby="p2-title">
+          <h3 id="p2-title">Barcelona Noise Forecasting</h3>
+          <p>Predicts hourly dB levels from city sensors. SARIMA vs GBM; spatial interpolation to estimate unmonitored zones; interpretable features and A/B impact analysis.</p>
+          <p class="meta">Pandas • statsmodels • LightGBM</p>
+        </article>
+        <article class="card" aria-labelledby="p3-title">
+          <h3 id="p3-title">Telecom Churn Prediction</h3>
+          <p>Production‑ready pipeline on GCP. Feature store, model registry, and drift checks. ROC‑AUC 0.92; SHAP explanations to prioritize retention offers.</p>
+          <p class="meta">GCP • sklearn • MLflow • BigQuery</p>
+        </article>
+        <article class="card" aria-labelledby="p4-title">
+          <h3 id="p4-title">Plan Interpreter for Architects</h3>
+          <p>Extracts rooms, areas, and relationships from CAD‑like plans to structured JSON. Seeds an AI‑assisted interior design tool.</p>
+          <p class="meta">OpenCV • CLIP • Python</p>
+        </article>
+      </div>
+    </section>
+
+    <section id="writing" class="section" aria-labelledby="writing-title">
+      <h2 id="writing-title">Writing</h2>
+      <div class="list" role="list">
+        <a class="card" role="listitem" href="#" aria-label="Read: How I explain ML to non‑technical clients">
+          <h3>How I explain ML to non‑technical clients</h3>
+          <p class="meta">3 min • Product thinking</p>
+        </a>
+        <a class="card" role="listitem" href="#" aria-label="Read: Notes on building tiny, shippable data apps">
+          <h3>Notes on building tiny, shippable data apps</h3>
+          <p class="meta">4 min • Practical ML</p>
+        </a>
+        <a class="card" role="listitem" href="#" aria-label="Read: Recommenders that don’t creep people out">
+          <h3>Recommenders that don’t creep people out</h3>
+          <p class="meta">5 min • Ethics + UX</p>
+        </a>
+      </div>
+    </section>
+
+    <section id="about" class="section about" aria-labelledby="about-title">
+      <div>
+        <h2 id="about-title">About</h2>
+        <p>I’m an architect‑turned‑data‑scientist based in Madrid. My work mixes analysis, clean code, and clear communication. I like shipping small tools that improve decisions for real people.</p>
+        <p>Previously: Interior Design Team Lead @ Life3A. Now: data science projects in NLP, forecasting, and analytics for product teams.</p>
+        <p class="kicker">Currently exploring: RAG for documentation, AI for floorplan understanding, and agentic workflows.</p>
+      </div>
+      <aside>
+        <div class="card">
+          <h3>Toolbox</h3>
+          <p class="meta">Python, SQL, PySpark, scikit‑learn, FastAPI, Docker, GCP, Pandas, NumPy, LightGBM, Statsmodels, MLflow, Power BI</p>
+        </div>
+        <div id="cv" class="card">
+          <h3>Resume</h3>
+          <p class="meta">One‑page PDF • <a href="#">download</a></p>
+        </div>
+      </aside>
+    </section>
+
+    <section id="contact" class="section" aria-labelledby="contact-title">
+      <h2 id="contact-title">Contact</h2>
+      <div class="card">
+        <p style="margin:0">Email me at <a href="mailto:hello@ivanseldas.dev">hello@ivanseldas.dev</a>. I read everything.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="footgrid">
+      <div>
+        <span class="kicker">© <span id="y"></span> Iván Seldas. Built with semantic HTML + a dash of CSS.</span>
+      </div>
+      <div class="footlinks">
+        <a href="https://github.com/ivanseldas" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/ivanseldas" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="#top">Back to top</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // current year
+    document.getElementById('y').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
