@@ -165,6 +165,11 @@
     .card:hover { transform:translateY(-2px); border-color:#2a2a2a; }
     .card .row { display:flex; gap:18px; flex-direction:column; }
     .card img { width:100%; border-radius:12px; border:1px solid var(--border); will-change:transform; transition:transform .3s ease; }
+    /* Vertically center image in media column (no crop) */
+    @media (min-width:900px){
+      .card .media { display:flex; align-items:center; justify-content:center; }
+      .card .media img { width:100%; height:auto; object-fit:contain; }
+    }
   .card h3 { margin:6px 0 8px; font-size:var(--fs-lg); }
   .card p { color:#c9c9c9; margin:0 0 10px; font-size:var(--fs-base); line-height:1.5; }
     .tags { display:flex; gap:8px; flex-wrap:wrap; }
@@ -187,6 +192,33 @@
 
     /* Footer */
   footer { padding:40px 0; text-align:center; color:var(--muted); font-size:var(--fs-sm); border-top:1px solid var(--border); }
+
+   /* ======================================
+     ABOUT SECTION LAYOUT (Minimal Scroll)
+     - Same vertical rhythm as other sections (uses generic section padding vars)
+     - Two columns desktop; single column mobile (leverages .two-cols)
+     - Left: Bio + Education & Certifications
+     - Right: Selected Achievements
+     ====================================== */
+   #about { padding:var(--pad-section) 0; }
+   .about-grid { align-items:start; }
+   #about .bio-block p { font-size:var(--fs-base); line-height:1.5; margin:0 0 14px; }
+  #about h3 { font-size:var(--fs-lg); margin:0 0 6px; font-weight:600; line-height:1.25; letter-spacing:.3px; font-family:'Epilogue',sans-serif; }
+  #about .bio-block { margin-bottom:12px; }
+  #about .bio-block .intro-lead { display:block; font-weight:600; margin:0 0 6px; font-size:var(--fs-lg); line-height:1.3; letter-spacing:.2px; }
+  #about .bio-block p { color:#c9c9c9; }
+  #about ul { color:#c9c9c9; }
+  #about ul li { list-style:disc; }
+  #about .achievements-block ul li { list-style:disc; }
+  @media (max-width:768px){ #about .bio-block .intro-lead { font-size:1.1rem; } }
+   #about ul { margin:10px 0 0 18px; padding:0; font-size:var(--fs-base); line-height:1.5; }
+   #about ul li { margin:0 0 6px; }
+  /* Education list: smaller text + more separation */
+  #about .education-block ul { font-size:var(--fs-sm); line-height:1.4; }
+  #about .education-block ul li { margin:0 0 12px; }
+  #about .education-block ul li:last-child { margin-bottom:0; }
+   #about .about-left > *, #about .about-right > * { margin-bottom:20px; }
+   #about .about-right { display:flex; flex-direction:column; }
 
     /* ======================================
        CLICK RIPPLE (CSS-only animation; JS appends/removes node)
@@ -223,7 +255,7 @@
         class="profile-pic" 
         loading="lazy"
       />
-  <div class="pre-head">JUNIOR DATA SCIENTIST · NLP · FORECASTING · RECOMMENDER SYSTEMS</div>
+  <div class="pre-head">DATA SCIENTIST · NLP · FORECASTING · RECOMMENDER SYSTEMS</div>
   <h1>NEED A DATA SCIENTIST WHO SPEAKS YOUR CLIENT'S LANGUAGE?</h1>
   <p class="subhead">I build end-to-end ML projects that clients understand – ensuring results are business-relevant.</p>
       <div class="cta-buttons" aria-label="Primary call to action">
@@ -293,7 +325,7 @@
         </div>
       </div>
   <button id="clear-skills-btn" type="button" class="clear-skills-btn" aria-hidden="true" aria-label="Clear selected skills">Clear selected skills ✕ <span id="skill-match-count" style="display:none;opacity:.8;font-weight:500;">(0 matches)</span></button>
-  <p class="recruiter-microcopy" style="margin-top:10px; text-transform:none;">Missing a <strong>skill?</strong> Not a problem — I'll <strong></strong>master<strong> it in <strong>7 days.</strong></p>
+  <p class="recruiter-microcopy" style="margin-top:10px; text-transform:none;">Missing a skill? Not a problem — I'll <strong>master it in 7 days.</strong></p>
   <div class="skill-suggest-cta">
     <button id="add-missing-skill-btn" type="button" class="add-missing-skill-btn">Suggest a Skill</button>
   </div>
@@ -399,24 +431,30 @@
   <section class="section" id="about">
     <div class="container">
       <div class="section-title">About</div>
-      <div class="two-cols">
-        <div>
-          <h3>Education & Certifications</h3>
-          <ul>
-            <li>MSc Data Science — Institution Name (Year)</li>
-            <li>Bootcamp Data Science & Machine Learning — Ironhack (2024)</li>
-            <li>Bachelor of Architecture — Institution Name (Year)</li>
-            <li>Certifications — AWS / GCP (Year)</li>
-          </ul>
-          <h3>Achievements</h3>
-          <ul>
-            <li>Emotion-Powered Recommender (TF-IDF + Sentiment + K-Means)</li>
-            <li>Led interior design teams for senior-living projects (Madrid & Sydney)</li>
-            <li>Production-ready ML pipelines with MLOps best practices</li>
-          </ul>
+      <div class="two-cols about-grid">
+        <div class="about-left">
+          <div class="bio-block">
+            <p><span class="intro-lead">I’m Iván — an architect turned data scientist.</span>I merge creative design thinking with analytical problem-solving, delivering machine learning solutions that are both technically sound and business-ready. My background in architecture trained me to see the big picture, communicate complex ideas visually, and build systems that work in the real world.</p>
+          </div>
+          <div class="education-block">
+            <h3>Education &amp; Certifications</h3>
+            <ul>
+              <li>Data Science &amp; Machine Learning Bootcamp — Ironhack (2024)</li>
+              <li>Bachelor of Architecture — Universidad Politécnica de Madrid (2016)</li>
+              <li>AWS Certified Cloud Practitioner (2024)</li>
+              <li>Google Cloud Professional Data Engineer (2024)</li>
+            </ul>
+          </div>
         </div>
-        <div>
-          <p>I’m Iván — architect turned data scientist. I merge creative design thinking with analytical problem-solving, focusing on AI solutions that make complex decisions clear and actionable.</p>
+        <div class="about-right">
+          <div class="achievements-block">
+            <h3>Selected Achievements</h3>
+            <ul>
+              <li>Delivered Emotion-Powered Recommender System — blending NLP and clustering for +12% watch-through on test data.</li>
+              <li>Led interior design teams for senior-living projects in Madrid &amp; Sydney.</li>
+              <li>Built production-ready ML pipelines with MLOps best practices, including feature stores and explainability (SHAP).</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
