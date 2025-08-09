@@ -187,44 +187,87 @@
     /* ======================================
        CONTACT — Lifestyle collage grid
        ====================================== */
-    .photo-collage { display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr)); gap:10px; margin-top:20px; }
-    .photo-collage img { width:100%; border-radius:8px; object-fit:cover; aspect-ratio:4/3; border:1px solid var(--border); }
+  /* (Removed lifestyle photo collage styles) */
 
     /* Footer */
   footer { padding:40px 0; text-align:center; color:var(--muted); font-size:var(--fs-sm); border-top:1px solid var(--border); }
 
-   /* ======================================
-     ABOUT SECTION LAYOUT (Minimal Scroll)
-     - Same vertical rhythm as other sections (uses generic section padding vars)
-     - Two columns desktop; single column mobile (leverages .two-cols)
-     - Left: Bio + Education & Certifications
-     - Right: Selected Achievements
-     ====================================== */
-   #about { padding:var(--pad-section) 0; }
-   .about-grid { align-items:start; }
-   #about .bio-block p { font-size:var(--fs-base); line-height:1.5; margin:0 0 14px; }
-  #about h3 { font-size:var(--fs-lg); margin:0 0 6px; font-weight:600; line-height:1.25; letter-spacing:.3px; font-family:'Epilogue',sans-serif; }
-  #about .bio-block { margin-bottom:12px; }
-  #about .bio-block .intro-lead { display:block; font-weight:600; margin:0 0 6px; font-size:var(--fs-lg); line-height:1.3; letter-spacing:.2px; }
-  #about .bio-block p { color:#c9c9c9; }
-  #about ul { color:#c9c9c9; }
-  #about ul li { list-style:disc; }
-  #about .achievements-block ul li { list-style:disc; }
-  @media (max-width:768px){ #about .bio-block .intro-lead { font-size:1.1rem; } }
-   #about ul { margin:10px 0 0 18px; padding:0; font-size:var(--fs-base); line-height:1.5; }
-   #about ul li { margin:0 0 6px; }
-  /* Education list: smaller text + more separation */
-  #about .education-block ul { font-size:var(--fs-sm); line-height:1.4; }
-  #about .education-block ul li { margin:0 0 12px; }
-  #about .education-block ul li:last-child { margin-bottom:0; }
-   #about .about-left > *, #about .about-right > * { margin-bottom:20px; }
-   #about .about-right { display:flex; flex-direction:column; }
+  /* ======================================
+    ABOUT (New structure: Bio + 2-col grid + CTA)
+    ====================================== */
+  #about { padding:48px 0; }
+  @media (max-width:680px){ #about { padding:38px 0; } }
+  #about .about-bio { max-width:780px; margin:0 0 20px; text-align:left; }
+  #about .about-bio p { margin:0; font-size:0.9rem; line-height:1.65; color:#c9c9c9; }
+  #about .about-bio p .intro-lead { font-weight:600; }
+  #about .about-bio .bio-compact { margin-top:4px; }
+  #about .about-bio details.bio-more { margin-top:8px; }
+  #about .about-bio details summary { cursor:pointer; list-style:none; font-size:0.8rem; letter-spacing:.5px; text-transform:uppercase; color:#888; transition:color .2s; }
+  #about .about-bio details summary.hook { display:inline-block; background:#111; border:1px solid var(--border); padding:10px 16px 9px; border-radius:999px; font-size:0.68rem; letter-spacing:1.2px; font-weight:600; color:#bdbdbd; position:relative; overflow:hidden; text-transform:uppercase; }
+  #about .about-bio details summary.hook:before { content:""; position:absolute; inset:0; background:radial-gradient(circle at 30% 40%, rgba(125,211,252,0.18), transparent 60%); opacity:0; transition:opacity .4s; }
+  #about .about-bio details summary.hook:hover { color:#fff; border-color:#3a3a3a; }
+  #about .about-bio details summary.hook:hover:before { opacity:1; }
+  #about .about-bio details[open] summary.hook { background:var(--accent); color:#000; border-color:var(--accent); }
+  #about .about-bio details summary.hook:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  #about .about-bio details[open] summary { color:#bbb; }
+  #about .about-bio details summary::-webkit-details-marker { display:none; }
+  #about .about-bio details summary:before { content:"+"; display:inline-block; margin-right:6px; font-weight:500; color:#666; transition:transform .25s; }
+  #about .about-bio details[open] summary:before { content:"–"; }
+  #about .about-bio .bio-full { margin-top:8px; animation:fadeIn .25s ease; }
+  #about .about-bio .bio-full p { font-size:0.88rem; line-height:1.7; margin:0 0 12px; }
+  #about .about-bio .bio-full p:last-child { margin-bottom:0; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(2px); } to { opacity:1; transform:translateY(0); } }
+  #about .about-bio a.inline-link { position:relative; text-decoration:none; color:#c9c9c9; transition:color .25s; }
+  #about .about-bio a.inline-link::after { content:""; position:absolute; left:0; bottom:-2px; width:100%; height:1px; background:currentColor; opacity:.45; transition:opacity .25s, transform .25s; transform:scaleX(1); transform-origin:left; }
+  #about .about-bio a.inline-link:hover { color:#ffffff; }
+  #about .about-bio a.inline-link:hover::after { opacity:.85; }
+  #about .about-bio a.inline-link:focus-visible { outline:2px solid #666; outline-offset:2px; }
+  #about .about-bio a.inline-link:focus-visible::after { opacity:1; }
+  #about .about-grid { max-width:1040px; margin:0 auto 26px; display:grid; grid-template-columns:1fr 1fr; gap:26px 46px; align-items:stretch; }
+  /* Photo + content layout variant */
+  #about .about-grid.with-photo { grid-template-columns:320px 1fr; }
+  @media (max-width:900px){ #about .about-grid.with-photo { grid-template-columns:280px 1fr; } }
+  @media (max-width:760px){ #about .about-grid.with-photo { grid-template-columns:1fr; } }
+  #about .about-photo { position:relative; display:flex; }
+  #about .about-photo-inner { position:static; top:auto; display:flex; flex-direction:column; gap:8px; height:100%; width:100%; }
+  @media (max-width:760px){ #about .about-photo-inner { position:static; top:auto; flex-direction:row; align-items:center; } }
+  #about .about-photo figure { margin:0; flex:1; display:flex; flex-direction:column; }
+  #about .about-photo img { width:100%; height:100%; object-fit:cover; border-radius:16px; border:1px solid var(--border); display:block; background:#111; flex:1; }
+  #about .about-photo figcaption { font-size:var(--fs-xs); color:var(--muted); text-align:left; margin-top:6px; letter-spacing:.4px; }
+  @media (max-width:760px){ #about .about-photo img { width:140px; height:auto; aspect-ratio:1/1; border-radius:16px; } #about .about-photo figcaption { flex:1; } }
+  #about .about-detail { display:flex; flex-direction:column; gap:24px; }
+  @media (max-width:760px){ #about .about-detail { gap:18px; } }
+  @media (max-width:900px){ #about .about-grid { gap:22px 34px; } }
+  @media (max-width:720px){ #about .about-grid { grid-template-columns:1fr; gap:20px; } }
+  #about h3 { font-size:var(--fs-lg); margin:0 0 12px; font-weight:600; letter-spacing:.3px; line-height:1.25; }
+  #about .about-grid ul { margin:0; padding:0; list-style:none; display:flex; flex-direction:column; gap:8px; }
+  #about .about-grid ul li { position:relative; padding-left:14px; font-size:0.9rem; line-height:1.45; color:#d0d0d0; }
+  #about .about-grid ul li::before { content:""; position:absolute; left:0; top:8px; width:6px; height:6px; border-radius:50%; background:var(--accent); opacity:.85; }
+  #about .about-grid ul li small { display:block; margin-top:4px; color:#9f9f9f; font-size:0.72rem; letter-spacing:.4px; }
+  #about .about-cta { max-width:700px; margin:0 auto; text-align:center; }
+  #about .about-cta p { margin:0 0 14px; font-size:0.9rem; line-height:1.4; color:#c9c9c9; }
+  #about .about-cta a.cta-link { display:inline-block; border:1px solid var(--border); padding:12px 24px; border-radius:999px; font-size:var(--fs-sm); letter-spacing:.5px; text-transform:uppercase; background:#111; color:#fff; transition:.25s; }
+  #about .about-cta a.cta-link:hover { background:var(--accent); color:#000; border-color:var(--accent); }
+  /* subtle divider above grid */
+  #about .about-grid::before { content:""; position:absolute; }
+  /* Utility wrapper to position divider */
+  #about .about-grid-wrapper { position:relative; }
+  #about .about-grid-wrapper::before { content:""; position:absolute; top:-22px; left:50%; transform:translateX(-50%); width:100%; max-width:1040px; height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); }
 
     /* ======================================
        CLICK RIPPLE (CSS-only animation; JS appends/removes node)
        ====================================== */
     .click-feedback { position:fixed; width:40px; height:40px; border:3px solid var(--accent); border-radius:50%; pointer-events:none; opacity:.7; transform:scale(0); animation:clickRipple .4s ease-out forwards; z-index:9999; }
     @keyframes clickRipple { 0%{transform:scale(0);opacity:.7} 100%{transform:scale(2);opacity:0} }
+  /* Reduced medium paragraph size (hero + about bio) */
+  .hero p:not(.subhead),
+  #about .bio-block p { font-size:0.92rem; line-height:1.45; }
+  /* Short bio toggle for very small screens */
+  #about .about-bio .short-bio { display:none; }
+  @media (max-width:380px){
+    #about .about-bio .long-bio { display:none; }
+    #about .about-bio .short-bio { display:block; }
+  }
   </style>
 </head>
 <body>
@@ -255,7 +298,7 @@
         class="profile-pic" 
         loading="lazy"
       />
-  <div class="pre-head">DATA SCIENTIST · NLP · FORECASTING · RECOMMENDER SYSTEMS</div>
+  <div class="pre-head">DATA SCIENTIST & ARCHITECT</div>
   <h1>NEED A DATA SCIENTIST WHO SPEAKS YOUR CLIENT'S LANGUAGE?</h1>
   <p class="subhead">I build end-to-end ML projects that clients understand – ensuring results are business-relevant.</p>
       <div class="cta-buttons" aria-label="Primary call to action">
@@ -427,62 +470,83 @@
     </div>
   </section>
 
-  <!-- ABOUT — Education & Achievements -->
-  <section class="section" id="about">
+  <!-- ABOUT (Bio + Grid + CTA) -->
+  <section class="section" id="about" aria-label="About">
     <div class="container">
       <div class="section-title">About</div>
-      <div class="two-cols about-grid">
-        <div class="about-left">
-          <div class="bio-block">
-            <p><span class="intro-lead">I’m Iván — an architect turned data scientist.</span>I merge creative design thinking with analytical problem-solving, delivering machine learning solutions that are both technically sound and business-ready. My background in architecture trained me to see the big picture, communicate complex ideas visually, and build systems that work in the real world.</p>
+      <div class="about-bio">
+        <h3 style="margin:0 0 10px; font-size:var(--fs-lg); letter-spacing:.3px;">Who I Am</h3>
+  <p class="long-bio intro-line" style="margin-bottom:6px;">I’m a <strong>Data Scientist</strong>, and an Architect. It all began with...</p>
+        <details class="bio-more">
+          <summary class="hook">READ THE FULL STORY</summary>
+          <div class="bio-full">
+            <p>my <a class="inline-link" href="https://www.youtube.com/watch?v=LzyZGEFMM0M&t=314s" target="_blank" rel="noopener noreferrer">Master's thesis in Architecture</a>, where I designed a data center. To make it real, I had to understand how data actually worked… and I got hooked.</p>
+            <p>That spark pushed me to reinvent my career — first at 42 Madrid, learning to code from zero, then at Ironhack, diving deep into Machine Learning and AI.</p>
+            <p>As an architect, I helped design and build two residential developments in Sydney. Today, I’m still building — not with concrete and steel, but with data solutions that stand the test of business reality.</p>
           </div>
-          <div class="education-block">
-            <h3>Education &amp; Certifications</h3>
-            <ul>
-              <li>Data Science &amp; Machine Learning Bootcamp — Ironhack (2024)</li>
-              <li>Bachelor of Architecture — Universidad Politécnica de Madrid (2016)</li>
-              <li>AWS Certified Cloud Practitioner (2024)</li>
-              <li>Google Cloud Professional Data Engineer (2024)</li>
-            </ul>
+        </details>
+      </div>
+      <div class="about-grid-wrapper">
+        <div class="about-grid with-photo">
+          <div class="about-photo">
+            <div class="about-photo-inner">
+              <figure>
+                <img src="images/personal_pic.jpg" alt="Iván Seldas casual portrait" loading="lazy" height="400" />
+                <figcaption>That's me in Lanzarote. What a place!</figcaption>
+              </figure>
+            </div>
           </div>
-        </div>
-        <div class="about-right">
-          <div class="achievements-block">
-            <h3>Selected Achievements</h3>
-            <ul>
-              <li>Delivered Emotion-Powered Recommender System — blending NLP and clustering for +12% watch-through on test data.</li>
-              <li>Led interior design teams for senior-living projects in Madrid &amp; Sydney.</li>
-              <li>Built production-ready ML pipelines with MLOps best practices, including feature stores and explainability (SHAP).</li>
-            </ul>
+          <div class="about-detail">
+            <div class="about-experience">
+              <h3>Experience</h3>
+              <p style="margin:0 0 6px; font-size:0.9rem; line-height:1.4; color:#d0d0d0;"><strong>Team Leader — Marchese Partners | LIFE3A</strong><br><small>2019 – Present · Madrid<small></small></p>
+              <ul>
+                <li>Led a 10+ member team across international offices, delivering projects with 200+ residential units.</li>
+                <li>Increased productivity by 15% through workshops on new tools and methodologies.</li>
+                <li>Reduced delivery time by 40% via workflow optimization and process automation.</li>
+              </ul>
+            </div>
+            <div class="about-edu">
+              <h3>Education &amp; Certifications</h3>
+              <ul>
+                <li><strong>Data Science &amp; Machine Learning Bootcamp — Ironhack</strong><br><small>2024 · Barcelona</small></li>
+                <li><strong>Google Advanced Data Analytics Certificate — Google</strong><br><small>2024 · Online</small></li>
+                <li><strong>IBM Data Science Professional Certificate</strong><br><small>2025 · Online</small></li>
+                <li><strong>Programming Campus — 42 Madrid (Telefónica)</strong><br><small>2022–2023 · Madrid</small></li>
+                <li><strong>Master’s Degree in Architecture — UPM</strong><br><small>2019–2021 · Madrid</small></li>
+                <li><strong>Bachelor’s Degree in Architecture — UPM &amp; KIT</strong><br><small>2013–2019 · Madrid &amp; Karlsruhe</small></li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- CONTACT — Info + Lifestyle Collage -->
+  <!-- CONTACT — Conversion-focused minimal block -->
   <section class="section" id="contact">
-    <div class="container">
+    <div class="container contact-block">
       <div class="section-title">Contact</div>
-      <div class="two-cols">
-        <div>
-          <p>Email: <a href="mailto:hello@example.com">hello@example.com</a></p>
-          <p>LinkedIn · <a href="https://linkedin.com/in/ivanseldasp">ivanseldasp</a></p>
-          <p>GitHub · <a href="https://github.com/ivanseldas">@ivanseldas</a></p>
-          <p>Portfolio · <a href="https://www.datascienceportfol.io/ivanseldas">datascienceportfol.io</a></p>
-        </div>
-        <div>
-          <p><strong>Resume</strong></p>
-          <a class="cta" href="#">Download PDF</a>
-        </div>
+      <div class="contact-intro">
+        <p class="hook-line">Based in <strong>Madrid</strong>, collaborating remotely across Europe. Always open to coffee chats about <em>AI</em> & architecture.</p>
       </div>
-      <div class="photo-collage">
-        <!-- Replace with your lifestyle photos -->
-        <img src="lifestyle1.jpg" alt="Lifestyle 1" />
-        <img src="lifestyle2.jpg" alt="Lifestyle 2" />
-        <img src="lifestyle3.jpg" alt="Lifestyle 3" />
-        <img src="lifestyle4.jpg" alt="Lifestyle 4" />
-        <img src="lifestyle5.jpg" alt="Lifestyle 5" />
+      <div class="contact-grid">
+        <div class="contact-primary">
+          <a class="contact-email-btn" href="mailto:ivanseldasp@gmail.com" aria-label="Send me an email">Email me</a>
+          <div class="availability">Currently: <strong>Open to full-time & freelance</strong></div>
+        </div>
+        <ul class="contact-links" aria-label="Professional links">
+          <li><span class="label">LinkedIn</span><a href="https://linkedin.com/in/ivanseldasp" target="_blank" rel="noopener">linkedin.com/in/ivanseldasp</a></li>
+          <li><span class="label">GitHub</span><a href="https://github.com/ivanseldas" target="_blank" rel="noopener">github.com/ivanseldas</a></li>
+          <li><span class="label">Portfolio</span><a href="https://www.datascienceportfol.io/ivanseldas" target="_blank" rel="noopener">datascienceportfol.io/ivanseldas</a></li>
+          <li><span class="label">Resume</span><a href="#" class="resume-link">Download PDF <small>(Updated Aug 2025)</small></a></li>
+          <li><span class="label">Book a call</span><a href="#" class="booking-link" aria-label="Schedule a 15 minute call">15‑min intro (Calendly)</a></li>
+        </ul>
+        <div class="contact-aside">
+          <p class="micro-bio">Architect-turned-Data Scientist: I design systems that are as usable as they are accurate.</p>
+          <p class="micro-note">Prefer async? Add a note in the subject with your timeframe. I respond within 24h.</p>
+          <!-- Optional: insert a short testimonial or badge below -->
+        </div>
       </div>
     </div>
   </section>
