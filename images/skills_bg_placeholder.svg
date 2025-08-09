@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" preserveAspectRatio="xMidYMid slice">
+  <!-- Subtle data-science inspired network pattern -->
+  <defs>
+    <!-- Gradient for accent nodes (very soft) -->
+    <radialGradient id="gAccent" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#7dd3fc" stop-opacity="0.55"/>
+      <stop offset="70%" stop-color="#7dd3fc" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#7dd3fc" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Reusable stroke style via class -->
+    <style><![CDATA[
+      .grid { stroke:#7dd3fc; stroke-opacity:0.05; stroke-width:1; }
+      .link { stroke:#7dd3fc; stroke-opacity:0.10; stroke-width:1.2; stroke-dasharray:4 8; }
+      .node { fill:#7dd3fc; fill-opacity:0.18; }
+      .ring { stroke:#7dd3fc; stroke-opacity:0.07; stroke-width:1; fill:none; }
+      .pulse { fill:url(#gAccent); }
+    ]]></style>
+  </defs>
+
+  <!-- Sparse concentric rings (context) -->
+  <g>
+    <circle class="ring" cx="350" cy="300" r="180"/>
+    <circle class="ring" cx="1250" cy="620" r="220"/>
+    <circle class="ring" cx="950" cy="260" r="140"/>
+  </g>
+
+  <!-- Light grid diagonals (not full grid to keep it airy) -->
+  <g>
+    <path class="grid" d="M0 200 L1600 900"/>
+    <path class="grid" d="M0 0 L1600 700"/>
+    <path class="grid" d="M0 420 L1400 900"/>
+    <path class="grid" d="M200 0 L1600 640"/>
+  </g>
+
+  <!-- Network links -->
+  <g>
+    <line class="link" x1="320" y1="310" x2="600" y2="180"/>
+    <line class="link" x1="600" y1="180" x2="900" y2="260"/>
+    <line class="link" x1="900" y1="260" x2="1180" y2="420"/>
+    <line class="link" x1="1180" y1="420" x2="1320" y2="620"/>
+    <line class="link" x1="900" y1="260" x2="1250" y2="620"/>
+    <line class="link" x1="600" y1="180" x2="350" y2="300"/>
+    <line class="link" x1="350" y1="300" x2="950" y2="260"/>
+  </g>
+
+  <!-- Nodes -->
+  <g>
+    <circle class="node" cx="320" cy="310" r="10"/>
+    <circle class="node" cx="600" cy="180" r="10"/>
+    <circle class="node" cx="900" cy="260" r="10"/>
+    <circle class="node" cx="1180" cy="420" r="10"/>
+    <circle class="node" cx="1320" cy="620" r="10"/>
+    <circle class="node" cx="350" cy="300" r="8"/>
+    <circle class="node" cx="950" cy="260" r="8"/>
+    <circle class="node" cx="1250" cy="620" r="14"/>
+  </g>
+
+  <!-- Soft accent pulses (blur-like gradient circles) -->
+  <g>
+    <circle class="pulse" cx="320" cy="310" r="120"/>
+    <circle class="pulse" cx="900" cy="260" r="160"/>
+    <circle class="pulse" cx="1250" cy="620" r="200"/>
+  </g>
+</svg>

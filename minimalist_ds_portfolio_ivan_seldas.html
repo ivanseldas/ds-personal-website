@@ -18,6 +18,12 @@
        ====================================== */
     :root {
       --bg:#0c0c0c; --fg:#fff; --muted:#888; --accent:#7dd3fc; --card:#1a1a1a; --border:#2c2c2c;
+    /* Spacing scale (more compact) */
+  --pad-section:30px;          /* standard vertical padding tighter */
+  --pad-section-compact:18px;  /* compact variant (skills) */
+  /* Background asset tokens */
+  --skills-bg-image:url('images/skills_bg_placeholder.svg');
+  --skills-bg-opacity:0.08; /* tweak between .04 and .12 */
       /* Typography scale (5 sizes max) */
       --fs-xs:.7rem;      /* micro: tags, meta, microcopy */
       --fs-sm:.85rem;     /* small: section titles, footer */
@@ -52,7 +58,7 @@
     /* ======================================
        HERO / INTRO
        ====================================== */
-    .hero { padding:160px 0 40px; text-align:center; }
+  .hero { padding:96px 0 24px; text-align:center; }
     .hero img.profile-pic { width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid var(--border); margin:0 auto 28px; display:block; }
   .hero h1 { font-family:'Playfair Display',serif; font-size:var(--fs-xl); line-height:1.15; letter-spacing:.5px; margin:0 auto 26px; max-width:880px; font-weight:700; }
   .hero p { color:var(--muted); font-size:var(--fs-base); max-width:700px; line-height:1.5; margin:0 auto 32px; }
@@ -72,10 +78,39 @@
     /* ======================================
        GENERIC SECTION STYLES
        ====================================== */
-    section { padding:80px 0; border-top:1px solid var(--border); }
+  section { padding:var(--pad-section) 0; border-top:1px solid var(--border); position:relative; }
+  /* Depth effects removed for flatter, cleaner layout */
+    @media (max-width:680px){
+      /* Slightly reduce intensity on mobile to avoid clutter */
+      .section[data-depth]::after { box-shadow:inset 0 0 120px rgba(0,0,0,calc(var(--depth-vignette,0.35)*0.8)); }
+      .section[data-depth]::before { opacity:.75; }
+    }
   .section-title { font-size:var(--fs-sm); text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:20px; }
+  .recruiter-microcopy { font-size:var(--fs-xs); letter-spacing:.4px; text-transform:uppercase; color:var(--muted); margin:-4px auto 10px; line-height:1.35; max-width:880px; text-align:center; }
+  .add-missing-skill-btn { margin-left:10px; font-size:var(--fs-xs); background:transparent; border:1px solid var(--border); padding:4px 10px; border-radius:999px; cursor:pointer; color:var(--muted); transition:.2s; }
+  .add-missing-skill-btn:hover { background:var(--accent); color:#000; border-color:var(--accent); }
+   .skill-suggest-cta { text-align:center; margin:6px 0 4px; }
+   .skill-suggest-cta .add-missing-skill-btn { margin-left:0; }
+   .skill-extra-line { font-size:var(--fs-xs); color:var(--muted); text-align:center; opacity:.8; margin:4px 0 4px; }
+  .add-skill-form { margin:8px 0 6px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .add-skill-form input { background:#111; border:1px solid var(--border); border-radius:8px; padding:6px 10px; color:var(--fg); font-size:var(--fs-xs); min-width:220px; }
+  .add-skill-form button { font-size:var(--fs-xs); background:#111; border:1px solid var(--border); padding:6px 12px; border-radius:999px; cursor:pointer; color:var(--muted); }
+  .add-skill-form button:hover { background:var(--accent); color:#000; border-color:var(--accent); }
+  .skill-suggest-success { font-size:var(--fs-xs); color:var(--accent); margin:4px 0 0; text-align:center; display:none; }
   /* Condensed height just for Skills section */
-  #skills { padding:28px 0 18px; }
+  #skills { padding:var(--pad-section-compact) 0; position:relative; overflow:hidden; }
+  /* Extra tightening for first sections so Projects preview appears above the fold */
+  #skills .skill-intro { margin-bottom:12px; }
+  #projects { padding-top:22px; padding-bottom:34px; }
+  #projects .section-title { margin-bottom:14px; }
+  /* Decorative background for skills (non-intrusive) */
+  #skills::before { content:""; position:absolute; inset:0; background:
+      radial-gradient(circle at 20% 30%, rgba(125,211,252,0.12), transparent 60%),
+      radial-gradient(circle at 80% 70%, rgba(125,211,252,0.10), transparent 65%),
+      var(--skills-bg-image) center/cover no-repeat;
+      mix-blend-mode:normal; opacity:var(--skills-bg-opacity); filter:grayscale(100%) contrast(110%) brightness(85%);
+      pointer-events:none; z-index:0; }
+  #skills > .container { position:relative; z-index:1; }
   /* Clear skills button */
   .clear-skills-btn { margin:12px 0 0; font-size:var(--fs-xs); background:transparent; border:1px dashed var(--border); padding:6px 14px; border-radius:999px; color:var(--muted); cursor:pointer; transition:.2s; display:none; }
   .clear-skills-btn.visible { display:inline-block; }
@@ -201,8 +236,7 @@
   <!-- SKILLS (chips) — names must match project data-skill to link properly -->
   <section class="section" id="skills">
     <div class="container">
-      <div class="section-title">Skills That Deliver Business Impact</div>
-      <p class="skill-intro">Beyond technical know-how, these are the tools and frameworks I use to turn complex datasets into decisions your clients can act on.</p>
+  <div class="section-title">Skills That Deliver Business Impact</div>
       <div class="skill-columns" id="skill-groups">
         <div class="skill-col" data-group="languages">
           <h4>LANGUAGES</h4>
@@ -213,7 +247,7 @@
           </div>
         </div>
         <div class="skill-col" data-group="ml-modeling">
-          <h4>MACHINE LEARNING & MODELING</h4>
+          <h4>ML & MODELING</h4>
           <div class="tags">
             <span class="tag" data-skill="scikit-learn">scikit-learn</span>
             <span class="tag" data-skill="XGBoost">XGBoost</span>
@@ -259,6 +293,17 @@
         </div>
       </div>
   <button id="clear-skills-btn" type="button" class="clear-skills-btn" aria-hidden="true" aria-label="Clear selected skills">Clear selected skills ✕ <span id="skill-match-count" style="display:none;opacity:.8;font-weight:500;">(0 matches)</span></button>
+  <p class="recruiter-microcopy" style="margin-top:10px; text-transform:none;">Missing a <strong>skill?</strong> Not a problem — I'll <strong></strong>master<strong> it in <strong>7 days.</strong></p>
+  <div class="skill-suggest-cta">
+    <button id="add-missing-skill-btn" type="button" class="add-missing-skill-btn">Suggest a Skill</button>
+  </div>
+  <form id="add-missing-skill-form" class="add-skill-form" style="display:none; justify-content:center;">
+        <label for="new-skill-input" class="visually-hidden" style="position:absolute;left:-9999px;">New skill</label>
+        <input id="new-skill-input" type="text" placeholder="Enter skill (comma separated allowed)" />
+        <button type="submit">Save</button>
+        <button type="button" id="cancel-add-skill">Cancel</button>
+      </form>
+  <div class="skill-suggest-success" id="skill-suggest-success">Saved. Total suggestions: <span id="suggest-count">0</span>. <button id="export-skill-suggestions" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:999px;cursor:pointer;">Export</button></div>
     </div>
   </section>
 
@@ -576,6 +621,58 @@
       updateClearButton();
     })();
 
+    /* Missing skill suggestion — store only (localStorage) */
+    (function(){
+      const triggerBtn = document.getElementById('add-missing-skill-btn');
+      const form = document.getElementById('add-missing-skill-form');
+      const input = document.getElementById('new-skill-input');
+      const cancel = document.getElementById('cancel-add-skill');
+      const successBox = document.getElementById('skill-suggest-success');
+      const countEl = document.getElementById('suggest-count');
+      const exportBtn = document.getElementById('export-skill-suggestions');
+      if(!triggerBtn || !form || !input || !cancel) return;
+
+      const STORAGE_KEY = 'suggestedSkills';
+      const load = () => {
+        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); } catch(e){ return []; }
+      };
+      const save = list => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch(e){} };
+      const updateCount = () => { const list = load(); if(countEl){ countEl.textContent = list.length; } };
+      updateCount();
+
+      triggerBtn.addEventListener('click', ()=>{
+        const show = form.style.display==='none';
+        form.style.display = show ? 'flex' : 'none';
+        if(show){ input.focus(); }
+      });
+      cancel.addEventListener('click', ()=>{ form.style.display='none'; input.value=''; });
+      form.addEventListener('submit', (e)=>{
+        e.preventDefault();
+        const raw = input.value.trim();
+        if(!raw) return;
+        const parts = raw.split(',').map(s=>s.trim()).filter(Boolean);
+        if(parts.length===0) return;
+        const current = load();
+        parts.forEach(p=>{ if(!current.map(c=>c.toLowerCase()).includes(p.toLowerCase())) current.push(p); });
+        save(current);
+        input.value='';
+        form.style.display='none';
+        updateCount();
+        if(successBox){ successBox.style.display='block'; successBox.classList.add('flash'); setTimeout(()=> successBox.style.display='none', 3000); }
+      });
+      if(exportBtn){
+        exportBtn.addEventListener('click', ()=>{
+          const data = load();
+          const blob = new Blob([JSON.stringify({ exportedAt:new Date().toISOString(), skills:data }, null, 2)], { type:'application/json' });
+          const url = URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url; a.download = 'suggested_skills.json';
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(()=> URL.revokeObjectURL(url), 1000);
+        });
+      }
+    })();
+
     /* Click ripple feedback (aligned with pointer using clientX/Y) */
     document.addEventListener('click',(e)=>{
       const ripple = document.createElement('div');
@@ -585,6 +682,8 @@
       document.body.appendChild(ripple);
       setTimeout(()=> ripple.remove(), 500);
     });
+
+  // Depth parallax removed for performance and compact layout focus
   </script>
 </body>
 </html>
