@@ -240,6 +240,13 @@
   .contact-links li[data-type=portfolio]::before { background:radial-gradient(circle at 40% 40%, #7dd3fc, transparent 70%); }
   .contact-links li[data-type=resume]::before { background:radial-gradient(circle at 40% 40%, #4ade80, transparent 70%); }
   .contact-links li[data-type=booking]::before { background:radial-gradient(circle at 40% 40%, #fbbf24, transparent 70%); }
+  /* Remove specific icons (visual markers) for LinkedIn, GitHub, Resume as requested */
+  .contact-links li[data-type=linkedin]::before,
+  .contact-links li[data-type=github]::before,
+  .contact-links li[data-type=resume]::before { display:none; }
+  .contact-links li[data-type=linkedin],
+  .contact-links li[data-type=github],
+  .contact-links li[data-type=resume] { padding-left:0; }
 
     /* Footer */
   footer { padding:40px 0; text-align:center; color:var(--muted); font-size:var(--fs-sm); border-top:1px solid var(--border); }
