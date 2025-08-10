@@ -185,10 +185,13 @@
        ====================================== */
     .card {
       grid-column:span 12; border:1px solid var(--border); background:var(--card);
-      border-radius:16px; padding:18px; margin-bottom:10px;
+      border-radius:16px; padding:18px; margin-bottom:10px; /* base spacing (overridden in #projects) */
       transition:transform .15s ease, border-color .2s ease, opacity .6s ease;
       opacity:0; transform:translateY(24px); will-change: transform;
     }
+    /* Larger vertical separation between project cards */
+    #projects .card { margin-bottom:28px; }
+    #projects .card:last-of-type { margin-bottom:0; }
     .card.visible { opacity:1; transform:translateY(0); }
     .card:hover { transform:translateY(-2px); border-color:#2a2a2a; }
   .card .row { display:flex; gap:18px; flex-direction:column; }
@@ -527,7 +530,7 @@
             <p class="microhook-line" style="margin-top:2px;">Ever wondered what AI fans really want to watch next? <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;"><br>I turned <strong>180K+ YouTube comments</strong> into personalized video suggestions.</span></p>
             <div class="desc-block" style="margin-top:-2px;">
               <ul class="desc-list" style="margin:4px 0 6px;">
-                <li><strong>Extracted</strong> sentiment-weighted signals from massive comment streams (RoBERTa) — boosting content relevance.</li>
+                <li><strong>Extracted</strong> sentiment-weighted signals from massive comment streams (RoBERTa) — boosting relevance.</li>
                 <li><strong>Matched</strong> viewer intent to clustered content themes — surfacing videos users actually want.</li>
               </ul>
             </div>
@@ -627,7 +630,57 @@
         </div>
       </article>
 
-      <!-- PROJECT 3 -->
+  <!-- PROJECT 3 -->
+  <article class="card">
+        <div class="row">
+          <div class="col">
+            <h3>Asthma Risk Prediction System</h3>
+            <p class="microhook-line" style="margin-top:2px;">What if we could predict asthma risk before symptoms appear?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Built an ML system forecasting asthma risk from <strong>1.2M+ environmental & clinical records</strong> to surface high‑risk zones early.</span></p>
+            <div class="desc-block">
+              <ul class="desc-list">
+                <li><strong>Trained</strong> regression models (MAE: 0.53) on multi-source datasets estimating individual risk & population hotspots.</li>
+                <li><strong>Engineered</strong> ETL pipelines (clean, merge, feature) preparing 1.2M+ records & aligning with medical guidelines.</li>
+                <li><strong>Built</strong> interactive Tableau dashboard for exploratory drill-down & public health decision support.</li>
+              </ul>
+            </div>
+            <div class="results-block" style="margin:6px 0 14px;">
+              <div class="results-inline-label">Results</div>
+              <ul class="results-list">
+                <li>
+                  <span class="res-icon relevance">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 4v8l5 3" /></svg>
+                  </span>
+                  <span class="metric">MAE 0.53</span> enabling targeted preventive measures in priority districts.</li>
+                <li>
+                  <span class="res-icon speed">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 16 0" /><path d="M12 12 16 8" /><circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" /></svg>
+                  </span>
+                  Interactive risk maps (Tableau) supporting data-driven public health interventions.</li>
+              </ul>
+            </div>
+            <div class="links-block">
+              <a class="btn" href="#">View Dashboard</a>
+              <a class="btn" href="#">View GitHub</a>
+              <a class="btn" href="#">Case Study</a>
+            </div>
+          </div>
+          <div class="media">
+            <img src="https://placehold.co/640x380/111/888?text=Risk+Dashboard+Preview" alt="Asthma risk dashboard preview" />
+            <div class="tag-block tags" style="margin-top:24px;">
+              <span class="tag" data-skill="Python">Python</span>
+              <span class="tag" data-skill="Pandas">Pandas</span>
+              <span class="tag" data-skill="scikit-learn">scikit-learn</span>
+              <span class="tag" data-skill="ETL">ETL</span>
+              <span class="tag" data-skill="Tableau">Tableau</span>
+              <span class="tag" data-skill="Data Visualization">Data Visualization</span>
+              <span class="tag" data-skill="MAE">MAE</span>
+              <span class="tag" data-skill="Risk Modeling">Risk Modeling</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <!-- PROJECT 4 -->
       <article class="card">
         <div class="row">
           <div class="col">
