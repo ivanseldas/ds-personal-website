@@ -197,6 +197,24 @@
   .card .row { display:flex; gap:18px; flex-direction:column; }
   .card .media { display:flex; flex-direction:column; }
     .card img { width:100%; border-radius:12px; border:1px solid var(--border); will-change:transform; transition:transform .3s ease; }
+  /* Video wrapper (only applied to first project for now) */
+  .card .media .video-wrapper { position:relative; width:100%; aspect-ratio:16/9; background:#111; border:1px solid var(--border); border-radius:12px; overflow:hidden; display:block; }
+  /* Removed padding-top fallback to avoid double height; aspect-ratio widely supported */
+  .card .media .video-wrapper iframe { position:absolute; inset:0; width:100%; height:100%; border:0; opacity:0; transition:opacity .4s ease; }
+  .card .media .video-wrapper .video-thumb { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; background:#000; display:block; border-radius:inherit; }
+  /* Neutralize any external parallax transforms inside video wrapper */
+  .card .media .video-wrapper .video-thumb,
+  .card .media .video-wrapper iframe { transform:none !important; }
+  .card .media .video-wrapper { line-height:0; font-size:0; }
+  /* Remove inner image/iframe borders to avoid double border offset */
+  .card .media .video-wrapper .video-thumb,
+  .card .media .video-wrapper iframe { border:none !important; background:#000; }
+  .card .media .video-wrapper .play-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 50% 50%, rgba(0,0,0,0.15), rgba(0,0,0,0.55)); color:#fff; border:0; cursor:pointer; transition:background .3s; }
+  .card .media .video-wrapper .play-overlay:hover { background:radial-gradient(circle at 50% 50%, rgba(0,0,0,0.1), rgba(0,0,0,0.4)); }
+  .card .media .video-wrapper .play-overlay:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+  .card .media .video-wrapper .play-overlay .icon { width:62px; height:62px; border-radius:50%; background:rgba(0,0,0,0.55); backdrop-filter:blur(2px); display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.18); transition:transform .25s, background .3s; }
+  .card .media .video-wrapper .play-overlay .icon svg { width:30px; height:30px; fill:#fff; }
+  .card .media .video-wrapper:hover .play-overlay .icon { transform:scale(1.08); background:rgba(0,0,0,0.65); }
     @media (min-width:900px){
       .card .media { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; }
       .card .media img { width:100%; height:auto; object-fit:contain; }
@@ -564,7 +582,14 @@
             </div>
           </div>
           <div class="media">
-            <img src="https://placehold.co/640x380/111/888?text=Demo+Preview+GIF+Coming" alt="Recommender system demo preview placeholder" />
+            <div class="video-wrapper" data-video-type="youtube" data-video-id="LzyZGEFMM0M" aria-label="Demo video: Sentiment-Driven Video Recommendation System">
+              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
+              <button class="play-overlay" type="button" aria-label="Play demo video">
+                <span class="icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </button>
+            </div>
             <div class="tag-block tags" style="margin-top:28px;">
               <span class="tag" data-skill="Python">Python</span>
               <span class="tag" data-skill="RoBERTa">RoBERTa</span>
@@ -614,7 +639,14 @@
             </div>
           </div>
           <div class="media">
-            <img src="https://images.unsplash.com/photo-1451188502541-13943edb6acb?q=80&w=1600&auto=format&fit=crop" alt="Time-series charts" />
+            <div class="video-wrapper" data-video-type="youtube" data-video-id="BSN1rPPKK9s" aria-label="Demo video: Barcelona Noise Forecasting">
+              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
+              <button class="play-overlay" type="button" aria-label="Play demo video">
+                <span class="icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </button>
+            </div>
             <div class="tag-block tags" style="margin-top:24px;">
               <span class="tag" data-skill="Time Series">Time Series</span>
               <span class="tag" data-skill="SARIMA">SARIMA</span>
@@ -665,7 +697,14 @@
             </div>
           </div>
           <div class="media">
-            <img src="https://placehold.co/640x380/111/888?text=Risk+Dashboard+Preview" alt="Asthma risk dashboard preview" />
+            <div class="video-wrapper" data-video-type="youtube" data-video-id="RmxWqo83MO4" data-video-start="1197" aria-label="Demo video: Asthma Risk Prediction System">
+              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
+              <button class="play-overlay" type="button" aria-label="Play demo video">
+                <span class="icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </button>
+            </div>
             <div class="tag-block tags" style="margin-top:24px;">
               <span class="tag" data-skill="Python">Python</span>
               <span class="tag" data-skill="Pandas">Pandas</span>
@@ -713,7 +752,14 @@
             </div>
           </div>
           <div class="media">
-            <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop" alt="Model dashboard" />
+            <div class="video-wrapper" data-video-type="youtube" data-video-id="IfLqsNRkBIo" aria-label="Demo video: Telecom Churn Prediction">
+              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
+              <button class="play-overlay" type="button" aria-label="Play demo video">
+                <span class="icon">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+                </span>
+              </button>
+            </div>
             <div class="tag-block tags" style="margin-top:24px;">
               <span class="tag" data-skill="ML">ML</span>
               <span class="tag" data-skill="MLOps">MLOps</span>
@@ -827,6 +873,7 @@
     /* Light parallax on project images */
     window.addEventListener('scroll', ()=>{
       document.querySelectorAll('.card img').forEach(img=>{
+        if(img.classList.contains('video-thumb')){ img.style.transform='none'; return; }
         const rect = img.getBoundingClientRect();
         const offset = (window.innerHeight - rect.top) * 0.02; // 2% factor
         img.style.transform = `translateY(${offset}px)`;
@@ -1039,6 +1086,64 @@
     });
 
   // Depth parallax removed for performance and compact layout focus
+  /* Lightweight inline video loader for first project */
+  (function(){
+    const wrappers = document.querySelectorAll('.card .media .video-wrapper[data-video-id]');
+    if(!wrappers.length) return;
+    const loadThumbnail = (wrapper)=>{
+      const videoId = wrapper.getAttribute('data-video-id');
+      const thumbEl = wrapper.querySelector('.video-thumb');
+      if(!thumbEl || !videoId) return;
+      const candidates = [
+        `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
+        `https://i.ytimg.com/vi/${videoId}/sddefault.jpg`,
+        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+        `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
+        `https://i.ytimg.com/vi/${videoId}/default.jpg`
+      ];
+      let loaded = false;
+      (function tryNext(idx){
+        if(idx>=candidates.length || loaded) return;
+        const test = new Image();
+        test.onload = ()=>{
+          if(test.naturalHeight < 200 && idx < candidates.length-1){ tryNext(idx+1); return; }
+          loaded = true; thumbEl.src = candidates[idx];
+        };
+        test.onerror = ()=> tryNext(idx+1);
+        test.src = candidates[idx];
+      })(0);
+    };
+    const loadIframe = (wrapper)=>{
+      if(wrapper.dataset.loaded) return;
+      const videoId = wrapper.getAttribute('data-video-id');
+      const start = wrapper.getAttribute('data-video-start');
+      const startParam = start ? `&start=${encodeURIComponent(start)}` : '';
+      const iframe = document.createElement('iframe');
+      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1${startParam}`;
+      iframe.title = 'Project demo video';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.allowFullscreen = true;
+      iframe.loading = 'lazy';
+      wrapper.appendChild(iframe);
+      wrapper.dataset.loaded = 'true';
+      const thumb = wrapper.querySelector('.video-thumb');
+      iframe.addEventListener('load', ()=>{
+        iframe.style.opacity = '1';
+        if(thumb){ thumb.style.transition='opacity .25s ease'; thumb.style.opacity='0'; setTimeout(()=> thumb.remove(), 250); }
+      });
+      const btn = wrapper.querySelector('.play-overlay');
+      if(btn) btn.remove();
+    };
+    wrappers.forEach(wrapper=>{
+      loadThumbnail(wrapper);
+      const btn = wrapper.querySelector('.play-overlay');
+      if(btn){
+        btn.addEventListener('click', ()=> loadIframe(wrapper));
+        btn.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); loadIframe(wrapper); } });
+      }
+    });
+  })();
   </script>
 </body>
 </html>
