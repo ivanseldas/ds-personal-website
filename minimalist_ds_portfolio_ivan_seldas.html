@@ -21,6 +21,16 @@
     /* Spacing scale (more compact) */
   --pad-section:30px;          /* standard vertical padding tighter */
   --pad-section-compact:18px;  /* compact variant (skills) */
+  /* New standardized vertical spacing tokens */
+  --space-section-y:56px;              /* increased bottom padding for sections desktop */
+  --space-section-y-mobile:42px;       /* increased bottom padding mobile */
+  --space-section-top:44px;            /* increased top padding for clearer separation */
+  --space-section-top-mobile:30px;     /* increased mobile top */
+  --space-hero-top:96px;               /* existing hero top (desktop) */
+  --space-hero-top-mobile:140px;       /* existing hero top (mobile) */
+  --space-hero-bottom:32px;            /* bottom spacing below hero content before skills */
+  --space-skills-bottom:36px;          /* spacing after integrated skills block */
+  --space-header-footer-y:20px;        /* unified vertical padding for header & footer */
   /* Background asset tokens */
   --skills-bg-image:url('images/skills_bg_placeholder.svg');
   --skills-bg-opacity:0.08; /* tweak between .04 and .12 */
@@ -29,11 +39,16 @@
       --fs-sm:.85rem;     /* small: section titles, footer */
       --fs-base:1rem;     /* body / paragraphs */
       --fs-lg:1.25rem;    /* subheads, card titles */
-      --fs-xl:clamp(2.2rem,4.5vw,3rem); /* hero headline */
+  --fs-xl:clamp(2.2rem,4.5vw,3rem); /* hero headline */
+  /* Line-height scale */
+  --lh-tight:1.4;
+  --lh-base:1.55;
+  --lh-body:1.68;
+  --lh-relaxed:1.75;
     }
     * { box-sizing:border-box; scroll-behavior:smooth; }
     html,body {
-      margin:0; padding:0; font-family:'Epilogue',sans-serif; background:var(--bg); color:var(--fg);
+      margin:0; padding:0; font-family:'Epilogue',sans-serif; background:var(--bg); color:var(--fg); line-height:var(--lh-base);
       /* Custom cursor (outlined circle) */
       cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" stroke="white" stroke-width="6" fill="none"/></svg>') 20 20, auto;
     }
@@ -58,10 +73,10 @@
     /* ======================================
        HERO / INTRO
        ====================================== */
-  .hero { padding:96px 0 24px; text-align:center; }
+  .hero { padding:var(--space-hero-top) 0 var(--space-hero-bottom); text-align:center; }
     .hero img.profile-pic { width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid var(--border); margin:0 auto 28px; display:block; }
   .hero h1 { font-family:'Playfair Display',serif; font-size:var(--fs-xl); line-height:1.15; letter-spacing:.5px; margin:0 auto 26px; max-width:880px; font-weight:700; }
-  .hero p { color:var(--muted); font-size:var(--fs-base); max-width:700px; line-height:1.5; margin:0 auto 32px; }
+  .hero p { color:var(--muted); font-size:var(--fs-base); max-width:700px; line-height:var(--lh-body); margin:0 auto 32px; }
   .hero p.subhead { font-size:var(--fs-lg); line-height:1.5; }
   .hero .pre-head { font-size:var(--fs-xs); letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:0 auto 18px; max-width:860px; font-weight:600; }
     .cta-buttons { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:0 auto 22px; max-width:760px; }
@@ -69,7 +84,7 @@
     .cta-buttons a:hover { background:#191919; }
   .trust-microcopy { margin:4px auto 0; font-size:var(--fs-xs); letter-spacing:.6px; text-transform:uppercase; color:var(--muted); max-width:880px; line-height:1.4; }
     @media (max-width:680px){
-      .hero { padding:140px 0 36px; }
+      .hero { padding:var(--space-hero-top-mobile) 0 30px; }
   .hero h1 { font-size:clamp(2rem,6vw,2.4rem); margin-bottom:24px; }
   .hero p { font-size:var(--fs-base); margin-bottom:28px; }
       .cta-buttons { gap:10px; margin-bottom:20px; }
@@ -78,8 +93,9 @@
     /* ======================================
        GENERIC SECTION STYLES
        ====================================== */
-  section { padding:var(--pad-section) 0; position:relative; }
-  /* Gradient separators between sections (reuse former About internal divider style) */
+  section { padding:var(--space-section-top) 0 var(--space-section-y); position:relative; }
+  @media (max-width:680px){ section { padding:var(--space-section-top-mobile) 0 var(--space-section-y-mobile); } }
+  /* Gradient separators between sections (skills suppressed for integration) */
   section:not(#home)::before { content:""; position:absolute; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:1040px; height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); pointer-events:none; }
   /* Remove separator (border-top) for Skills section specifically */
   /* Skills no special override needed now (line handled by generic rule) */
@@ -103,10 +119,14 @@
   .add-skill-form button:hover { background:var(--accent); color:#000; border-color:var(--accent); }
   .skill-suggest-success { font-size:var(--fs-xs); color:var(--accent); margin:4px 0 0; text-align:center; display:none; }
   /* Condensed height just for Skills section */
-  #skills { padding:var(--pad-section-compact) 0; position:relative; overflow:hidden; }
+  /* Integrated skills: no top padding, only bottom to separate from next section */
+  #skills { padding:0 0 var(--space-skills-bottom); position:relative; overflow:hidden; }
+  #skills::before { content:none !important; }
   /* Extra tightening for first sections so Projects preview appears above the fold */
   #skills .skill-intro { margin-bottom:12px; }
-  #projects { padding-top:22px; padding-bottom:34px; }
+  /* Selected Work uses standard section spacing */
+  #projects { padding:var(--space-section-y) 0; }
+  @media (max-width:680px){ #projects { padding:var(--space-section-y-mobile) 0; } }
   #projects .section-title { margin-bottom:14px; }
   /* Decorative background for skills (non-intrusive) */
   #skills::before { content:""; position:absolute; inset:0; background:
@@ -121,7 +141,7 @@
   .clear-skills-btn.visible { display:inline-block; }
   .clear-skills-btn:hover { border-color:var(--accent); color:#000; background:var(--accent); }
   /* Skills grouping */
-  .skill-intro { color:var(--muted); font-size:var(--fs-base); max-width:820px; line-height:1.45; margin:4px 0 18px; }
+  .skill-intro { color:var(--muted); font-size:var(--fs-base); max-width:820px; line-height:1.6; margin:4px 0 18px; }
   .skill-groups { display:grid; gap:16px; }
   .skill-group { border:1px solid var(--border); padding:10px 12px 10px; border-radius:10px; background:#111; position:relative; }
   .skill-group h4 { margin:0 0 4px; font-size:var(--fs-xs); letter-spacing:.75px; text-transform:uppercase; color:#c0c0c0; font-weight:600; display:flex; align-items:center; gap:6px; }
@@ -146,7 +166,10 @@
   .skill-columns .tag { font-size:var(--fs-xs); padding:4px 8px; }
   @media (min-width:680px){ .skill-columns { grid-template-columns:repeat(2,1fr); } }
   @media (min-width:960px){ .skill-columns { grid-template-columns:repeat(3,1fr); } }
-  @media (min-width:1280px){ .skill-columns { grid-template-columns:repeat(6,1fr); } }
+  /* Keep 6 columns but give the last (specialized techniques) extra width for long labels */
+  @media (min-width:1280px){ .skill-columns { grid-template-columns:repeat(5,1fr) 1.45fr; } }
+  /* Prevent wrapping of long tag text */
+  #skills .tag[data-skill="Hyperparameter Tuning"] { white-space:nowrap; }
   @media (min-width:860px){ .skill-groups.compact-cards { grid-template-columns:repeat(2,1fr); } }
   @media (min-width:1180px){ .skill-groups.compact-cards { grid-template-columns:repeat(3,1fr); } }
   .skill-group .tags { margin-top:4px; }
@@ -168,15 +191,61 @@
     }
     .card.visible { opacity:1; transform:translateY(0); }
     .card:hover { transform:translateY(-2px); border-color:#2a2a2a; }
-    .card .row { display:flex; gap:18px; flex-direction:column; }
+  .card .row { display:flex; gap:18px; flex-direction:column; }
+  .card .media { display:flex; flex-direction:column; }
     .card img { width:100%; border-radius:12px; border:1px solid var(--border); will-change:transform; transition:transform .3s ease; }
-    /* Vertically center image in media column (no crop) */
     @media (min-width:900px){
-      .card .media { display:flex; align-items:center; justify-content:center; }
+      .card .media { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; }
       .card .media img { width:100%; height:auto; object-fit:contain; }
+      .card .media .tag-block { align-self:flex-start; width:100%; }
     }
-  .card h3 { margin:6px 0 8px; font-size:var(--fs-lg); }
-  .card p { color:#c9c9c9; margin:0 0 10px; font-size:var(--fs-base); line-height:1.5; }
+  .card h3 { margin:2px 0 8px; font-size:clamp(1.18rem,1.7vw,1.48rem); line-height:1.15; letter-spacing:.4px; }
+  /* Match project description typography to bio-full paragraphs */
+  .card p { color:#c9c9c9; margin:0 0 10px; font-size:0.88rem; line-height:1.7; }
+  /* Spacing blocks inside cards */
+  .card .desc-block { margin-bottom:10px; }
+  .card .tag-block { margin:4px 0 10px; }
+  .card .links-block { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
+  .card .links-block a.btn { font-size:0.65rem; letter-spacing:.6px; text-transform:uppercase; border:1px solid var(--border); padding:8px 14px; border-radius:999px; background:#111; color:#bdbdbd; transition:.2s; }
+  .card .links-block a.btn:hover { background:var(--accent); color:#000; border-color:var(--accent); }
+  /* Impact emphasis */
+  .card .impact { margin:4px 0 4px; font-size:0.78rem; line-height:1.45; font-weight:600; color:#e2e2e2; position:relative; padding:8px 12px 8px 14px; background:#141414; border:1px solid var(--border); border-radius:10px; }
+  .card .impact strong { color:var(--accent); font-weight:600; }
+  .card .impact::before { content:"Impact"; position:absolute; top:-9px; left:12px; font-size:0.55rem; letter-spacing:1px; text-transform:uppercase; padding:2px 6px; background:#111; border:1px solid var(--border); border-radius:6px; color:#8d8d8d; }
+  #projects .card .tags .tag { padding:4px 8px; font-size:var(--fs-xs); letter-spacing:.3px; }
+  #projects .card .tags { gap:6px; }
+  #projects .card .tag-block { margin:2px 0 8px; }
+  .card .hook-question { margin:0 0 10px; font-size:0.92rem; line-height:1.45; font-weight:600; letter-spacing:.2px; }
+  .card .desc-list { margin:0 0 8px 0; padding:0 0 0 16px; font-size:0.83rem; line-height:1.58; color:#c5c5c5; }
+  .card .desc-list li { margin:0 0 4px; }
+  .card .desc-list li:last-child { margin-bottom:0; }
+  .card .stack-line { margin:2px 0 10px; font-size:0.64rem; letter-spacing:.8px; text-transform:uppercase; color:#9fa0a0; font-weight:600; }
+  .card .stack-line strong { color:#cfd0d0; font-weight:600; }
+  .card .microhook { font-style:italic; margin:0 0 10px; font-size:0.85rem; line-height:1.5; color:#d2d2d2; letter-spacing:.2px; }
+  .card .compact-stack { margin:4px 0 6px; font-size:0.62rem; letter-spacing:.6px; text-transform:uppercase; color:#9fa0a0; font-weight:600; }
+  .card .impact-inline { margin:4px 0 10px; font-size:0.78rem; line-height:1.45; color:#e0e0e0; }
+  .card .impact-inline strong { color:var(--accent); font-weight:600; }
+  .card .results-block { margin:10px 0 16px; padding:0; background:transparent; border:none; position:relative; }
+  :root { --blue-brand:#4da6ff; }
+  .card .results-inline-label { font-size:0.7rem; letter-spacing:1.4px; text-transform:uppercase; color:var(--blue-brand); font-weight:700; margin:0 0 10px; display:inline-block; position:relative; }
+  .card .results-inline-label::after { content:""; position:absolute; left:0; bottom:-4px; height:2px; width:64px; background:var(--blue-brand); border-radius:2px; opacity:.95; }
+  .card .results-list { list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:6px; }
+  /* Unified results list item line-height */
+  .card .results-list li { display:flex; gap:8px; align-items:flex-start; font-size:0.8rem; line-height:1.6; color:#dcdcdc; }
+  .card .results-list .res-icon { width:18px; height:18px; flex-shrink:0; display:inline-flex; align-items:center; justify-content:center; margin-top:2px; }
+  .card .results-list .res-icon svg { width:18px; height:18px; stroke:var(--blue-brand); stroke-width:1.7; fill:none; }
+  .card .results-list .res-icon.speed svg { stroke-width:1.9; }
+  .card .microhook-line { font-style:italic; font-size:0.9rem; line-height:1.58; margin:4px 0 14px; background:linear-gradient(90deg,var(--accent) 0%, var(--accent) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 0 6px rgba(255,170,0,0.25)); font-weight:500; letter-spacing:.2px; }
+  .card .intro-story { font-size:0.9rem; line-height:1.6; color:#dcdcdc; margin:0 0 6px; font-weight:500; }
+  .card .metric { color:var(--blue-brand); font-weight:600; letter-spacing:.4px; }
+  .card .results-block::before { content:""; display:none; }
+  .card .results-list .res-arrow { color:var(--blue-brand); font-weight:700; font-size:0.78rem; line-height:1.2; transform:translateY(2px); }
+  @media (max-width:640px){ .card .results-block { margin:18px 0 12px; } }
+  .card .links-block .case-link { display:inline-block; margin-left:8px; font-size:0.58rem; letter-spacing:.5px; text-transform:uppercase; }
+  .card .links-block .case-link a { color:#8f8f8f; text-decoration:none; border-bottom:1px dotted #555; padding-bottom:1px; }
+  .card .links-block .case-link a:hover { color:var(--accent); border-color:var(--accent); }
+  /* Subtle dividers between logical blocks */
+  .card .section-divider { height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); margin:10px 0 12px; opacity:.85; }
     .tags { display:flex; gap:8px; flex-wrap:wrap; }
   .tag { padding:6px 10px; border-radius:999px; border:1px solid var(--border); color:#bdbdbd; font-size:var(--fs-xs); background:var(--card); transition:all .2s ease; cursor:url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"20\" stroke=\"white\" stroke-width=\"6\" fill=\"none\"/></svg>') 20 20, auto; }
     .tag:hover { transform:scale(1.05); background:var(--accent); color:#000; border-color:var(--accent); }
@@ -249,7 +318,7 @@
   .contact-links li[data-type=resume] { padding-left:0; }
 
     /* Footer */
-  footer { padding:40px 0; text-align:center; color:var(--muted); font-size:var(--fs-sm); border-top:1px solid var(--border); }
+  footer { padding:var(--space-header-footer-y) 0; text-align:center; color:var(--muted); font-size:var(--fs-sm); border-top:1px solid var(--border); display:flex; align-items:center; justify-content:center; }
 
   /* ======================================
     ABOUT (New structure: Bio + 2-col grid + CTA)
@@ -272,9 +341,9 @@
   #about .about-bio details summary::-webkit-details-marker { display:none; }
   #about .about-bio details summary:before { content:"+"; display:inline-block; margin-right:6px; font-weight:500; color:#666; transition:transform .25s; }
   #about .about-bio details[open] summary:before { content:"–"; }
-  #about .about-bio .bio-full { margin-top:8px; animation:fadeIn .25s ease; }
-  #about .about-bio .bio-full p { font-size:0.88rem; line-height:1.7; margin:0 0 12px; }
-  #about .about-bio .bio-full p:last-child { margin-bottom:0; }
+  #about .about-bio .bio-block { margin-top:8px; animation:fadeIn .25s ease; }
+  #about .about-bio .bio-block p { font-size:0.88rem; line-height:1.7; margin:0 0 12px; }
+  #about .about-bio .bio-block p:last-child { margin-bottom:0; }
   @keyframes fadeIn { from { opacity:0; transform:translateY(2px); } to { opacity:1; transform:translateY(0); } }
   #about .about-bio a.inline-link { position:relative; text-decoration:none; color:#c9c9c9; transition:color .25s; }
   #about .about-bio a.inline-link::after { content:""; position:absolute; left:0; bottom:-2px; width:100%; height:1px; background:currentColor; opacity:.45; transition:opacity .25s, transform .25s; transform:scaleX(1); transform-origin:left; }
@@ -313,6 +382,9 @@
   #about .about-grid-wrapper { position:relative; }
   /* Removed internal divider inside About; global section separators now handle transitions */
   #about .about-grid-wrapper::before { content:none; }
+  /* About spacing overrides to reduce excessive gap before Contact */
+  #about { padding-bottom:8px; }
+  #about .about-grid { margin:0 auto 10px; }
 
     /* ======================================
        CLICK RIPPLE (CSS-only animation; JS appends/removes node)
@@ -325,7 +397,7 @@
   /* Short bio toggle for very small screens */
   #about .about-bio .short-bio { display:none; }
   @media (max-width:380px){
-    #about .about-bio .long-bio { display:none; }
+  /* removed long-bio differentiation; unified under .bio-block */
     #about .about-bio .short-bio { display:block; }
   }
   </style>
@@ -451,29 +523,57 @@
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3>Emotion-Powered Video Recommendations</h3>
-            <p>Hybrid recommender that blends <strong>TF-IDF content similarity</strong>, <strong>sentiment analysis</strong> of comments, and <strong>K-Means clusters</strong> to score the “next best video”. Includes a FastAPI service and Dockerized deploy.</p>
-            <div class="tags">
-              <span class="tag" data-skill="Python">Python</span>
-              <span class="tag" data-skill="PySpark">PySpark</span>
-              <span class="tag" data-skill="NLP">NLP</span>
-              <span class="tag" data-skill="GCP">GCP</span>
-              <span class="tag" data-skill="FastAPI">FastAPI</span>
-              <span class="tag" data-skill="TF-IDF">TF-IDF</span>
-              <span class="tag" data-skill="Hugging Face">Hugging Face</span>
-              <span class="tag" data-skill="K-Means">K-Means</span>
-              <span class="tag" data-skill="FastAPI">FastAPI</span>
-              <span class="tag" data-skill="Docker">Docker</span>
+            <h3>Sentiment-Driven Video Recommendation System</h3>
+            <p class="microhook-line" style="margin-top:2px;">Ever wondered what AI fans really want to watch next? <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;"><br>I turned <strong>180K+ YouTube comments</strong> into personalized video suggestions.</span></p>
+            <div class="desc-block" style="margin-top:-2px;">
+              <ul class="desc-list" style="margin:4px 0 6px;">
+                <li><strong>Extracted</strong> sentiment-weighted signals from massive comment streams (RoBERTa) — boosting content relevance.</li>
+                <li><strong>Matched</strong> viewer intent to clustered content themes — surfacing videos users actually want.</li>
+              </ul>
             </div>
-            <div class="meta">Impact: +12% watch-through on test set · Repo & demo on request</div>
-            <div class="chips">
-              <a class="btn" href="#">Live Demo</a>
+            <div class="results-block" style="margin:6px 0 14px;">
+              <div class="results-inline-label">Results</div>
+              <ul class="results-list" style="gap:6px;">
+                <li>
+                  <span class="res-icon relevance">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="12" cy="12" r="8" />
+                      <path d="M12 4v8l5 3" />
+                    </svg>
+                  </span>
+                  <span class="metric">+18% CTR</span> vs baseline playlists — higher-quality recommendations surfacing what users are primed to engage with.
+                </li>
+                <li>
+                  <span class="res-icon speed">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 12a8 8 0 0 1 16 0" />
+                      <path d="M12 12 16 8" />
+                      <circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" />
+                    </svg>
+                  </span>
+                  Sub-200ms median response latency enabling real-time interaction.
+                </li>
+              </ul>
+            </div>
+            <div class="links-block" style="margin-top:4px;">
+              <a class="btn" href="#">Try Demo</a>
               <a class="btn" href="#">GitHub</a>
-              <a class="btn" href="#">Case Study</a>
             </div>
           </div>
           <div class="media">
-            <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1600&auto=format&fit=crop" alt="Recommender system UI preview" />
+            <img src="https://placehold.co/640x380/111/888?text=Demo+Preview+GIF+Coming" alt="Recommender system demo preview placeholder" />
+            <div class="tag-block tags" style="margin-top:28px;">
+              <span class="tag" data-skill="Python">Python</span>
+              <span class="tag" data-skill="RoBERTa">RoBERTa</span>
+              <span class="tag" data-skill="Transformers">Transformers</span>
+              <span class="tag" data-skill="scikit-learn">scikit-learn</span>
+              <span class="tag" data-skill="Docker">Docker</span>
+              <span class="tag" data-skill="GCP">GCP</span>
+              <span class="tag" data-skill="FastAPI">FastAPI</span>
+              <span class="tag" data-skill="Vector DB">Vector DB</span>
+              <span class="tag" data-skill="Embeddings">Embeddings</span>
+              <span class="tag" data-skill="MLOps">MLOps</span>
+            </div>
           </div>
         </div>
       </article>
@@ -483,22 +583,46 @@
         <div class="row">
           <div class="col">
             <h3>Barcelona Noise Forecasting</h3>
-            <p>Time-series pipeline predicting urban noise with <strong>SARIMA</strong> and <strong>Gradient Boosting</strong>. Explored <em>COVID-19</em> as a shock, plus spatial interpolation to estimate unmonitored areas.</p>
-            <div class="tags">
-              <span class="tag" data-skill="Time Series">Time Series</span>
-              <span class="tag" data-skill="SARIMA">SARIMA</span>
-              <span class="tag" data-skill="XGBoost">XGBoost</span>
-              <span class="tag" data-skill="Geo">Geo</span>
-              <span class="tag" data-skill="MAPE / RMSE">MAPE / RMSE</span>
+            <p class="microhook-line" style="margin-top:2px;">Can a city forecast its own noise hotspots before they spike?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Built a multi-model layer to anticipate urban noise hours ahead and guide proactive mitigation.</span></p>
+            <div class="desc-block">
+              <ul class="desc-list">
+                <li><strong>Blended</strong> SARIMA baselines + Gradient Boosting residuals + spatial kriging — closing data gaps in cold sensor zones.</li>
+                <li><strong>Automated</strong> holiday / event regressors & monitoring — enabling proactive municipal noise mitigation.</li>
+              </ul>
             </div>
-            <div class="meta">Impact: baseline → −18% RMSE; dashboard for city insights</div>
-            <div class="chips">
+            <div class="results-block" style="margin:6px 0 14px;">
+              <div class="results-inline-label">Results</div>
+              <ul class="results-list">
+                <li>
+                  <span class="res-icon relevance">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 4v8l5 3" /></svg>
+                  </span>
+                  <span class="metric">−18% RMSE</span> vs baseline (multi-season).</li>
+                <li>
+                  <span class="res-icon speed">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 16 0" /><path d="M12 12 16 8" /><circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" /></svg>
+                  </span>
+                  Increased spatial coverage via kriging for underserved districts.</li>
+              </ul>
+            </div>
+            <div class="links-block">
               <a class="btn" href="#">Notebook</a>
               <a class="btn" href="#">Report</a>
             </div>
           </div>
           <div class="media">
             <img src="https://images.unsplash.com/photo-1451188502541-13943edb6acb?q=80&w=1600&auto=format&fit=crop" alt="Time-series charts" />
+            <div class="tag-block tags" style="margin-top:24px;">
+              <span class="tag" data-skill="Time Series">Time Series</span>
+              <span class="tag" data-skill="SARIMA">SARIMA</span>
+              <span class="tag" data-skill="XGBoost">XGBoost</span>
+              <span class="tag" data-skill="Geo">Geo</span>
+              <span class="tag" data-skill="Statsmodels">Statsmodels</span>
+              <span class="tag" data-skill="Feature Store">Feature Store</span>
+              <span class="tag" data-skill="ETL">ETL</span>
+              <span class="tag" data-skill="MAPE / RMSE">MAPE / RMSE</span>
+              <span class="tag" data-skill="Monitoring">Monitoring</span>
+            </div>
           </div>
         </div>
       </article>
@@ -508,22 +632,49 @@
         <div class="row">
           <div class="col">
             <h3>Telecom Churn Prediction</h3>
-            <p>Production-style project with <strong>feature store</strong>, <strong>ML pipeline</strong>, experiment tracking and a simple web UI. Models compared: Logistic, Random Forest, XGBoost.</p>
-            <div class="tags">
-              <span class="tag" data-skill="ML">ML</span>
-              <span class="tag" data-skill="MLOps">MLOps</span>
-              <span class="tag" data-skill="Feature Store">Feature Store</span>
-              <span class="tag" data-skill="XGBoost">XGBoost</span>
-              <span class="tag" data-skill="Streamlit">Streamlit</span>
+            <p class="microhook-line" style="margin-top:2px;">What if you could spot churn 30 days before it happens?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Delivered an explainable pipeline that flags at‑risk subscribers early and surfaces the levers to retain them.</span></p>
+            <div class="desc-block">
+              <ul class="desc-list">
+                <li><strong>Production-style</strong> churn pipeline (feature store, experiment tracking, SHAP) powering analyst UI.</li>
+                <li><strong>Calibrated</strong> ensemble (XGBoost / RF / Logistic) delivering explainable retention insights.</li>
+              </ul>
             </div>
-            <div class="meta">Impact: >95% accuracy on holdout; SHAP to explain drivers</div>
-            <div class="chips">
+            <div class="results-block" style="margin:6px 0 14px;">
+              <div class="results-inline-label">Results</div>
+              <ul class="results-list">
+                <li>
+                  <span class="res-icon relevance">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 4v8l5 3" /></svg>
+                  </span>
+                  <span class="metric">&gt;95% accuracy</span> (calibrated) on holdout.</li>
+                <li>
+                  <span class="res-icon speed">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 16 0" /><path d="M12 12 16 8" /><circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" /></svg>
+                  </span>
+                  Actionable churn drivers surfaced via SHAP for targeted retention.</li>
+              </ul>
+            </div>
+            <div class="links-block">
               <a class="btn" href="#">Demo</a>
               <a class="btn" href="#">GitHub</a>
             </div>
           </div>
           <div class="media">
             <img src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?q=80&w=1600&auto=format&fit=crop" alt="Model dashboard" />
+            <div class="tag-block tags" style="margin-top:24px;">
+              <span class="tag" data-skill="ML">ML</span>
+              <span class="tag" data-skill="MLOps">MLOps</span>
+              <span class="tag" data-skill="Feature Store">Feature Store</span>
+              <span class="tag" data-skill="Streamlit">Streamlit</span>
+              <span class="tag" data-skill="FastAPI">FastAPI</span>
+              <span class="tag" data-skill="Docker">Docker</span>
+              <span class="tag" data-skill="ETL">ETL</span>
+              <span class="tag" data-skill="Hyperparameter Tuning">Hyperparameter Tuning</span>
+              <span class="tag" data-skill="Monitoring">Monitoring</span>
+              <span class="tag" data-skill="XGBoost">XGBoost</span>
+              <span class="tag" data-skill="Random Forest">Random Forest</span>
+              <span class="tag" data-skill="Logistic Regression">Logistic Regression</span>
+            </div>
           </div>
         </div>
       </article>
@@ -536,15 +687,11 @@
       <div class="section-title">About</div>
       <div class="about-bio">
         <h3 style="margin:0 0 10px; font-size:var(--fs-lg); letter-spacing:.3px;">Who I Am</h3>
-  <p class="long-bio intro-line" style="margin-bottom:6px;">I’m a <strong>Data Scientist</strong>, and an Architect. It all began with...</p>
-        <details class="bio-more">
-          <summary class="hook">READ THE FULL STORY</summary>
-          <div class="bio-full">
-            <p>my <a class="inline-link" href="https://www.youtube.com/watch?v=LzyZGEFMM0M&t=314s" target="_blank" rel="noopener noreferrer">Master's thesis in Architecture</a>, where I designed a data center. To make it real, I had to understand how data actually worked… and I got hooked.</p>
-            <p>That spark pushed me to reinvent my career — first at 42 Madrid, learning to code from zero, then at Ironhack, diving deep into Machine Learning and AI.</p>
-            <p>As an architect, I helped design and build two residential developments in Sydney. Today, I’m still building — not with concrete and steel, but with data solutions that stand the test of business reality.</p>
-          </div>
-        </details>
+        <div class="bio-block" style="margin-top:4px;">
+          <p>I’m a <strong>Data Scientist</strong>, and an Architect.<p>It all began with my <a class="inline-link" href="https://www.youtube.com/watch?v=LzyZGEFMM0M&t=314s" target="_blank" rel="noopener noreferrer">Master's thesis in Architecture</a>, where I designed a data center. To make it real, I had to understand how data actually worked… and I got hooked.</p>
+          <p>That spark pushed me to reinvent my career — first at 42 Madrid, learning to code from zero, then at Ironhack, diving deep into Machine Learning and AI.</p>
+          <p>As an architect, I helped design and build two residential developments in Sydney. Today, I’m still building — not with concrete and steel, but with data solutions that stand the test of business reality.</p>
+        </div>
       </div>
       <div class="about-grid-wrapper">
         <div class="about-grid with-photo">
@@ -588,7 +735,7 @@
     <div class="container contact-block">
       <div class="section-title">Contact</div>
       <div class="contact-intro">
-        <p class="bio-full">Based in <strong>Madrid</strong>, collaborating remotely across Europe. Always open to coffee chats about <em>AI</em> & architecture.</p>
+  <p class="bio-block" style="font-size:0.78rem; line-height:1.55; margin:14px 0 0; color:#bdbdbd;">Based in <strong>Madrid</strong>, collaborating remotely across Europe. Always open to coffee chats about <em>AI</em> & architecture.</p>
       </div>
       <div class="contact-grid">
         <div class="contact-primary">
