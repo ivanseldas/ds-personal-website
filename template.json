@@ -1,0 +1,255 @@
+{
+  "version": "1.0",
+  "goal": "Generate a static single-file HTML page with the same style and UX as Iván Seldas’s base portfolio.",
+  "designPrinciples": [
+    "Minimalist, dark, readable",
+    "Typography: Playfair Display (headings) + Epilogue (UI/body)",
+    "Consistent CSS tokens (colors, spacing, sizes)",
+    "Clear sections and subtle dividers",
+    "Lightweight, accessible behaviors (no frameworks)"
+  ],
+  "outputRequirements": {
+    "fileType": "html-single-file",
+    "inlineCSS": true,
+    "inlineJS": true,
+    "externalFonts": [
+      "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Epilogue:wght@300;400;600&display=swap"
+    ],
+    "meta": {
+      "title": "Iván Seldas — Data Scientist",
+      "description": "Architect-turned-Data Scientist in Madrid. Projects in NLP, forecasting, and recommender systems."
+    }
+  },
+  "styleTokens": {
+    "colors": {
+      "--bg": "#0c0c0c",
+      "--fg": "#ffffff",
+      "--muted": "#888888",
+      "--accent": "#7dd3fc",
+      "--card": "#1a1a1a",
+      "--border": "#2c2c2c",
+      "--blue-brand": "#4da6ff"
+    },
+    "typography": {
+      "fontFamilies": {
+        "heading": "'Playfair Display', serif",
+        "ui": "'Epilogue', sans-serif"
+      },
+      "sizes": {
+        "--fs-xs": ".7rem",
+        "--fs-sm": ".85rem",
+        "--fs-base": "1rem",
+        "--fs-lg": "1.25rem",
+        "--fs-xl": "clamp(2.2rem,4.5vw,3rem)"
+      },
+      "lineHeights": {
+        "--lh-tight": 1.4,
+        "--lh-base": 1.55,
+        "--lh-body": 1.68,
+        "--lh-relaxed": 1.75
+      }
+    },
+    "spacing": {
+      "--space-section-y": "56px",
+      "--space-section-y-mobile": "42px",
+      "--space-section-top": "44px",
+      "--space-section-top-mobile": "30px",
+      "--space-hero-top": "96px",
+      "--space-hero-bottom": "32px",
+      "--space-skills-bottom": "36px",
+      "--space-header-footer-y": "20px"
+    },
+    "breakpoints": {
+      "sm": 640,
+      "md": 680,
+      "lg": 900,
+      "xl": 1280
+    }
+  },
+  "pageStructure": [
+    "header (fixed nav with logo, links, and mobile hamburger menu)",
+    "hero (photo, headline, subhead, primary CTA)",
+    "skills (optional chips; omit section if none)",
+    "projects (list of cards)",
+    "about (optional; bio + grid)",
+    "contact (minimal block with links)",
+    "footer (dynamic year)"
+  ],
+  "header": {
+    "classes": {
+      "header": "header",
+      "nav": "nav",
+      "logo": "logo",
+      "links": "nav-links",
+      "toggle": "nav-toggle",
+      "openClass": "nav-open"
+    },
+  "mobileNav": "Use a hamburger button that opens a side panel at <=680px. Close on link click/Escape. Lock body scroll via body.menu-open."
+  },
+  "hero": {
+    "fields": ["profileImage", "preHead", "title", "subhead", "primaryCTA"],
+  "notes": "140x140 circular image with border; Playfair headline; centered CTA."
+  },
+  "skills": {
+    "optional": true,
+  "layout": "grid of columns; see classes .skill-columns, .skill-col, .tag",
+  "behavior": "clickable chips that reorder projects by match, with Clear button."
+  },
+  "projectCard": {
+    "requiredFields": [
+      "title",
+      "microhook",
+      "introStory",
+      "bullets[]",
+      "results[]",
+      "links[] (CTAs)",
+      "tags[]",
+      "media (youtubeId, start?)"
+    ],
+    "htmlStructureHint": [
+      "article.card > .row",
+      ".col (text) + .media (visual)",
+      "Blocks: microhook-line, desc-list, results-block, links-block, tag-block"
+    ],
+    "videoComponent": {
+      "pattern": "thumbnail + play overlay -> on click insert YouTube iframe with autoplay",
+      "wrapper": ".video-wrapper[data-video-id][data-video-start?]",
+      "thumbnail": ".video-thumb with object-fit: cover, fallback maxres/sd/hq/mq/default",
+      "overlay": ".play-overlay (centered button with icon)",
+      "iframe": "https://www.youtube.com/embed/{id}?autoplay=1&rel=0&modestbranding=1&start={start}",
+      "noParallax": "exclude .video-thumb from parallax",
+      "borders": "border only on the wrapper, no inner border"
+    },
+    "resultsBlock": {
+      "label": "Results",
+      "items": "short text; if there are metrics, wrap the number in span.metric"
+    },
+    "ctaButtons": {
+      "class": "btn",
+      "target": "_blank",
+      "rel": "noopener noreferrer"
+    }
+  },
+  "about": {
+    "optional": true,
+    "pattern": "short bio + grid with photo and experience/education",
+    "style": "same typography scheme and dividers"
+  },
+  "contact": {
+    "fields": ["emailCTA", "availability", "links (LinkedIn, GitHub, Resume)"],
+    "style": "simple grid; no heavy icons; subtle styles"
+  },
+  "behaviorsJS": {
+    "footerYear": "Fill #year with the current year.",
+    "revealOnScroll": "IntersectionObserver adds .visible to .card.",
+    "parallax": "Apply gentle translateY to .card img except .video-thumb.",
+    "skillsFilter": "Select tags from #skills; reorder cards by matches; Clear button.",
+    "missingSkillSuggest": "Basic form to localStorage (optional).",
+    "mobileNavToggle": "Open/close panel; aria-expanded; ESC to close.",
+    "videoLoader": "For each .video-wrapper: load best thumbnail; on click, insert iframe and fade."
+  },
+  "accessibility": [
+    "Play button with aria-label and visible focus",
+    "Nav toggle with aria-controls and aria-expanded",
+    "Images with appropriate alt text",
+    "Sufficient contrast with defined colors",
+    "Close nav panel with Escape"
+  ],
+  "contentSchema": {
+    "page": {
+      "title": "string",
+      "description": "string",
+      "hero": {
+        "profileImage": "url",
+        "preHead": "string",
+        "title": "string",
+        "subhead": "string",
+        "primaryCTA": { "text": "string", "href": "hash|url" }
+      },
+      "skills": {
+        "enabled": "boolean",
+        "groups": [
+          {
+            "title": "string",
+            "tags": ["string"]
+          }
+        ]
+      },
+      "projects": [
+        {
+          "title": "string",
+          "microhook": "string",
+          "introStory": "string",
+          "bullets": ["string"],
+          "results": ["string"],
+          "links": [{ "text": "string", "href": "url" }],
+          "tags": ["string"],
+          "media": { "youtubeId": "string", "start": "number" }
+        }
+      ],
+      "about": {
+        "enabled": "boolean",
+        "bio": ["string"],
+        "photo": "url",
+        "experience": [{ "role": "string", "org": "string", "period": "string", "bullets": ["string"] }],
+        "education": [{ "program": "string", "org": "string", "period": "string" }]
+      },
+      "contact": {
+        "email": "mailto:",
+        "availability": "string",
+        "links": [{ "label": "LinkedIn|GitHub|Resume", "href": "url" }]
+      }
+    }
+  },
+  "generationSteps": [
+    "Include <head> with meta, fonts, and base styles using the provided tokens",
+    "Build header + nav with classes and mobile toggle",
+    "Render hero",
+    "If skills.enabled, create chips and JS wiring; otherwise omit section",
+    "Render each project as article.card with the indicated structure",
+    "For each media, use video-wrapper with youtubeId and start if applicable (load thumbnail and play overlay)",
+    "Add about/contact if enabled, with the same classes",
+    "Add footer with #year and a script that fills it",
+    "Add minimal behavior JS (reveal, video, mobile nav; skills if the section exists)",
+    "Validate basic accessibility (aria, alt, focus)",
+    "Verify responsiveness at <=680px and >=900px"
+  ],
+  "mustUseClassNames": [
+    "card",
+    "row",
+    "col",
+    "media",
+    "tags",
+    "tag",
+    "links-block",
+    "btn",
+    "video-wrapper",
+    "video-thumb",
+    "play-overlay",
+    "results-block",
+    "results-list",
+    "metric",
+    "nav-toggle",
+    "nav-links",
+    "visible"
+  ],
+  "exampleProject": {
+    "title": "Sample Project Title",
+    "microhook": "A sharp, benefits-first teaser line.",
+    "introStory": "One sentence explaining the essence and approach.",
+    "bullets": [
+      "Built X using Y to achieve Z.",
+      "Automated A which reduced B by C%."
+    ],
+    "results": [
+      "+18% CTR compared to baseline playlists",
+      "Sub-200ms median latency"
+    ],
+    "links": [
+      { "text": "Try Demo", "href": "https://example.com" },
+      { "text": "GitHub", "href": "https://github.com/user/repo" }
+    ],
+    "tags": ["Python", "Transformers", "FastAPI", "Docker"],
+    "media": { "youtubeId": "LzyZGEFMM0M", "start": 0 }
+  }
+}
