@@ -287,6 +287,19 @@
   .card .links-block .case-link a:hover { color:var(--accent); border-color:var(--accent); }
   /* Subtle dividers between logical blocks */
   .card .section-divider { height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); margin:10px 0 12px; opacity:.85; }
+  /* Expandable project details */
+  .card .project-details { display:none; border-top:1px solid var(--border); margin-top:12px; padding-top:12px; }
+  .card.open .project-details { display:block; }
+  .project-details .detail-header { display:flex; align-items:center; justify-content:space-between; gap:10px; margin:0 0 10px; }
+  .project-details .detail-title { margin:0; font-size:0.95rem; letter-spacing:.3px; }
+  .project-details .detail-actions { display:flex; gap:10px; flex-wrap:wrap; }
+  .project-details .detail-actions .btn { font-size:0.62rem; letter-spacing:.6px; text-transform:uppercase; border:1px solid var(--border); padding:7px 12px; border-radius:999px; background:#111; color:#bdbdbd; }
+  .project-details .detail-actions .btn:hover { background:var(--accent); color:#000; border-color:var(--accent); }
+  .project-details .app-embed { margin:10px 0 0; }
+  .project-details .app-frame { width:100%; height:65vh; min-height:420px; border:1px solid var(--border); border-radius:12px; background:#0a0a0a; }
+  .project-details .app-fallback { font-size:0.78rem; color:#a9a9a9; margin:8px 0 0; }
+  /* Make project titles operable */
+  .card h3[role="button"] { cursor:pointer; }
     .tags { display:flex; gap:8px; flex-wrap:wrap; }
   .tag { padding:6px 10px; border-radius:999px; border:1px solid var(--border); color:#bdbdbd; font-size:var(--fs-xs); background:var(--card); transition:all .2s ease; cursor:url('data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"40\" height=\"40\" viewBox=\"0 0 100 100\"><circle cx=\"50\" cy=\"50\" r=\"20\" stroke=\"white\" stroke-width=\"6\" fill=\"none\"/></svg>') 20 20, auto; }
     .tag:hover { transform:scale(1.05); background:var(--accent); color:#000; border-color:var(--accent); }
@@ -569,7 +582,7 @@
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3>Sentiment-Driven Video Recommendation System</h3>
+            <h3><a href="projects/sentiment/index.html" class="project-link" aria-label="Open case study: Sentiment-Driven Video Recommendation System">Sentiment-Driven Video Recommendation System</a></h3>
             <p class="microhook-line" style="margin-top:2px;">Ever wondered what AI fans really want to watch next? <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;"><br>I turned <strong>180K+ YouTube comments</strong> into personalized video suggestions.</span></p>
             <div class="desc-block" style="margin-top:-2px;">
               <ul class="desc-list" style="margin:4px 0 6px;">
@@ -629,13 +642,14 @@
             </div>
           </div>
         </div>
+  <!-- Project 1 now links to a dedicated case study page; inline details removed -->
       </article>
 
       <!-- PROJECT 2 -->
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3>Barcelona Noise Forecasting</h3>
+            <h3 role="button" tabindex="0" aria-expanded="false" aria-controls="details-proj-2">Barcelona Noise Forecasting</h3>
             <p class="microhook-line" style="margin-top:2px;">Can a city forecast its own noise hotspots before they spike?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Built a multi-model layer to anticipate urban noise hours ahead and guide proactive mitigation.</span></p>
             <div class="desc-block">
               <ul class="desc-list">
@@ -685,13 +699,27 @@
             </div>
           </div>
         </div>
+        <!-- Expandable details: Project 2 -->
+        <div class="project-details" id="details-proj-2" role="region" aria-label="More details: Barcelona Noise Forecasting">
+          <div class="detail-header">
+            <h4 class="detail-title">More details</h4>
+            <div class="detail-actions">
+              <button type="button" class="btn close-details" aria-label="Close details">Close</button>
+            </div>
+          </div>
+          <p class="intro-story" style="margin-top:0;">Hybrid SARIMA + gradient boosting residuals with spatial interpolation (kriging) to fill cold zones. Automated regressors for holidays/events and monitoring hooks for drift.</p>
+          <ul class="desc-list">
+            <li>Feature engineering for temporal/spatial seasonality, weather, and event calendars.</li>
+            <li>Backtesting across multi-season windows; prioritized RMSE and coverage stability.</li>
+          </ul>
+        </div>
       </article>
 
   <!-- PROJECT 3 -->
   <article class="card">
         <div class="row">
           <div class="col">
-            <h3>Asthma Risk Prediction System</h3>
+            <h3 role="button" tabindex="0" aria-expanded="false" aria-controls="details-proj-3">Asthma Risk Prediction System</h3>
             <p class="microhook-line" style="margin-top:2px;">What if we could predict asthma risk before symptoms appear?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Built an ML system forecasting asthma risk from <strong>1.2M+ environmental & clinical records</strong> to surface high‑risk zones early.</span></p>
             <div class="desc-block">
               <ul class="desc-list">
@@ -742,13 +770,27 @@
             </div>
           </div>
         </div>
+        <!-- Expandable details: Project 3 -->
+        <div class="project-details" id="details-proj-3" role="region" aria-label="More details: Asthma Risk Prediction System">
+          <div class="detail-header">
+            <h4 class="detail-title">More details</h4>
+            <div class="detail-actions">
+              <button type="button" class="btn close-details" aria-label="Close details">Close</button>
+            </div>
+          </div>
+          <p class="intro-story" style="margin-top:0;">Multi-source ETL to align environmental and clinical signals. Model selection focused on explainability and operational thresholds, with dashboarding for public health use.</p>
+          <ul class="desc-list">
+            <li>Bias/variance checks and MAE-based optimization; calibration where needed.</li>
+            <li>Interactive Tableau visuals for hotspot exploration and what-if analysis.</li>
+          </ul>
+        </div>
       </article>
 
       <!-- PROJECT 4 -->
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3>Telecom Churn Prediction</h3>
+            <h3 role="button" tabindex="0" aria-expanded="false" aria-controls="details-proj-4">Telecom Churn Prediction</h3>
             <p class="microhook-line" style="margin-top:2px;">What if you could spot churn 30 days before it happens?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Delivered an explainable pipeline that flags at‑risk subscribers early and surfaces the levers to retain them.</span></p>
             <div class="desc-block">
               <ul class="desc-list">
@@ -800,6 +842,20 @@
               <span class="tag" data-skill="Logistic Regression">Logistic Regression</span>
             </div>
           </div>
+        </div>
+        <!-- Expandable details: Project 4 -->
+        <div class="project-details" id="details-proj-4" role="region" aria-label="More details: Telecom Churn Prediction">
+          <div class="detail-header">
+            <h4 class="detail-title">More details</h4>
+            <div class="detail-actions">
+              <button type="button" class="btn close-details" aria-label="Close details">Close</button>
+            </div>
+          </div>
+          <p class="intro-story" style="margin-top:0;">Feature store powered pipeline with experiment tracking and SHAP-driven explanations. Calibrated ensemble for actionable retention strategies.</p>
+          <ul class="desc-list">
+            <li>Segment-specific thresholds for contact prioritization.</li>
+            <li>Top drivers surfaced for each subscriber for tailored offers.</li>
+          </ul>
         </div>
       </article>
     </div>
@@ -1195,6 +1251,81 @@
         btn.addEventListener('click', ()=> loadIframe(wrapper));
         btn.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); loadIframe(wrapper); } });
       }
+    });
+  })();
+
+  /* Expand/collapse project details and lazy-load app iframes */
+  (function(){
+    const cards = document.querySelectorAll('#projects .card');
+    const closeAll = () => {
+      cards.forEach(card => {
+        card.classList.remove('open');
+        const title = card.querySelector('h3[role="button"]');
+        const region = card.querySelector('.project-details');
+        if(title) title.setAttribute('aria-expanded','false');
+        if(region) region.setAttribute('aria-hidden','true');
+      });
+    };
+
+    const openCard = (card) => {
+      // Close others for accordion behavior
+      closeAll();
+      card.classList.add('open');
+      const title = card.querySelector('h3[role="button"]');
+      const region = card.querySelector('.project-details');
+      if(title) title.setAttribute('aria-expanded','true');
+      if(region) region.setAttribute('aria-hidden','false');
+      // Lazy-set iframe src if app URL present
+      if(region) {
+        const appUrl = region.getAttribute('data-app-url');
+        const iframe = region.querySelector('.app-frame');
+        if(appUrl && iframe && !iframe.src){
+          iframe.src = appUrl;
+        }
+      }
+      // Scroll into view smoothly below header
+      const rect = card.getBoundingClientRect();
+      const y = window.scrollY + rect.top - 90;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    };
+
+  cards.forEach(card => {
+      const title = card.querySelector('h3[role="button"]');
+      const region = card.querySelector('.project-details');
+      if(!title || !region) return;
+      region.setAttribute('aria-hidden','true');
+      const handler = (e) => {
+        e.preventDefault();
+        const isOpen = card.classList.contains('open');
+        if(isOpen){
+          card.classList.remove('open');
+          title.setAttribute('aria-expanded','false');
+          region.setAttribute('aria-hidden','true');
+        } else {
+          openCard(card);
+        }
+      };
+      title.addEventListener('click', handler);
+      title.addEventListener('keydown', (e)=>{
+        if(e.key==='Enter' || e.key===' '){ handler(e); }
+      });
+      const closeBtn = card.querySelector('.project-details .close-details');
+      if(closeBtn){
+        closeBtn.addEventListener('click', (e)=>{ e.preventDefault(); handler(e); });
+      }
+    });
+
+  // Close details with Escape if focus is within the open card
+    document.addEventListener('keydown', (e)=>{
+      if(e.key !== 'Escape') return;
+      const open = document.querySelector('#projects .card.open');
+      if(!open) return;
+      const title = open.querySelector('h3[role="button"]');
+      const region = open.querySelector('.project-details');
+      open.classList.remove('open');
+      if(title) title.setAttribute('aria-expanded','false');
+      if(region) region.setAttribute('aria-hidden','true');
+      if(title) title.focus();
     });
   })();
   </script>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sentiment-Driven Video Recommendation — Case Study</title>
+  <meta name="description" content="Deep dive into the Sentiment-Driven Video Recommendation System: problem, approach, results, and live demo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Epilogue:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0c0c0c; --fg:#fff; --muted:#a0a0a0; --accent:#7dd3fc; --border:#2c2c2c; --card:#111; --blue-brand:#4da6ff; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:'Epilogue',sans-serif;line-height:1.6}
+    .container{max-width:1024px;margin:0 auto;padding:0 20px}
+    header{position:sticky;top:0;background:rgba(12,12,12,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:100}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0}
+    .logo{font-family:'Playfair Display',serif;font-weight:700}
+    .back a{color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:8px 14px;border-radius:999px;background:#111}
+    .back a:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+  main{padding:0 0 40px}
+    /* Normalize title sizing to match main site rhythm */
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,2.4rem);line-height:1.15;margin:10px 0 12px}
+    .sub{color:var(--muted);margin:0 0 14px;line-height:1.68;max-width:900px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+    .btn{font-size:.7rem;letter-spacing:.7px;text-transform:uppercase;border:1px solid var(--border);padding:8px 14px;border-radius:999px;background:#111;color:#bdbdbd;}
+    .btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+  .app-frame{width:100%;height:70vh;min-height:400px;border:1px solid var(--border);border-radius:12px;background:#0a0a0a;overflow:hidden}
+    section{padding:26px 0;border-top:1px solid rgba(44,44,44,0.85)}
+    h2{font-size:1.18rem;letter-spacing:.3px;margin:0 0 10px}
+    ul{margin:0 0 10px 18px}
+    li{margin:0 0 6px}
+  /* Image placeholders for approach steps */
+  .img-slot{margin:10px 0 4px; width:100%; aspect-ratio:16/9; border:1px dashed #3a3a3a; border-radius:12px; background:repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 10px, rgba(255,255,255,0.01) 10px 20px); display:flex; align-items:center; justify-content:center; color:#8d8d8d; font-size:.8rem}
+    .results{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+    .results li{display:flex;gap:8px;align-items:flex-start}
+    .metric{color:var(--blue-brand);font-weight:600}
+    footer{padding:16px 0;border-top:1px solid var(--border);text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Iván Seldas</div>
+  <div class="back"><a href="../../index.html">Back to Portfolio</a></div>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <!-- Exact narrative and structure, styled to match the site -->
+    <h1>Emotion Meets Algorithms: How I Built a Sentiment-Driven Video Recommender from Scratch</h1>
+    <p class="sub">In an era where algorithms suggest what we watch, listen to, and read, I wanted to ask a deeper question: What if we could recommend content not just based on what it’s about — but on how it makes people feel?</p>
+    <p class="sub">This idea led me to build the Sentiment-Driven Video Recommendation System, a fully deployed machine learning pipeline that recommends YouTube videos using not only content similarity but viewer emotions extracted from comments and unsupervised video clustering.</p>
+    <p class="sub">Let me walk you through how I engineered it — and what I learned along the way.</p>
+
+    <!-- Live App immediately after the hook (no scrollbars) -->
+    <section id="live">
+      <h2>👉 Live App</h2>
+      <div class="hero-actions">
+        <a class="btn" target="_blank" rel="noopener" href="https://vidrec-321465604500.europe-west1.run.app/">Live App</a>
+        <a class="btn" target="_blank" rel="noopener" href="https://github.com/ivanseldas/Sentiment-Driven-Video-Recommendations">GitHub Repo</a>
+      </div>
+      <iframe class="app-frame" title="Live app: Sentiment-Driven Video Recommendation" loading="lazy" scrolling="no" referrerpolicy="strict-origin-when-cross-origin" src="https://vidrec-321465604500.europe-west1.run.app/" allow="clipboard-write; fullscreen; geolocation; microphone; camera"></iframe>
+    </section>
+
+    <section>
+      <h2>🧩 The Problem: Personalization Beyond Clicks</h2>
+      <p>Most recommendation systems lean heavily on behavioral data (clicks, likes, watch time), which limits recommendations to past user behavior. But what if someone liked a video but felt confused, angry, or disappointed after watching it? That’s invisible to most systems.</p>
+      <p>I decided to change that — by capturing the emotional impact of videos using NLP.</p>
+    </section>
+
+    <section>
+      <h2>🔍 The Approach: A Three-Factor Scoring Engine</h2>
+      <p><strong>Final Score =</strong> Cosine Similarity × Sentiment Score × Cluster Boost</p>
+      <ol>
+        <li><strong>Content Similarity (TF-IDF + Cosine Similarity):</strong> Transcripts of videos are vectorized and compared using TF-IDF to recommend semantically similar content.
+          <div class="img-slot" aria-label="Image placeholder">Image: TF‑IDF similarity viz</div>
+        </li>
+        <li><strong>Sentiment Analysis (RoBERTa, PySpark):</strong> I ran comment data through a fine-tuned RoBERTa model that classifies 29 emotions (joy, anger, trust, etc.). Using PySpark allowed me to scale across large datasets quickly.
+          <div class="img-slot" aria-label="Image placeholder">Image: Emotion distribution</div>
+        </li>
+        <li><strong>Clustering (K-means + DBSCAN):</strong> Videos are grouped by topics and features (metadata, engagement). Cluster membership is used to promote content diversity in recommendations.
+          <div class="img-slot" aria-label="Image placeholder">Image: Cluster map</div>
+        </li>
+      </ol>
+    </section>
+
+    <section>
+      <h2>⚙️ Under the Hood (Short)</h2>
+      <ul>
+        <li><strong>Data & NLP</strong>: YouTube API + RoBERTa (go_emotions)</li>
+        <li><strong>Processing</strong>: Python + PySpark</li>
+        <li><strong>API & Deploy</strong>: FastAPI on Cloud Run (Docker, Cloud Build)</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>💡 Challenges Faced</h2>
+      <ul>
+        <li><strong>Multilingual comments:</strong> I used Google Translate API to unify languages before running sentiment models.</li>
+        <li><strong>Real-time performance:</strong> Pre-computed scoring matrices and lightweight REST endpoints made it possible to serve recommendations quickly.</li>
+        <li><strong>Balancing recommendations:</strong> Combining three separate scoring systems required normalization and careful weighting.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>🎯 Results and Features</h2>
+      <ul>
+        <li><strong>Interactive web app:</strong> Browse AI-recommended YouTube videos based on emotional tone and topic.</li>
+        <li><strong>API:</strong> Easily extendable for different use cases (educational, entertainment, mental health).</li>
+        <li><strong>Emotion maps:</strong> Visualize how viewers felt about each video (anger, joy, confusion, etc.).</li>
+      </ul>
+    </section>
+
+    
+
+    <section>
+      <h2>🚀 Why It Matters</h2>
+      <ul>
+        <li>Applied NLP at scale</li>
+        <li>Cloud-based deployment with production-ready APIs</li>
+        <li>User-centric ML design with emotional intelligence</li>
+      </ul>
+      <p>For recruiters, it shows I can ship full-stack ML applications that move beyond code and into real-world impact.</p>
+    </section>
+
+    <section>
+      <h2>🙌 Let’s Talk</h2>
+      <p>Curious how this system could be adapted for other industries (education, marketing, wellness)? Or want to build something similar for your company? Let’s connect.</p>
+    </section>
+  <!-- End explanation sections -->
+  </main>
+  <footer>
+    <div class="container">© <span id="year"></span> Iván Seldas</div>
+  </footer>
+  <script>
+    const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+    // Size the app frame to the viewport height minus the header, so no scroll is needed to see it
+    function sizeAppFrame(){
+      const header=document.querySelector('header');
+      const frame=document.querySelector('.app-frame');
+      if(!frame) return;
+      const headerH = header ? header.getBoundingClientRect().height : 0;
+      const target = Math.max(360, window.innerHeight - headerH - 8); // small margin
+      frame.style.height = target + 'px';
+    }
+    window.addEventListener('load', sizeAppFrame);
+    window.addEventListener('resize', sizeAppFrame);
+    window.addEventListener('orientationchange', sizeAppFrame);
+    document.addEventListener('DOMContentLoaded', sizeAppFrame);
+  </script>
+</body>
+</html>
