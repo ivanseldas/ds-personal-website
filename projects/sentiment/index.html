@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sentiment-Driven Video Recommendation — Case Study</title>
+  <meta name="description" content="Deep dive into the Sentiment-Driven Video Recommendation System: problem, approach, results, and live demo." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=Epilogue:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root { --bg:#0c0c0c; --fg:#fff; --muted:#a0a0a0; --accent:#7dd3fc; --border:#2c2c2c; --card:#111; --blue-brand:#4da6ff; }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--fg);font-family:'Epilogue',sans-serif;line-height:1.6;
+      /* Custom cursor (outlined circle) to match main site */
+      cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" stroke="white" stroke-width="6" fill="none"/></svg>') 20 20, auto;
+    }
+    a{
+      cursor:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100"><circle cx="50" cy="50" r="20" stroke="white" stroke-width="6" fill="none"/></svg>') 20 20, auto;
+    }
+    .container{max-width:1024px;margin:0 auto;padding:0 20px}
+    header{position:sticky;top:0;background:rgba(12,12,12,.85);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);z-index:100}
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 0}
+    .logo{font-family:'Playfair Display',serif;font-weight:700}
+    .back a{color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:8px 14px;border-radius:999px;background:#111}
+    .back a:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+  main{padding:0 0 40px}
+    /* Normalize title sizing to match main site rhythm */
+    h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,2.4rem);line-height:1.15;margin:10px 0 12px}
+    .sub{color:var(--muted);margin:0 0 14px;line-height:1.68;max-width:900px}
+    .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
+    .btn{font-size:.7rem;letter-spacing:.7px;text-transform:uppercase;border:1px solid var(--border);padding:8px 14px;border-radius:999px;background:#111;color:#bdbdbd;}
+    .btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+  .app-frame{width:100%;height:74vh;min-height:520px;border:1px solid var(--border);border-radius:12px;background:#0a0a0a;overflow:auto;-webkit-overflow-scrolling:touch}
+    section{padding:26px 0;border-top:1px solid rgba(44,44,44,0.85)}
+    h2{font-size:1.28rem;letter-spacing:.4px;margin:0 0 14px;color:#ffffff;font-weight:700}
+    p{font-size:0.9rem;line-height:1.65;max-width:720px}
+    ul{margin:0 0 12px 18px;font-size:0.9rem;line-height:1.6}
+    p{font-size:0.9rem;line-height:1.65;max-width:720px}
+  ul{margin:0 0 12px 18px;font-size:0.9rem;line-height:1.6}
+  li{margin:0 0 8px;max-width:720px}
+  /* Education-like list pattern: strong keyword + small details */
+  ul.edu-like{margin-left:18px}
+  ul.edu-like li{color:var(--fg);font-size:0.9rem;line-height:1.6}
+  ul.edu-like li small{display:inline; margin-left:6px; font-size:0.9rem; color:#bdbdbd}
+    ol{margin:0 0 12px 18px;font-size:0.9rem;line-height:1.6}
+    ol > li{margin:0 0 20px;max-width:720px}
+    .tech-detail{font-size:0.85rem;line-height:1.6;color:#c5c5c5;margin:8px 0 0;max-width:680px}
+  .results{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px}
+  .results li{display:flex;gap:8px;align-items:flex-start}
+  .metric{color:inherit;font-weight:600}
+    /* Image placeholders for approach steps */
+    .img-slot{margin:10px 0 4px; width:100%; aspect-ratio:16/9; border:1px dashed #3a3a3a; border-radius:12px; background:repeating-linear-gradient(45deg, rgba(255,255,255,0.03) 0 10px, rgba(255,255,255,0.01) 10px 20px); display:flex; align-items:center; justify-content:center; color:#8d8d8d; font-size:.8rem}
+  /* Hook styling (match main site gradient) */
+  .microhook-line{font-style:italic; font-size:0.9rem; line-height:1.58; margin:4px 0 20px; background:linear-gradient(90deg,var(--accent) 0%, var(--accent) 100%); -webkit-background-clip:text; background-clip:text; color:transparent; filter:drop-shadow(0 0 6px rgba(255,170,0,0.25)); font-weight:500; letter-spacing:.2px}
+    .intro-story{font-weight:500}
+  /* Subsection headers (neutral color) */
+  h3{font-size:1rem;margin:20px 0 8px;color:#dcdcdc}
+  /* Inline tooltips for non‑tech readers */
+  .term{position:relative; border-bottom:1px dotted #666; cursor:help}
+  .term:focus-visible{outline:2px dashed var(--accent); outline-offset:2px}
+  .term::after{content:attr(data-tip); position:absolute; left:50%; bottom:calc(100% + 8px); transform:translateX(-50%); background:#111; color:#eaeaea; border:1px solid var(--border); border-radius:8px; padding:10px 12px; width:max(220px, min(360px, 70vw)); white-space:normal; line-height:1.5; font-size:0.82rem; box-shadow:0 6px 18px rgba(0,0,0,0.35); opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:20}
+  .term::before{content:""; position:absolute; left:50%; bottom:100%; transform:translateX(-50%); border:6px solid transparent; border-top-color:var(--border); margin-bottom:2px; opacity:0; transition:opacity .15s ease; z-index:21}
+  .term:hover::after, .term:focus-visible::after{opacity:1}
+  .term:hover::before, .term:focus-visible::before{opacity:1}
+  /* (Education-style bullets use default <ul>/<li> – no custom class needed) */
+    footer{padding:16px 0;border-top:1px solid var(--border);text-align:center;color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <nav>
+        <div class="logo">Iván Seldas</div>
+        <div class="back"><a href="../../index.html">Back to Portfolio</a></div>
+      </nav>
+    </div>
+  </header>
+  <main class="container">
+    <h1>Emotion-Aware Recommendations: Building a YouTube Recommender That Understands Feelings</h1>
+    <p class="microhook-line" style="margin-top:2px;">Ever wondered what AI fans really want to watch next?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">I turned <strong>180K+ YouTube comments</strong> into personalized video suggestions using sentiment analysis + clustering.</span></p>
+    <p class="sub">In an era where algorithms suggest what we watch, listen to, and read, I wanted to ask a deeper question: What if we could recommend content not just based on what it's about — but on how it makes people feel?</p>
+    <p class="sub">This idea led me to build the Sentiment-Driven Video Recommendation System, a fully deployed machine learning pipeline that recommends YouTube videos using not only content similarity but viewer emotions extracted from comments and unsupervised video clustering.</p>
+    <p class="sub">Let me walk you through how I engineered it — and what I learned along the way.</p>
+
+    <section id="live">
+      <h2>Live App</h2>
+      <div class="hero-actions">
+        <a class="btn" target="_blank" rel="noopener" href="https://vidrec-321465604500.europe-west1.run.app/">Live App</a>
+        <a class="btn" target="_blank" rel="noopener" href="https://github.com/ivanseldas/Sentiment-Driven-Video-Recommendations">GitHub Repo</a>
+      </div>
+  <iframe class="app-frame" title="Live app: Sentiment-Driven Video Recommendation" loading="lazy" scrolling="auto" referrerpolicy="strict-origin-when-cross-origin" src="https://vidrec-321465604500.europe-west1.run.app/" allow="clipboard-write; fullscreen; geolocation; microphone; camera"></iframe>
+    </section>
+
+    <section>
+      <h2>The Problem</h2>
+      <p>Most recommender systems ignore emotions. What if someone liked a video but felt confused or disappointed? I built a system that captures emotional impact using NLP.</p>
+    </section>
+
+    <section>
+  <h2>The Approach</h2>
+  <p>El sistema calcula una puntuación final para cada video candidato usando la siguiente fórmula:</p>
+  <p>Final Score = Content Similarity × Sentiment Score × Cluster Boost</p>
+      <div style="background:#1a1a1a;border:1px solid var(--border);border-radius:8px;padding:16px;margin:12px 0;text-align:center;font-family:monospace;">
+        <div style="font-size:1rem;line-height:1.8;">
+          <em>Final Score</em> = <em>Content Similarity</em> × <em>Sentiment Score</em> × <em>Cluster Boost</em>
+        </div>
+      </div>
+      <ol>
+        <li><strong>Content Similarity (TF-IDF + Cosine Similarity)</strong>
+          <p class="tech-detail">Para capturar la similitud semántica entre videos, transformé las transcripciones en vectores numéricos de alta dimensión usando TF‑IDF (Term Frequency–Inverse Document Frequency).</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Pasos clave:</p>
+          <ul class="edu-like">
+            <li><strong>Limpieza de texto:</strong><small> lowercase, stopwords, puntuación</small></li>
+            <li><strong>Vectorización (TfidfVectorizer):</strong><small> ngram_range=(1,2) → unigrams y bigrams; max_features → control de dimensionalidad</small></li>
+            <li><strong>Resultado:</strong><small> Matriz TF‑IDF ∈ ℝⁿˣᵐ, donde n = videos y m = términos únicos</small></li>
+            <li><strong>Similitud coseno:</strong><small> Matriz simétrica; cada celda (i, j) refleja similitud temática</small></li>
+            <li><strong>Base por contenido:</strong><small> Sirve como base del motor de recomendaciones, independiente del usuario</small></li>
+          </ul>
+          <figure class="img">
+            <img src="../../assets/images/projects/sentiment/final_matrix_triangular.jpg" alt="Cosine similarity matrix (TF‑IDF)" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;" />
+            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Matriz de similitud coseno (TF‑IDF)</figcaption>
+          </figure>
+        </li>
+        <li><strong>Sentiment Analysis (RoBERTa + PySpark)</strong>
+          <p class="tech-detail">Para incorporar la percepción emocional de la audiencia, utilicé un modelo RoBERTa fine‑tuned en GoEmotions para realizar análisis de sentimientos multiclase.</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Pipeline técnico:</p>
+          <ul class="edu-like">
+            <li><strong>Paralelización:</strong><small> comentarios por video procesados en paralelo con PySpark</small></li>
+            <li><strong>Inferencia:</strong><small> cada comentario genera una distribución sobre 29 emociones (softmax)</small></li>
+            <li><strong>Agregación:</strong><small> promedio por video → vector emocional único por contenido</small></li>
+          </ul>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Cálculo del Sentiment Score:</p>
+          <div style="background:#1a1a1a;border:1px dashed var(--border);border-radius:8px;padding:12px;margin:8px 0;font-family:monospace;">
+            Sentiment Score<sub>i</sub> = 1 + Σ<sub>j</sub> w<sub>j</sub> · p<sub>ij</sub>
+          </div>
+          <ul class="edu-like">
+            <li><strong>p<sub>ij</sub>:</strong><small> probabilidad de la emoción j para el video i</small></li>
+            <li><strong>w<sub>j</sub>:</strong><small> peso de cada emoción positiva</small></li>
+            <li><strong>Efecto:</strong><small> multiplicador sobre la similitud semántica; favorece reacciones positivas</small></li>
+          </ul>
+          <figure class="img">
+            <img src="../../assets/images/projects/sentiment/wordcloud_positive_comment.jpg.png" alt="Wordcloud of positive comments (sentiment features)" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;" />
+            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Wordcloud de comentarios positivos (features de sentimiento)</figcaption>
+          </figure>
+        </li>
+        <li><strong>Clustering (K-means + DBSCAN)</strong>
+          <p class="tech-detail">Para evitar recomendaciones redundantes y asegurar diversidad temática, apliqué clustering no supervisado sobre features combinadas de contenido, emociones y engagement.</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Features utilizadas:</p>
+          <ul class="edu-like">
+            <li><strong>Vector emocional:</strong><small> 29D (promedio de probabilidades por emoción)</small></li>
+            <li><strong>Engagement:</strong><small> conteo de vistas (log), ratio de likes, duración</small></li>
+            <li><strong>Categoría:</strong><small> one‑hot/embeddings de categoría</small></li>
+          </ul>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Técnicas aplicadas:</p>
+          <ul class="edu-like">
+            <li><strong>K‑means:</strong><small> normalización con StandardScaler; k por método del codo + Silhouette Score</small></li>
+            <li><strong>DBSCAN:</strong><small> detecta clústeres densos y videos atípicos (viral/de nicho)</small></li>
+            <li><strong>Cluster Boost:</strong><small> ×1.2 si candidato y seed comparten clúster → equilibrio entre relevancia y variedad</small></li>
+          </ul>
+          <figure class="img">
+            <img src="../../assets/images/projects/sentiment/video_clustering_kmeans.jpg" alt="K‑means clustering of videos" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;" />
+            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Clústeres de videos (K‑means)</figcaption>
+          </figure>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Replace the Tech Stack section with Spanish detailed stack -->
+    <section>
+      <h2>Tech Stack</h2>
+      <h3>Natural Language Processing (NLP)</h3>
+      <ul class="edu-like">
+        <li><strong>RoBERTa + GoEmotions:</strong><small> Fine‑tuned model (29 emotion categories)</small></li>
+        <li><strong>Text cleaning:</strong><small> <span class="term" data-tip="NLTK is a Python toolkit for basic text processing tasks.">NLTK</span>: <span class="term" data-tip="Tokenization splits text into words or phrases.">tokenization</span>, <span class="term" data-tip="Stopwords are common words (like ‘the’) often removed to reduce noise.">stopwords</span>, <span class="term" data-tip="Normalization cleans and standardizes text (case, accents, etc.).">normalization</span></small></li>
+        <li><strong>Outcome:</strong><small> Emotion vector per video from hundreds of comments</small></li>
+      </ul>
+      <h3>Data Ingestion & Enrichment</h3>
+      <ul class="edu-like">
+        <li><strong>Data sources:</strong><small> YouTube Data <span class="term" data-tip="An API is a contract that lets apps talk to each other and request data.">API</span>: transcripts, metadata, comments</small></li>
+        <li><strong>Dataset:</strong><small> Textual content, emotional signals, engagement metrics</small></li>
+      </ul>
+      <h3>Scale-out Processing</h3>
+      <ul class="edu-like">
+        <li><strong>Distributed processing:</strong><small> 180,000+ comments with <span class="term" data-tip="PySpark is the Python API for Apache Spark, enabling large‑scale distributed processing.">PySpark</span></small></li>
+        <li><strong>Aggregations:</strong><small> Per‑video summaries for efficient queries</small></li>
+      </ul>
+      <h3>Production Deployment</h3>
+      <ul class="edu-like">
+        <li><strong>Service:</strong><small> <span class="term" data-tip="FastAPI is a fast Python web framework for building APIs.">FastAPI</span> <span class="term" data-tip="A REST API exposes data and actions via HTTP endpoints.">REST API</span> packaged with <span class="term" data-tip="Docker bundles code + dependencies into portable containers.">Docker</span></small></li>
+        <li><strong>Deployment:</strong><small> Runs on <span class="term" data-tip="Cloud Run runs containers on Google Cloud with automatic scaling to zero.">Google Cloud Run</span> (auto‑scaling, low latency)</small></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Key Results</h2>
+      <ul class="edu-like">
+        <li><strong>Interactive web app:</strong><small> Explore personalized recommendations by emotion and content</small></li>
+        <li><strong>Production API:</strong><small> Serves recommendations with low latency</small></li>
+        <li><strong>Emotion visualization:</strong><small> Each video shows an emotion map explaining the suggestion</small></li>
+      </ul>
+    </section>
+  </main>
+  <footer>
+    <div class="container">© <span id="year"></span> Iván Seldas</div>
+  </footer>
+  <script>
+    const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
+    // Viewport-based sizing to keep the app visible; internal scroll remains enabled
+    function sizeAppFrame(){
+      const header=document.querySelector('header');
+      const frame=document.querySelector('.app-frame');
+      if(!frame) return;
+      const headerH = header ? header.getBoundingClientRect().height : 0;
+      const safetyPadding = 24; // avoid bottom cut-off
+      const target = Math.max(520, window.innerHeight - headerH - safetyPadding);
+      frame.style.height = target + 'px';
+    }
+    window.addEventListener('load', sizeAppFrame);
+    window.addEventListener('resize', sizeAppFrame);
+    window.addEventListener('orientationchange', sizeAppFrame);
+    document.addEventListener('DOMContentLoaded', sizeAppFrame);
+  </script>
+</body>
+</html>
