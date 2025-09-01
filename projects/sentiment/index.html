@@ -99,7 +99,7 @@
 
     <section>
   <h2>The Approach</h2>
-  <p>El sistema calcula una puntuación final para cada video candidato usando la siguiente fórmula:</p>
+  <p>The system computes a final score for each candidate video using the following formula:</p>
   <p>Final Score = Content Similarity × Sentiment Score × Cluster Boost</p>
       <div style="background:#1a1a1a;border:1px solid var(--border);border-radius:8px;padding:16px;margin:12px 0;text-align:center;font-family:monospace;">
         <div style="font-size:1rem;line-height:1.8;">
@@ -108,59 +108,59 @@
       </div>
       <ol>
         <li><strong>Content Similarity (TF-IDF + Cosine Similarity)</strong>
-          <p class="tech-detail">Para capturar la similitud semántica entre videos, transformé las transcripciones en vectores numéricos de alta dimensión usando TF‑IDF (Term Frequency–Inverse Document Frequency).</p>
-          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Pasos clave:</p>
+          <p class="tech-detail">To capture semantic similarity between videos, I transformed transcripts into high‑dimensional numeric vectors using TF‑IDF (Term Frequency–Inverse Document Frequency).</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Key steps:</p>
           <ul class="edu-like">
-            <li><strong>Limpieza de texto:</strong><small> lowercase, stopwords, puntuación</small></li>
-            <li><strong>Vectorización (TfidfVectorizer):</strong><small> ngram_range=(1,2) → unigrams y bigrams; max_features → control de dimensionalidad</small></li>
-            <li><strong>Resultado:</strong><small> Matriz TF‑IDF ∈ ℝⁿˣᵐ, donde n = videos y m = términos únicos</small></li>
-            <li><strong>Similitud coseno:</strong><small> Matriz simétrica; cada celda (i, j) refleja similitud temática</small></li>
-            <li><strong>Base por contenido:</strong><small> Sirve como base del motor de recomendaciones, independiente del usuario</small></li>
+            <li><strong>Text cleaning:</strong><small> lowercase, stopwords, punctuation</small></li>
+            <li><strong>Vectorization (TfidfVectorizer):</strong><small> ngram_range=(1,2) → unigrams and bigrams; max_features → dimensionality control</small></li>
+            <li><strong>Result:</strong><small> TF‑IDF matrix ∈ ℝⁿˣᵐ where n = videos and m = unique terms</small></li>
+            <li><strong>Cosine similarity:</strong><small> Symmetric matrix; each cell (i, j) reflects topical similarity</small></li>
+            <li><strong>Content baseline:</strong><small> Serves as the base of the content‑driven recommender, independent of user behavior</small></li>
           </ul>
           <figure class="img">
             <img src="../../assets/images/projects/sentiment/final_matrix_triangular.jpg" alt="Cosine similarity matrix (TF‑IDF)" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;" />
-            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Matriz de similitud coseno (TF‑IDF)</figcaption>
+            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Cosine similarity matrix (TF‑IDF)</figcaption>
           </figure>
         </li>
         <li><strong>Sentiment Analysis (RoBERTa + PySpark)</strong>
-          <p class="tech-detail">Para incorporar la percepción emocional de la audiencia, utilicé un modelo RoBERTa fine‑tuned en GoEmotions para realizar análisis de sentimientos multiclase.</p>
-          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Pipeline técnico:</p>
+          <p class="tech-detail">To incorporate audience perception, I used a RoBERTa model fine‑tuned on GoEmotions to run multi‑class sentiment analysis.</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Technical pipeline:</p>
           <ul class="edu-like">
-            <li><strong>Paralelización:</strong><small> comentarios por video procesados en paralelo con PySpark</small></li>
-            <li><strong>Inferencia:</strong><small> cada comentario genera una distribución sobre 29 emociones (softmax)</small></li>
-            <li><strong>Agregación:</strong><small> promedio por video → vector emocional único por contenido</small></li>
+            <li><strong>Parallelization:</strong><small> per‑video comments processed in parallel with PySpark</small></li>
+            <li><strong>Inference:</strong><small> each comment yields a distribution over 29 emotions (softmax)</small></li>
+            <li><strong>Aggregation:</strong><small> per‑video mean → a unique emotion vector per content</small></li>
           </ul>
-          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Cálculo del Sentiment Score:</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Sentiment Score calculation:</p>
           <div style="background:#1a1a1a;border:1px dashed var(--border);border-radius:8px;padding:12px;margin:8px 0;font-family:monospace;">
             Sentiment Score<sub>i</sub> = 1 + Σ<sub>j</sub> w<sub>j</sub> · p<sub>ij</sub>
           </div>
           <ul class="edu-like">
-            <li><strong>p<sub>ij</sub>:</strong><small> probabilidad de la emoción j para el video i</small></li>
-            <li><strong>w<sub>j</sub>:</strong><small> peso de cada emoción positiva</small></li>
-            <li><strong>Efecto:</strong><small> multiplicador sobre la similitud semántica; favorece reacciones positivas</small></li>
+            <li><strong>p<sub>ij</sub>:</strong><small> probability of emotion j for video i</small></li>
+            <li><strong>w<sub>j</sub>:</strong><small> weight for each positively associated emotion</small></li>
+            <li><strong>Effect:</strong><small> multiplier over semantic similarity; favors positive reactions</small></li>
           </ul>
           <figure class="img">
             <img src="../../assets/images/projects/sentiment/wordcloud_positive_comment.jpg.png" alt="Wordcloud of positive comments (sentiment features)" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;" />
-            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Wordcloud de comentarios positivos (features de sentimiento)</figcaption>
+            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Wordcloud of positive comments (sentiment features)</figcaption>
           </figure>
         </li>
         <li><strong>Clustering (K-means + DBSCAN)</strong>
-          <p class="tech-detail">Para evitar recomendaciones redundantes y asegurar diversidad temática, apliqué clustering no supervisado sobre features combinadas de contenido, emociones y engagement.</p>
-          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Features utilizadas:</p>
+          <p class="tech-detail">To avoid redundant recommendations and ensure topical diversity, I applied unsupervised clustering on combined content, emotion, and engagement features.</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Features used:</p>
           <ul class="edu-like">
-            <li><strong>Vector emocional:</strong><small> 29D (promedio de probabilidades por emoción)</small></li>
-            <li><strong>Engagement:</strong><small> conteo de vistas (log), ratio de likes, duración</small></li>
-            <li><strong>Categoría:</strong><small> one‑hot/embeddings de categoría</small></li>
+            <li><strong>Emotion vector:</strong><small> 29D (mean of per‑emotion probabilities)</small></li>
+            <li><strong>Engagement:</strong><small> view count (log), like ratio, duration</small></li>
+            <li><strong>Category:</strong><small> one‑hot/category embeddings</small></li>
           </ul>
-          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Técnicas aplicadas:</p>
+          <p class="tech-detail" style="margin:8px 0 6px; color:#c5c5c5;">Techniques applied:</p>
           <ul class="edu-like">
-            <li><strong>K‑means:</strong><small> normalización con StandardScaler; k por método del codo + Silhouette Score</small></li>
-            <li><strong>DBSCAN:</strong><small> detecta clústeres densos y videos atípicos (viral/de nicho)</small></li>
-            <li><strong>Cluster Boost:</strong><small> ×1.2 si candidato y seed comparten clúster → equilibrio entre relevancia y variedad</small></li>
+            <li><strong>K‑means:</strong><small> normalization with StandardScaler; k via elbow method + Silhouette Score</small></li>
+            <li><strong>DBSCAN:</strong><small> detects dense clusters and outlier/viral content</small></li>
+            <li><strong>Cluster Boost:</strong><small> ×1.2 if candidate and seed share a cluster → balances relevance and variety</small></li>
           </ul>
           <figure class="img">
             <img src="../../assets/images/projects/sentiment/video_clustering_kmeans.jpg" alt="K‑means clustering of videos" loading="lazy" style="width:100%;border:1px solid var(--border);border-radius:12px;" />
-            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Clústeres de videos (K‑means)</figcaption>
+            <figcaption style="font-size:.75rem;color:var(--muted);margin-top:6px;text-align:center;">Video clusters (K‑means)</figcaption>
           </figure>
         </li>
       </ol>
