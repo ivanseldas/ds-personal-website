@@ -266,6 +266,14 @@
   .card .desc-list { margin:0 0 8px 0; padding:0 0 0 16px; font-size:0.83rem; line-height:1.58; color:#c5c5c5; }
   .card .desc-list li { margin:0 0 4px; }
   .card .desc-list li:last-child { margin-bottom:0; }
+  /* Arrow bullet variant for concise, single-line items */
+  .card .desc-list.arrow { list-style:none; padding-left:0; }
+  .card .desc-list.arrow li { position:relative; padding-left:22px; }
+  .card .desc-list.arrow li::before {
+    content:""; position:absolute; left:0; top:0.48em; width:12px; height:12px;
+    background-repeat:no-repeat; background-size:12px 12px;
+    background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24"><path d="M5 12h14M13 5l7 7-7 7" fill="none" stroke="%234da6ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+  }
   .card .stack-line { margin:2px 0 10px; font-size:0.64rem; letter-spacing:.8px; text-transform:uppercase; color:#9fa0a0; font-weight:600; }
   .card .stack-line strong { color:#cfd0d0; font-weight:600; }
   .card .microhook { font-style:italic; margin:0 0 10px; font-size:0.85rem; line-height:1.5; color:#d2d2d2; letter-spacing:.2px; }
@@ -592,6 +600,50 @@
     <div class="container">
       <div class="section-title">Selected Work</div>
 
+      <!-- PROJECT 1B: Content Automation Workflow -->
+      <article class="card">
+        <div class="row">
+          <div class="col">
+            <h3><a href="projects/content-automation/index.html" class="project-link" aria-label="Open case study: Content Automation Workflow">Content Automation Workflow</a></h3>
+            <p class="microhook-line" style="margin-top:2px;">From Telegram prompt to structured, sourced article — automated with n8n, Supabase and RAG.</p>
+            <div class="desc-block" style="margin-top:-2px;">
+              <ul class="desc-list" style="margin:4px 0 6px;">
+                <li><strong>Automated</strong> research and drafting with <strong>Agentic RAG</strong> grounded in Supabase documents.</li>
+                <li><strong>Delivered</strong> JSON‑structured long‑form content ready for CMS or app ingestion.</li>
+              </ul>
+            </div>
+            <div class="results-block" style="margin:6px 0 14px;">
+              <div class="results-inline-label">Results</div>
+              <ul class="desc-list arrow" style="margin:6px 0 0 0;">
+                <li><span class="metric">Source‑grounded</span> drafts with inline citations and missing‑data callouts.</li>
+                <li>Consistent <em>JSON schema</em> outputs enabling downstream automation.</li>
+              </ul>
+            </div>
+            <div class="links-block" style="margin-top:4px;">
+              <a class="btn" href="mailto:ivanseldasp@gmail.com?subject=Content%20Automation%20Workflow%20demo" target="_blank" rel="noopener noreferrer">Request Demo</a>
+              <a class="btn" href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+          </div>
+          <div class="media">
+            <picture>
+              <img src="images/skills_bg_placeholder.svg"
+                   alt="Content Automation Workflow — illustration placeholder"
+                   loading="lazy" />
+            </picture>
+            <div class="tag-block tags" style="margin-top:28px;">
+              <span class="tag" data-skill="n8n">n8n</span>
+              <span class="tag" data-skill="LangChain">LangChain</span>
+              <span class="tag" data-skill="OpenAI">OpenAI</span>
+              <span class="tag" data-skill="Telegram Bot">Telegram Bot</span>
+              <span class="tag" data-skill="Supabase">Supabase</span>
+              <span class="tag" data-skill="Vector DB">Vector DB</span>
+              <span class="tag" data-skill="Embeddings">Embeddings</span>
+              <span class="tag" data-skill="RAG">RAG</span>
+            </div>
+          </div>
+        </div>
+      </article>
+
       <!-- PROJECT 1 -->
       <article class="card">
         <div class="row">
@@ -600,32 +652,14 @@
             <p class="microhook-line" style="margin-top:2px;">Ever wondered what AI fans really want to watch next? <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;"><br>I turned <strong>180K+ YouTube comments</strong> into personalized video suggestions.</span></p>
             <div class="desc-block" style="margin-top:-2px;">
               <ul class="desc-list" style="margin:4px 0 6px;">
-                <li><strong>Extracted</strong> sentiment-weighted signals from massive comment streams (RoBERTa) — boosting relevance.</li>
-                <li><strong>Matched</strong> viewer intent to clustered content themes — surfacing videos users actually want.</li>
+                <li>Video recommendation system using <strong>clustering</strong> over <strong>2,500+ videos</strong>, <strong>sentiment analysis</strong> of <strong>180,000+ comments</strong> in <strong>PySpark</strong>, and <strong>content similarity (TF‑IDF)</strong>, generating personalized suggestions based on the current video.</li>
               </ul>
             </div>
             <div class="results-block" style="margin:6px 0 14px;">
               <div class="results-inline-label">Results</div>
-              <ul class="results-list" style="gap:6px;">
-                <li>
-                  <span class="res-icon relevance">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="12" cy="12" r="8" />
-                      <path d="M12 4v8l5 3" />
-                    </svg>
-                  </span>
-                  <span class="metric">+18% CTR</span> vs baseline playlists — higher-quality recommendations surfacing what users are primed to engage with.
-                </li>
-                <li>
-                  <span class="res-icon speed">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M4 12a8 8 0 0 1 16 0" />
-                      <path d="M12 12 16 8" />
-                      <circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" />
-                    </svg>
-                  </span>
-                  Sub-200ms median response latency enabling real-time interaction.
-                </li>
+              <ul class="desc-list arrow" style="margin:6px 0 0 0;">
+                <li>Web app in production, deployed with <strong>Docker</strong> on <strong>Google Cloud Platform</strong>.</li>
+                <li>Recommendations computed via a <strong>final score</strong> conditioned on the <strong>currently watched video</strong>.</li>
               </ul>
             </div>
             <div class="links-block" style="margin-top:4px;">
@@ -659,68 +693,73 @@
   <!-- Project 1 now links to a dedicated case study page; inline details removed -->
       </article>
 
-      <!-- PROJECT 1B: Content Automation Workflow -->
+      <!-- PROJECT 4 (moved up to position 3) -->
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3><a href="projects/content-automation/index.html" class="project-link" aria-label="Open case study: Content Automation Workflow">Content Automation Workflow</a></h3>
-            <p class="microhook-line" style="margin-top:2px;">From Telegram prompt to structured, sourced article — automated with n8n, Supabase and RAG.</p>
-            <div class="desc-block" style="margin-top:-2px;">
-              <ul class="desc-list" style="margin:4px 0 6px;">
-                <li><strong>Automated</strong> research and drafting with <strong>Agentic RAG</strong> grounded in Supabase documents.</li>
-                <li><strong>Delivered</strong> JSON‑structured long‑form content ready for CMS or app ingestion.</li>
+            <h3><a href="projects/churn/index.html" class="project-link" aria-label="Open case study: Telecom Churn Prediction">Telecom Churn Prediction</a></h3>
+            <p class="microhook-line" style="margin-top:2px;">Predict churn with high recall to power targeted, cost‑effective retention.<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Structured data + supervised models (LogReg, Random Forest, XGBoost) to identify customers most likely to leave.</span></p>
+            <div class="desc-block">
+              <ul class="desc-list">
+                <li><strong>EDA + Feature Engineering</strong> to expose churn patterns across categorical and numeric signals.</li>
+                <li><strong>Recall-first modeling</strong> with Logistic Regression, Random Forest, and XGBoost to catch churners.</li>
               </ul>
             </div>
             <div class="results-block" style="margin:6px 0 14px;">
               <div class="results-inline-label">Results</div>
-              <ul class="results-list" style="gap:6px;">
-                <li>
-                  <span class="res-icon relevance">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <circle cx="12" cy="12" r="8" />
-                      <path d="M12 4v8l5 3" />
-                    </svg>
-                  </span>
-                  <span class="metric">Source‑grounded</span> drafts with inline citations and missing‑data callouts.
-                </li>
-                <li>
-                  <span class="res-icon speed">
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                      <path d="M4 12a 8 8 0 0 1 16 0" />
-                      <path d="M12 12 16 8" />
-                      <circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" />
-                    </svg>
-                  </span>
-                  Consistent <em>JSON schema</em> outputs enabling downstream automation.
-                </li>
+              <ul class="desc-list arrow" style="margin:6px 0 0 0;">
+                <li><span class="metric">Recall 0.84</span> on validation (best of Logistic Regression, Random Forest, XGBoost).</li>
+                <li>Top <span class="metric">500</span> at‑risk customers ranked — potential churn reduction <span class="metric">59.5% (95% CI)</span>.</li>
               </ul>
             </div>
-            <div class="links-block" style="margin-top:4px;">
-              <a class="btn" href="mailto:ivanseldasp@gmail.com?subject=Content%20Automation%20Workflow%20demo" target="_blank" rel="noopener noreferrer">Request Demo</a>
-              <a class="btn" href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <div class="links-block">
+              <a class="btn" href="#">Demo</a>
+              <a class="btn" href="#">GitHub</a>
+              <a class="btn" href="projects/churn/index.html">Case Study</a>
             </div>
           </div>
           <div class="media">
             <picture>
-              <img src="images/skills_bg_placeholder.svg"
-                   alt="Content Automation Workflow — illustration placeholder"
+              <source type="image/webp" srcset="images/projects/churn_800.webp 800w">
+              <img src="images/projects/churn_800.jpg"
+                   srcset="images/projects/churn_800.jpg 800w, images/projects/churn_1200.jpg 1200w"
+                   sizes="(min-width:900px) 50vw, 100vw"
+                   alt="Screenshot of the Telecom Churn Prediction project"
                    loading="lazy" />
             </picture>
-            <div class="tag-block tags" style="margin-top:28px;">
-              <span class="tag" data-skill="n8n">n8n</span>
-              <span class="tag" data-skill="LangChain">LangChain</span>
-              <span class="tag" data-skill="OpenAI">OpenAI</span>
-              <span class="tag" data-skill="Telegram Bot">Telegram Bot</span>
-              <span class="tag" data-skill="Supabase">Supabase</span>
-              <span class="tag" data-skill="Vector DB">Vector DB</span>
-              <span class="tag" data-skill="Embeddings">Embeddings</span>
-              <span class="tag" data-skill="RAG">RAG</span>
+            <div class="tag-block tags" style="margin-top:24px;">
+              <span class="tag" data-skill="ML">ML</span>
+              <span class="tag" data-skill="MLOps">MLOps</span>
+              <span class="tag" data-skill="Feature Store">Feature Store</span>
+              <span class="tag" data-skill="Streamlit">Streamlit</span>
+              <span class="tag" data-skill="FastAPI">FastAPI</span>
+              <span class="tag" data-skill="Docker">Docker</span>
+              <span class="tag" data-skill="ETL">ETL</span>
+              <span class="tag" data-skill="Hyperparameter Tuning">Hyperparameter Tuning</span>
+              <span class="tag" data-skill="Monitoring">Monitoring</span>
+              <span class="tag" data-skill="XGBoost">XGBoost</span>
+              <span class="tag" data-skill="Random Forest">Random Forest</span>
+              <span class="tag" data-skill="Logistic Regression">Logistic Regression</span>
             </div>
           </div>
         </div>
+        <!-- Expandable details: Project 4 -->
+        <div class="project-details" id="details-proj-4" role="region" aria-label="More details: Telecom Churn Prediction">
+          <div class="detail-header">
+            <h4 class="detail-title">More details</h4>
+            <div class="detail-actions">
+              <button type="button" class="btn close-details" aria-label="Close details">Close</button>
+            </div>
+          </div>
+          <p class="intro-story" style="margin-top:0;">Feature store powered pipeline with experiment tracking and SHAP-driven explanations. Calibrated ensemble for actionable retention strategies.</p>
+          <ul class="desc-list">
+            <li>Segment-specific thresholds for contact prioritization.</li>
+            <li>Top drivers surfaced for each subscriber for tailored offers.</li>
+          </ul>
+        </div>
       </article>
 
-      <!-- PROJECT 2 -->
+      <!-- PROJECT 2 (moved to position 4) -->
       <article class="card">
         <div class="row">
           <div class="col">
@@ -790,7 +829,7 @@
         </div>
       </article>
 
-  <!-- PROJECT 3 -->
+  <!-- PROJECT 3 (moved to position 5) -->
   <article class="card">
         <div class="row">
           <div class="col">
@@ -854,80 +893,6 @@
           <ul class="desc-list">
             <li>Bias/variance checks and MAE-based optimization; calibration where needed.</li>
             <li>Interactive Tableau visuals for hotspot exploration and what-if analysis.</li>
-          </ul>
-        </div>
-      </article>
-
-      <!-- PROJECT 4 -->
-      <article class="card">
-        <div class="row">
-          <div class="col">
-            <h3><a href="projects/churn/index.html" class="project-link" aria-label="Open case study: Telecom Churn Prediction">Telecom Churn Prediction</a></h3>
-            <p class="microhook-line" style="margin-top:2px;">What if you could spot churn 30 days before it happens?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Delivered an explainable pipeline that flags at‑risk subscribers early and surfaces the levers to retain them.</span></p>
-            <div class="desc-block">
-              <ul class="desc-list">
-                <li><strong>Production-style</strong> churn pipeline (feature store, experiment tracking, SHAP) powering analyst UI.</li>
-                <li><strong>Calibrated</strong> ensemble (XGBoost / RF / Logistic) delivering explainable retention insights.</li>
-              </ul>
-            </div>
-            <div class="results-block" style="margin:6px 0 14px;">
-              <div class="results-inline-label">Results</div>
-              <ul class="results-list">
-                <li>
-                  <span class="res-icon relevance">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="8" /><path d="M12 4v8l5 3" /></svg>
-                  </span>
-                  <span class="metric">&gt;95% accuracy</span> (calibrated) on holdout.</li>
-                <li>
-                  <span class="res-icon speed">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 16 0" /><path d="M12 12 16 8" /><circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" /></svg>
-                  </span>
-                  Actionable churn drivers surfaced via SHAP for targeted retention.</li>
-              </ul>
-            </div>
-            <div class="links-block">
-              <a class="btn" href="#">Demo</a>
-              <a class="btn" href="#">GitHub</a>
-              <a class="btn" href="projects/churn/index.html">Case Study</a>
-            </div>
-          </div>
-          <div class="media">
-            <picture>
-              <source type="image/webp" srcset="images/projects/churn_800.webp 800w">
-              <img src="images/projects/churn_800.jpg"
-                   srcset="images/projects/churn_800.jpg 800w, images/projects/churn_1200.jpg 1200w"
-                   sizes="(min-width:900px) 50vw, 100vw"
-                   alt="Screenshot of the Telecom Churn Prediction project"
-                   loading="lazy" />
-            </picture>
-            <div class="tag-block tags" style="margin-top:24px;">
-              <span class="tag" data-skill="ML">ML</span>
-              <span class="tag" data-skill="MLOps">MLOps</span>
-              <span class="tag" data-skill="Feature Store">Feature Store</span>
-              <span class="tag" data-skill="Streamlit">Streamlit</span>
-              <span class="tag" data-skill="FastAPI">FastAPI</span>
-              <span class="tag" data-skill="Docker">Docker</span>
-              <span class="tag" data-skill="ETL">ETL</span>
-              <span class="tag" data-skill="Hyperparameter Tuning">Hyperparameter Tuning</span>
-              <span class="tag" data-skill="Monitoring">Monitoring</span>
-              <span class="tag" data-skill="XGBoost">XGBoost</span>
-              <span class="tag" data-skill="Random Forest">Random Forest</span>
-              <span class="tag" data-skill="Logistic Regression">Logistic Regression</span>
-            </div>
-          </div>
-        </div>
-        <!-- Expandable details: Project 4 -->
-        <div class="project-details" id="details-proj-4" role="region" aria-label="More details: Telecom Churn Prediction">
-          <div class="detail-header">
-            <h4 class="detail-title">More details</h4>
-            <div class="detail-actions">
-              <button type="button" class="btn close-details" aria-label="Close details">Close</button>
-            </div>
-          </div>
-          <p class="intro-story" style="margin-top:0;">Feature store powered pipeline with experiment tracking and SHAP-driven explanations. Calibrated ensemble for actionable retention strategies.</p>
-          <ul class="desc-list">
-            <li>Segment-specific thresholds for contact prioritization.</li>
-            <li>Top drivers surfaced for each subscriber for tailored offers.</li>
           </ul>
         </div>
       </article>
