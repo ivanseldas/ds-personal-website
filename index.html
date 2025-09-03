@@ -241,6 +241,12 @@
       .card .media .tag-block { align-self:flex-start; width:100%; }
     }
   .card h3 { margin:2px 0 8px; font-size:clamp(1.18rem,1.7vw,1.48rem); line-height:1.15; letter-spacing:.4px; }
+  /* Make project titles visibly clickable */
+  .card h3, .card h3 a { text-decoration:none; }
+  .card h3:hover, .card h3 a:hover, .card h3:focus-within a, .card h3[role="button"]:focus-visible {
+    text-decoration:underline;
+    text-underline-offset:3px;
+  }
   /* Match project description typography to bio-full paragraphs */
   .card p { color:#c9c9c9; margin:0 0 10px; font-size:0.88rem; line-height:1.7; }
   /* Spacing blocks inside cards */
@@ -529,6 +535,10 @@
             <span class="tag" data-skill="Hugging Face">Hugging Face</span>
             <span class="tag" data-skill="Transformers">Transformers</span>
             <span class="tag" data-skill="RoBERTa">RoBERTa</span>
+            <span class="tag" data-skill="LangChain">LangChain</span>
+            <span class="tag" data-skill="OpenAI">OpenAI</span>
+            <span class="tag" data-skill="Embeddings">Embeddings</span>
+            <span class="tag" data-skill="RAG">RAG</span>
           </div>
         </div>
         <div class="skill-col" data-group="cloud">
@@ -537,6 +547,8 @@
             <span class="tag" data-skill="AWS">AWS</span>
             <span class="tag" data-skill="GCP">GCP</span>
             <span class="tag" data-skill="Airflow">AirFlow</span>
+            <span class="tag" data-skill="Supabase">Supabase</span>
+            <span class="tag" data-skill="Vector DB">Vector DB</span>
           </div>
         </div>
         <div class="skill-col" data-group="deployment">
@@ -545,6 +557,8 @@
             <span class="tag" data-skill="FastAPI">Fast API</span>
             <span class="tag" data-skill="Streamlit">Streamlit</span>
             <span class="tag" data-skill="Docker">Docker</span>
+            <span class="tag" data-skill="n8n">n8n</span>
+            <span class="tag" data-skill="Telegram Bot">Telegram Bot</span>
           </div>
         </div>
         <div class="skill-col" data-group="specialized">
@@ -620,14 +634,14 @@
             </div>
           </div>
           <div class="media">
-            <div class="video-wrapper" data-video-type="youtube" data-video-id="LzyZGEFMM0M" aria-label="Demo video: Sentiment-Driven Video Recommendation System">
-              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
-              <button class="play-overlay" type="button" aria-label="Play demo video">
-                <span class="icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-                </span>
-              </button>
-            </div>
+            <picture>
+              <source type="image/webp" srcset="images/projects/recommender_800.webp 800w">
+              <img src="images/projects/recommender_800.jpg"
+                   srcset="images/projects/recommender_800.jpg 800w, images/projects/recommender_1200.jpg 1200w"
+                   sizes="(min-width:900px) 50vw, 100vw"
+                   alt="Screenshot of the Sentiment-Driven Video Recommendation app"
+                   loading="lazy" />
+            </picture>
             <div class="tag-block tags" style="margin-top:28px;">
               <span class="tag" data-skill="Python">Python</span>
               <span class="tag" data-skill="RoBERTa">RoBERTa</span>
@@ -643,6 +657,67 @@
           </div>
         </div>
   <!-- Project 1 now links to a dedicated case study page; inline details removed -->
+      </article>
+
+      <!-- PROJECT 1B: Content Automation Workflow -->
+      <article class="card">
+        <div class="row">
+          <div class="col">
+            <h3><a href="projects/content-automation/index.html" class="project-link" aria-label="Open case study: Content Automation Workflow">Content Automation Workflow</a></h3>
+            <p class="microhook-line" style="margin-top:2px;">From Telegram prompt to structured, sourced article — automated with n8n, Supabase and RAG.</p>
+            <div class="desc-block" style="margin-top:-2px;">
+              <ul class="desc-list" style="margin:4px 0 6px;">
+                <li><strong>Automated</strong> research and drafting with <strong>Agentic RAG</strong> grounded in Supabase documents.</li>
+                <li><strong>Delivered</strong> JSON‑structured long‑form content ready for CMS or app ingestion.</li>
+              </ul>
+            </div>
+            <div class="results-block" style="margin:6px 0 14px;">
+              <div class="results-inline-label">Results</div>
+              <ul class="results-list" style="gap:6px;">
+                <li>
+                  <span class="res-icon relevance">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <circle cx="12" cy="12" r="8" />
+                      <path d="M12 4v8l5 3" />
+                    </svg>
+                  </span>
+                  <span class="metric">Source‑grounded</span> drafts with inline citations and missing‑data callouts.
+                </li>
+                <li>
+                  <span class="res-icon speed">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M4 12a 8 8 0 0 1 16 0" />
+                      <path d="M12 12 16 8" />
+                      <circle cx="12" cy="12" r="1" fill="var(--blue-brand)" stroke="none" />
+                    </svg>
+                  </span>
+                  Consistent <em>JSON schema</em> outputs enabling downstream automation.
+                </li>
+              </ul>
+            </div>
+            <div class="links-block" style="margin-top:4px;">
+              <a class="btn" href="mailto:ivanseldasp@gmail.com?subject=Content%20Automation%20Workflow%20demo" target="_blank" rel="noopener noreferrer">Request Demo</a>
+              <a class="btn" href="#" target="_blank" rel="noopener noreferrer">GitHub</a>
+            </div>
+          </div>
+          <div class="media">
+            <picture>
+              <img src="images/skills_bg_placeholder.svg"
+                   alt="Content Automation Workflow — illustration placeholder"
+                   loading="lazy" />
+            </picture>
+            <div class="tag-block tags" style="margin-top:28px;">
+              <span class="tag" data-skill="n8n">n8n</span>
+              <span class="tag" data-skill="LangChain">LangChain</span>
+              <span class="tag" data-skill="OpenAI">OpenAI</span>
+              <span class="tag" data-skill="Telegram Bot">Telegram Bot</span>
+              <span class="tag" data-skill="Supabase">Supabase</span>
+              <span class="tag" data-skill="Vector DB">Vector DB</span>
+              <span class="tag" data-skill="Embeddings">Embeddings</span>
+              <span class="tag" data-skill="RAG">RAG</span>
+            </div>
+          </div>
+        </div>
       </article>
 
       <!-- PROJECT 2 -->
@@ -678,14 +753,14 @@
             </div>
           </div>
           <div class="media">
-            <div class="video-wrapper" data-video-type="youtube" data-video-id="BSN1rPPKK9s" aria-label="Demo video: Barcelona Noise Forecasting">
-              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
-              <button class="play-overlay" type="button" aria-label="Play demo video">
-                <span class="icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-                </span>
-              </button>
-            </div>
+            <picture>
+              <source type="image/webp" srcset="images/projects/noise_800.webp 800w">
+              <img src="images/projects/noise_800.jpg"
+                   srcset="images/projects/noise_800.jpg 800w, images/projects/noise_1200.jpg 1200w"
+                   sizes="(min-width:900px) 50vw, 100vw"
+                   alt="Screenshot of the Barcelona Noise Forecasting project"
+                   loading="lazy" />
+            </picture>
             <div class="tag-block tags" style="margin-top:24px;">
               <span class="tag" data-skill="Time Series">Time Series</span>
               <span class="tag" data-skill="SARIMA">SARIMA</span>
@@ -750,14 +825,11 @@
             </div>
           </div>
           <div class="media">
-            <div class="video-wrapper" data-video-type="youtube" data-video-id="RmxWqo83MO4" data-video-start="1197" aria-label="Demo video: Asthma Risk Prediction System">
-              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
-              <button class="play-overlay" type="button" aria-label="Play demo video">
-                <span class="icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-                </span>
-              </button>
-            </div>
+            <picture>
+              <img src="assets/images/projects/sentiment/final_matrix_triangular.jpg"
+                   alt="Asthma Risk Prediction — dashboard placeholder"
+                   loading="lazy" />
+            </picture>
             <div class="tag-block tags" style="margin-top:24px;">
               <span class="tag" data-skill="Python">Python</span>
               <span class="tag" data-skill="Pandas">Pandas</span>
@@ -790,7 +862,7 @@
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3 role="button" tabindex="0" aria-expanded="false" aria-controls="details-proj-4">Telecom Churn Prediction</h3>
+            <h3><a href="projects/churn/index.html" class="project-link" aria-label="Open case study: Telecom Churn Prediction">Telecom Churn Prediction</a></h3>
             <p class="microhook-line" style="margin-top:2px;">What if you could spot churn 30 days before it happens?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Delivered an explainable pipeline that flags at‑risk subscribers early and surfaces the levers to retain them.</span></p>
             <div class="desc-block">
               <ul class="desc-list">
@@ -816,17 +888,18 @@
             <div class="links-block">
               <a class="btn" href="#">Demo</a>
               <a class="btn" href="#">GitHub</a>
+              <a class="btn" href="projects/churn/index.html">Case Study</a>
             </div>
           </div>
           <div class="media">
-            <div class="video-wrapper" data-video-type="youtube" data-video-id="IfLqsNRkBIo" aria-label="Demo video: Telecom Churn Prediction">
-              <img class="video-thumb" alt="Video thumbnail" loading="lazy" />
-              <button class="play-overlay" type="button" aria-label="Play demo video">
-                <span class="icon">
-                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
-                </span>
-              </button>
-            </div>
+            <picture>
+              <source type="image/webp" srcset="images/projects/churn_800.webp 800w">
+              <img src="images/projects/churn_800.jpg"
+                   srcset="images/projects/churn_800.jpg 800w, images/projects/churn_1200.jpg 1200w"
+                   sizes="(min-width:900px) 50vw, 100vw"
+                   alt="Screenshot of the Telecom Churn Prediction project"
+                   loading="lazy" />
+            </picture>
             <div class="tag-block tags" style="margin-top:24px;">
               <span class="tag" data-skill="ML">ML</span>
               <span class="tag" data-skill="MLOps">MLOps</span>
@@ -1195,64 +1268,7 @@
     })();
 
   // Depth parallax removed for performance and compact layout focus
-  /* Lightweight inline video loader for first project */
-  (function(){
-    const wrappers = document.querySelectorAll('.card .media .video-wrapper[data-video-id]');
-    if(!wrappers.length) return;
-    const loadThumbnail = (wrapper)=>{
-      const videoId = wrapper.getAttribute('data-video-id');
-      const thumbEl = wrapper.querySelector('.video-thumb');
-      if(!thumbEl || !videoId) return;
-      const candidates = [
-        `https://i.ytimg.com/vi/${videoId}/maxresdefault.jpg`,
-        `https://i.ytimg.com/vi/${videoId}/sddefault.jpg`,
-        `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
-        `https://i.ytimg.com/vi/${videoId}/mqdefault.jpg`,
-        `https://i.ytimg.com/vi/${videoId}/default.jpg`
-      ];
-      let loaded = false;
-      (function tryNext(idx){
-        if(idx>=candidates.length || loaded) return;
-        const test = new Image();
-        test.onload = ()=>{
-          if(test.naturalHeight < 200 && idx < candidates.length-1){ tryNext(idx+1); return; }
-          loaded = true; thumbEl.src = candidates[idx];
-        };
-        test.onerror = ()=> tryNext(idx+1);
-        test.src = candidates[idx];
-      })(0);
-    };
-    const loadIframe = (wrapper)=>{
-      if(wrapper.dataset.loaded) return;
-      const videoId = wrapper.getAttribute('data-video-id');
-      const start = wrapper.getAttribute('data-video-start');
-      const startParam = start ? `&start=${encodeURIComponent(start)}` : '';
-      const iframe = document.createElement('iframe');
-      iframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1${startParam}`;
-      iframe.title = 'Project demo video';
-      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
-      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
-      iframe.allowFullscreen = true;
-      iframe.loading = 'lazy';
-      wrapper.appendChild(iframe);
-      wrapper.dataset.loaded = 'true';
-      const thumb = wrapper.querySelector('.video-thumb');
-      iframe.addEventListener('load', ()=>{
-        iframe.style.opacity = '1';
-        if(thumb){ thumb.style.transition='opacity .25s ease'; thumb.style.opacity='0'; setTimeout(()=> thumb.remove(), 250); }
-      });
-      const btn = wrapper.querySelector('.play-overlay');
-      if(btn) btn.remove();
-    };
-    wrappers.forEach(wrapper=>{
-      loadThumbnail(wrapper);
-      const btn = wrapper.querySelector('.play-overlay');
-      if(btn){
-        btn.addEventListener('click', ()=> loadIframe(wrapper));
-        btn.addEventListener('keydown', e=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); loadIframe(wrapper); } });
-      }
-    });
-  })();
+  // YouTube video loader removed — using static preview images for all project cards now.
 
   /* Expand/collapse project details and lazy-load app iframes */
   (function(){
