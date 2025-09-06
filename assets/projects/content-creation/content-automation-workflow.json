@@ -1,0 +1,879 @@
+{
+  "name": "content-automation-workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -480,
+        3360
+      ],
+      "id": "3a44d5db-4461-43ea-8426-494e8cacddf4",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "UdpeT16JCDpdUMCb",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# 1. INITIAL GENERATOR\n## Content schema production",
+        "height": 528,
+        "width": 1584,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        1792
+      ],
+      "typeVersion": 1,
+      "id": "cdff0d16-27de-4ab1-a487-8c158399291f",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {
+          "chatIds": "7906364230"
+        }
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -592,
+        1952
+      ],
+      "id": "8f962b06-8ef2-4494-8599-d10b234805cf",
+      "name": "Telegram Trigger",
+      "webhookId": "094fc3a7-1aad-42e1-b8fb-23782a8dfde0",
+      "credentials": {
+        "telegramApi": {
+          "id": "aa1MxYGM9Xf52i2U",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.message_id }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        304,
+        2176
+      ],
+      "id": "c500f27f-c477-4bb2-b59f-7fd2e9e39eca",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}\n\nUsing the following inputs, generate a base draft article:\n\nCONTEXT (relevant retrieved chunks):\n{CONTEXT}\n\nHIGHLIGHTS (summary notes):\n{HIGHLIGHTS}\n\nTarget length: {TARGET_WORDS} words (default 900–1200).\n\nReturn JSON with this structure:\n{\n  \"title\": \"string\",\n  \"summary\": \"string (2–3 sentences overview)\",\n  \"sections\": [\n    { \"h2\": \"string\", \"paras\": [\"paragraph 1\", \"paragraph 2\", \"...\"] }\n  ],\n  \"metrics\": [\"string\"],\n  \"citations\": [{\"section_path\":\"string\",\"quote\":\"string\"}],\n  \"missing_data\": [\"string\"]\n}\n\nRules:\n- Use at least 3 sections with H2 titles.\n- Ensure every numeric claim has a citation in `citations`.\n- If data is missing or unclear, add a note in `missing_data` instead of fabricating.\n",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "You are a senior technical writer.\nYour job is to create a long-form, neutral draft based on project documentation.\nGuidelines:\n- Structure: Problem → Approach → Results → Why it matters.\n- Be factual, precise, and neutral in tone.\n- Never invent metrics or results.\n- Always cite supporting snippets by `section_path` and short quotes from the CONTEXT when making factual claims.\n- If information is missing, add it to a `missing_data` field instead of inventing it.\n- Output must be valid JSON matching the required schema.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        336,
+        1968
+      ],
+      "id": "b6c54abe-2e58-4559-be23-5037b91d51a6",
+      "name": "GENERATOR"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Work with your data from the vetor store",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        432,
+        2176
+      ],
+      "id": "d06f3ad0-6cd1-4ff7-a380-19966881f088",
+      "name": "Supabase Vector Store1",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UZCtQfP27Z0Z2mtJ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -368,
+        3360
+      ],
+      "id": "32271743-af6a-4127-81ee-23a596f6118b",
+      "name": "Embeddings OpenAI1",
+      "credentials": {
+        "openAiApi": {
+          "id": "UdpeT16JCDpdUMCb",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "message": "={{ $('Call formatter-critic-agents').item.json.output }}",
+        "responseType": "freeText",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1440,
+        2416
+      ],
+      "id": "63153330-b780-4e75-bdf5-8382e2c6ad22",
+      "name": "Send message and wait for response1",
+      "webhookId": "70d3aaf0-a147-4baf-8b86-a8216364ebd9",
+      "credentials": {
+        "telegramApi": {
+          "id": "aa1MxYGM9Xf52i2U",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.data.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "approved",
+              "description": "The text has been reviewd and accepted as-is. The huma explicitly or implicitly expresses approval, indicating that no changes are needed."
+            },
+            {
+              "category": "declined",
+              "description": "The text has ben reviewed, but the human requests modifications before it is sent like tweaks, removing parts, rewording, etc. This could include suggested edtis, rewording, or major revisions."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        1664,
+        2416
+      ],
+      "id": "3f181438-5b36-4097-a1cd-53737d2da5ed",
+      "name": "Text Classifier1"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=WORKFLOW FINISHED!\n\n{{ $('Call formatter-critic-agents').item.json.output }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2128,
+        2400
+      ],
+      "id": "d0344544-cac8-41f3-a737-d9ef830e3140",
+      "name": "Send a text message1",
+      "webhookId": "232d8f04-f61e-43dc-b44c-7e4ce13db6a0",
+      "credentials": {
+        "telegramApi": {
+          "id": "aa1MxYGM9Xf52i2U",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Here is the post to revise: {{ $('Call formatter-critic-agents').item.json.output }}\n\nHere is the human feedback: {{ $json.data.text }}",
+        "options": {
+          "systemMessage": "You are a helpful assistant"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        2016,
+        2576
+      ],
+      "id": "d2811d19-0e48-42d3-9e1f-57979fec6e80",
+      "name": "FINAL HUMAN REVIEW"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "lJez07lHVckGl4Gz",
+          "mode": "list",
+          "cachedResultName": "ai-agent-test — formatter-critic-agents"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "text": "={{ $('Set Article').item.json.text }}"
+          },
+          "matchingColumns": [
+            "text"
+          ],
+          "schema": [
+            {
+              "id": "text",
+              "displayName": "text",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.executeWorkflow",
+      "typeVersion": 1.2,
+      "position": [
+        1216,
+        2480
+      ],
+      "name": "Call formatter-critic-agents",
+      "id": "f1258774-c576-4fe1-8e8e-3c6fb95f2809"
+    },
+    {
+      "parameters": {
+        "operation": "sendAndWait",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "message": "=Good to go?\n\n{{ $json.output }}",
+        "responseType": "freeText",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -32,
+        2528
+      ],
+      "id": "5676ee8a-77d3-478a-85e2-ed14d67bf493",
+      "name": "Send message and wait for response",
+      "webhookId": "97629c18-7fd6-4000-8439-7b1b9a62eeef",
+      "credentials": {
+        "telegramApi": {
+          "id": "aa1MxYGM9Xf52i2U",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "inputText": "={{ $json.data.text }}",
+        "categories": {
+          "categories": [
+            {
+              "category": "approved",
+              "description": "The text has been reviewd and accepted as-is. The huma explicitly or implicitly expresses approval, indicating that no changes are needed."
+            },
+            {
+              "category": "declined",
+              "description": "The text has ben reviewed, but the human requests modifications before it is sent like tweaks, removing parts, rewording, etc. This could include suggested edtis, rewording, or major revisions."
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.textClassifier",
+      "typeVersion": 1.1,
+      "position": [
+        192,
+        2528
+      ],
+      "id": "2d1daa44-6932-4f06-bc14-33a79d4ec3f0",
+      "name": "Text Classifier"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You will receive:\n- DRAFT_JSON (from Generator): \n{{ $('Set Article').item.json.text }}\n\n- FAIL_REASONS (optional, from Quality Gate):\n{{ $json.data.text }}\n\nYour tasks:\n1) Validate the draft against CONTEXT:\n   - Map each metric or numeric claim in DRAFT_JSON to a supporting citation in CONTEXT.\n   - If a claim lacks support, either (a) remove or soften it, OR (b) add it to \"missing_data\" with a short reason.\n   - Ensure \"citations\" only contain quotes that appear in CONTEXT and correct section_path.\n\n2) Apply MINIMAL edits according to STYLE_HINTS and FAIL_REASONS (if any).\n   - Keep edits scoped: do not rewrite unrelated parts.\n   - Keep tone neutral; formatting for Medium will be handled later.\n\n3) Return a validated JSON with the SAME schema and include a change log.\n\nReturn JSON with this structure:\n{\n  \"title\": \"string\",\n  \"summary\": \"string\",\n  \"sections\": [\n    { \"h2\": \"string\", \"paras\": [\"paragraph 1\", \"paragraph 2\", \"...\"] }\n  ],\n  \"metrics\": [\"string\"], \n  \"citations\": [{\"section_path\":\"string\",\"quote\":\"string\"}],\n  \"missing_data\": [\"string\"],\n  \"review\": {\n    \"verdict\": \"pass\" | \"fail\",\n    \"reasons\": [\"string\"],\n    \"change_log\": [\n      { \"loc\": \"title|summary|sections[i]|metrics|citations|missing_data\",\n        \"before\": \"string\",\n        \"after\": \"string\",\n        \"reason\": \"string\"\n      }\n    ],\n    \"coverage\": {\n      \"metrics_with_citation\": int,\n      \"metrics_total\": int\n    }\n  }\n}\n\nValidation checklist (must enforce):\n- ≥ 3 sections exist.\n- Every numeric claim in \"metrics\" appears in CONTEXT (same value or tighter rounding).\n- Every numeric claim has a matching \"citations\" entry (correct section_path + short quote).\n- \"missing_data\" is empty unless a claim cannot be supported by CONTEXT.\n- No new metrics added unless found in CONTEXT verbatim (quote added).\n- Minimal edits only; unrelated text remains unchanged.\n\nNotes:\n- If verdict = \"fail\", prefer concise reasons and precise instructions for the next revision.\n- Do not exceed the JSON schema. Do not add extra top-level fields.\n\n\n",
+        "options": {
+          "systemMessage": "You are a strict REVIEWER that validates and minimally edits a JSON draft against the provided CONTEXT (retrieved from the vector store).\nGoals:\n- Verify every factual/numeric claim against CONTEXT only. Never invent or use external knowledge.\n- Enforce citations: every numeric claim must have a matching citation (section_path + short quote).\n- Apply MINIMAL edits: fix only what style_hints/fail_reasons request or what violates factual/citation rules.\n- Preserve the JSON schema and as much original text as possible.\n- If evidence is insufficient, do NOT fabricate; either remove the claim or move it to \"missing_data\".\n\nHard rules:\n- Do not introduce new metrics unless they appear verbatim or clearly supported in CONTEXT.\n- Do not alter metrics values except to match CONTEXT exactly.\n- Keep structure: Problem → Approach → Results → Why it matters.\n- Output must be valid JSON following the required schema.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        560,
+        2768
+      ],
+      "id": "f96b3e1b-f1e2-47ff-a439-ba2e89c7f4a0",
+      "name": "REVISION AGENT"
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "=Article approved!\n\n{{ $('Set Article').item.json.text }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        624,
+        2480
+      ],
+      "id": "547a93de-1176-4f81-bff1-e2fa7de77a31",
+      "name": "Send a text message",
+      "webhookId": "232d8f04-f61e-43dc-b44c-7e4ce13db6a0",
+      "credentials": {
+        "telegramApi": {
+          "id": "aa1MxYGM9Xf52i2U",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "8267a13c-9032-44ca-ae69-93ac7553296f",
+              "name": "text",
+              "value": "={{ $json.output }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        -608,
+        2624
+      ],
+      "id": "7f981799-bf4c-423d-9f35-36bcd78edaaa",
+      "name": "Set Article"
+    },
+    {
+      "parameters": {
+        "content": "# 2. HUMAN IN THE LOOP + QUALITY GATE\n## Make sure the initial proposal is accepted and the minimum quality requirements achieved",
+        "height": 816,
+        "width": 1584,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        2352
+      ],
+      "typeVersion": 1,
+      "id": "85fca3ee-0936-49ef-83dd-a3a9ba1ae9d1",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "# 3. FINAL REVIEW AND PRODUCTION\n## Article post after final acceptance",
+        "height": 576,
+        "width": 1184,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1136,
+        2272
+      ],
+      "typeVersion": 1,
+      "id": "4d114057-922f-4b6c-b577-8b2863567a2c",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "Get this info from the input and prepare a simple message for telegram, very very summarised:\n\n{\n  \"title\": \"string\",\n  \"summary\": \"2–3 sentences\",\n  \"sections\": [{\"h2\":\"string\",\"paras\":[\"...\"]}],\n  \"metrics\": [\"MAP@10 0.312 (0.265 baseline)\", \"CTR +11%\"],\n  \"citations\": [{\"section_path\":\"readme#eval\",\"quote\":\"...\"}],\n  \"missing_data\": []\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -384,
+        2528
+      ],
+      "id": "768c6215-aa48-48d6-b1c1-3639ee9196da",
+      "name": "HITL Light"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Work with your data in Supabase Vector",
+        "tableName": {
+          "__rl": true,
+          "value": "documents",
+          "mode": "list",
+          "cachedResultName": "documents"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreSupabase",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        3008
+      ],
+      "id": "398474c5-c75e-4a01-b716-b7db11068be6",
+      "name": "Supabase Vector Store",
+      "credentials": {
+        "supabaseApi": {
+          "id": "UZCtQfP27Z0Z2mtJ",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "0d5062fa-e480-4257-ae80-d0afba341c4a",
+                    "leftValue": "={{ $json.message.voice }}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "object",
+                      "operation": "exists",
+                      "singleValue": true
+                    }
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "voice"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.message.text || \"\"}}",
+                    "rightValue": "",
+                    "operator": {
+                      "type": "string",
+                      "operation": "exists",
+                      "singleValue": true
+                    },
+                    "id": "976cb370-932d-4a40-b4c0-394ba73c3a98"
+                  }
+                ],
+                "combinator": "and"
+              },
+              "renameOutput": true,
+              "outputKey": "text"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        -368,
+        1952
+      ],
+      "id": "57431810-d7f2-4678-9135-b1727d171252",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "resource": "file",
+        "fileId": "={{ $json.message.voice.file_id }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -144,
+        1888
+      ],
+      "id": "14490c3f-f130-4e3f-b581-29a35ccb6fde",
+      "name": "Get a file",
+      "webhookId": "d6b071ae-8a1a-42d1-8643-9d366623e083",
+      "credentials": {
+        "telegramApi": {
+          "id": "aa1MxYGM9Xf52i2U",
+          "name": "Telegram account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "audio",
+        "operation": "transcribe",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        80,
+        1888
+      ],
+      "id": "dd88f079-ba9a-4e6f-9cff-58926df0f7b4",
+      "name": "Transcribe a recording",
+      "credentials": {
+        "openAiApi": {
+          "id": "UdpeT16JCDpdUMCb",
+          "name": "OpenAi account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "# AI MODELS",
+        "height": 256,
+        "width": 480,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -704,
+        3248
+      ],
+      "typeVersion": 1,
+      "id": "d8ba676f-6fc4-4fe2-9245-18e96cf5516d",
+      "name": "Sticky Note3"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "GENERATOR",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "FINAL HUMAN REVIEW",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier1",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "Text Classifier",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "REVISION AGENT",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "HITL Light",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "GENERATOR",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GENERATOR": {
+      "main": [
+        [
+          {
+            "node": "Set Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store1": {
+      "ai_tool": [
+        [
+          {
+            "node": "GENERATOR",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings OpenAI1": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Supabase Vector Store1",
+            "type": "ai_embedding",
+            "index": 0
+          },
+          {
+            "node": "Supabase Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response1": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier1": {
+      "main": [
+        [
+          {
+            "node": "Send a text message1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "FINAL HUMAN REVIEW",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "FINAL HUMAN REVIEW": {
+      "main": [
+        [
+          {
+            "node": "Call formatter-critic-agents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call formatter-critic-agents": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message and wait for response": {
+      "main": [
+        [
+          {
+            "node": "Text Classifier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text Classifier": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "REVISION AGENT",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "REVISION AGENT": {
+      "main": [
+        [
+          {
+            "node": "Set Article",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send a text message": {
+      "main": [
+        [
+          {
+            "node": "Call formatter-critic-agents",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Article": {
+      "main": [
+        [
+          {
+            "node": "HITL Light",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HITL Light": {
+      "main": [
+        [
+          {
+            "node": "Send message and wait for response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Supabase Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "REVISION AGENT",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Get a file",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "GENERATOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a file": {
+      "main": [
+        [
+          {
+            "node": "Transcribe a recording",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transcribe a recording": {
+      "main": [
+        [
+          {
+            "node": "GENERATOR",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1de3638c-c506-44b3-ab12-7f4dfb04fae2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "649b46888e72b8bd7e75966b63eb30a0e2d43630235b5b7e1bfd3585e8a87707"
+  },
+  "id": "kmEVykprSMtHPpPd",
+  "tags": []
+}

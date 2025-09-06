@@ -1,416 +1,273 @@
 {
-  "name": "My workflow 29",
+  "name": "Content Automation RAG Pipeline",
   "nodes": [
     {
-      "parameters": {
-        "query": "Ai adoption for small business ",
-        "options": {
-          "topic": "news",
-          "time_range": "week"
-        }
-      },
-      "type": "@tavily/n8n-nodes-tavily.tavily",
+      "id": "1",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
       "typeVersion": 1,
-      "position": [
-        -368,
-        -608
-      ],
-      "id": "1316b0e8-4dda-4a3e-92f5-322252fe4156",
-      "name": "Research",
-      "credentials": {
-        "tavilyApi": {
-          "id": "7ihlyqiolIPyi9tE",
-          "name": "Tavily account"
-        }
-      }
+      "position": [200, 200],
+      "parameters": {
+        "updates": ["message"],
+        "additionalFields": {}
+      },
+      "notes": "Receives user prompt. Uses chat_id to maintain session context.",
+      "notesInFlow": true
     },
     {
+      "id": "2",
+      "name": "Classify Intent / Action",
+      "type": "n8n-nodes-base.openai",
+      "typeVersion": 3,
+      "position": [480, 180],
       "parameters": {
-        "promptType": "define",
-        "text": "={{ $node[\"Research\"].json[\"results\"][\"0\"][\"content\"] }}\n{{ $json.results.map(item => JSON.stringify(item,null,2)).join('n/n')}}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "=## Overview\nYou are an expert newsletter planner. You will receive three articles from the past week. Your job is to come up with a creative and fun title as well as the main topics for this newsletter. \n\n## Instructions\nThe newsletter should flow nicely, feel informative, and holistic. The topics should be 3-5 words.",
-          "passthroughBinaryImages": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -192,
-        -608
-      ],
-      "id": "d5c4b89e-c3f3-4e7b-a4ea-284c8084dcc1",
-      "name": "AI Agent"
-    },
-    {
-      "parameters": {
-        "model": "openai/gpt-3.5-turbo",
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
-      "typeVersion": 1,
-      "position": [
-        -192,
-        -752
-      ],
-      "id": "8fa82fbe-e866-4a1f-8969-55340aeb1321",
-      "name": "OpenRouter Chat Model",
-      "credentials": {
-        "openRouterApi": {
-          "id": "MD4AbfdxzeVJuTOB",
-          "name": "OpenRouter account 3"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"object\",\n  \"required\": [\"title\", \"topics\"],\n  \"properties\": {\n    \"title\": {\n      \"type\": \"string\",\n      \"description\": \"A short, descriptive title\"\n    },\n    \"topics\": {\n      \"type\": \"array\",\n      \"description\": \"An array of exactly three topics\",\n      \"minItems\": 3,\n      \"maxItems\": 3,\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"additionalProperties\": false\n}"
-      },
-      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
-      "typeVersion": 1.3,
-      "position": [
-        -16,
-        -752
-      ],
-      "id": "a471cfe7-778d-4e68-aef7-52b5b364c168",
-      "name": "Structured Output Parser"
-    },
-    {
-      "parameters": {
-        "fieldToSplitOut": "=output.topics",
-        "options": {}
-      },
-      "type": "n8n-nodes-base.splitOut",
-      "typeVersion": 1,
-      "position": [
-        96,
-        -624
-      ],
-      "id": "e49704c0-a13b-457c-a458-b0a901a0cf2e",
-      "name": "Split Out"
-    },
-    {
-      "parameters": {
-        "query": "={{ $json['output.topics'] }}",
-        "options": {
-          "topic": "general",
-          "time_range": "month",
-          "include_raw_content": true
-        }
-      },
-      "type": "@tavily/n8n-nodes-tavily.tavily",
-      "typeVersion": 1,
-      "position": [
-        272,
-        -640
-      ],
-      "id": "8ccef21e-114a-4a15-aad7-f4ae4f15c40e",
-      "name": "Research Topic",
-      "credentials": {
-        "tavilyApi": {
-          "id": "7ihlyqiolIPyi9tE",
-          "name": "Tavily account"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "model": {
-          "__rl": true,
-          "mode": "list",
-          "value": "gpt-4.1-mini"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        -320,
-        -128
-      ],
-      "id": "7f46ee8d-50f9-4fb8-8ad1-b85a42bea24e",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "LAjgwIrYVDB9ZN3F",
-          "name": "n8n free OpenAI API credits"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "fieldsToAggregate": {
-          "fieldToAggregate": [
-            {
-              "fieldToAggregate": "output"
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.aggregate",
-      "typeVersion": 1,
-      "position": [
-        -304,
-        -384
-      ],
-      "id": "31b566fd-778d-4c78-bbe6-9ae1a049a1b5",
-      "name": "Aggregate"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Title:{{ $('AI Agent').item.json.output.title }}\n\nSections:{{ $json.output .join('n\\n\\n')}}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "=# Overview\nYou are an AI editor tasked with refining and merging three provided newsletter sections.  \n\n## Goals\n- Refine clarity, flow, and consistency across all sections.  \n- Keep total content output ≤ 1000 words (hard limit). Avoid fluff.  \n\n## Structure (HTML only)\n1) Introduction that frames the three topics and their relevance; reference today’s date: {{$now.format(\"yyyy-MM-dd\")}}.  \n2) For each provided section:  \n   - Keep or slightly adjust the given title.  \n   - Edited <p> content.  \n   - Inline, clickable citations near related claims using <a href=\"https://...\">Source</a>. Never invent sources.  \n3) <h3>Sources</h3><ul> A single consolidated list:  \n   - Each item: <a href=\"[URL]\">[Publication Name]</a> [Article Title]  \n   - Merge identical URLs, deduplicate identical links, and alphabetize by Publication Name.  \n4) <p> Conclusion tying threads together with implications or next steps.  \n\n## Citation and Link Rules\n- Every factual claim relying on external information must include a real, verifiable, clickable URL.  \n- Preserve any provided citations, standardize to the <a> format.  \n- Summarize better rather than fabricate.  \n- Only basic HTML tags (<h3>, <ul>, <li>, <p>, <a>, <br>, <b>, <i>). No images, scripts, styles, or markdown.  \n\n## Input\nYou will receive three sections. Edit and integrate them without adding unrelated topics.  \n\n**Output Format (return only this):**  \nSubject: One clear, specific subject line (≤ 80 characters)",
-          "passthroughBinaryImages": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -128,
-        -384
-      ],
-      "id": "612d29a1-affe-4cf5-91b5-db9747bfd578",
-      "name": "AI Agent2"
-    },
-    {
-      "parameters": {
-        "promptType": "define",
-        "text": "=Topic: {{ $json.query }}\n\n\n{{ $json.results.map(item => JSON.stringify(item,null,2)).join('n\\n\\n')}}",
-        "hasOutputParser": true,
-        "options": {
-          "systemMessage": "=# Overview\nYou are a professional newsletter section writer.  \nYour only task is to write one standalone section of a newsletter.  \n\n## Instructions\n- Always include a clear section heading followed by the section content.  \n- Do not write an overall title, introduction, or conclusion.  \n- Write in a professional, expert, and engaging tone suitable for a business newsletter.  \n- If you reference facts, data, or quotes, you must cite your sources and provide the actual clickable URLs.  \n- Do not invent citations—only include real, verifiable sources.  \n- Keep the section concise, well-structured, and easy to read.",
-          "passthroughBinaryImages": false
-        }
-      },
-      "type": "@n8n/n8n-nodes-langchain.agent",
-      "typeVersion": 2.2,
-      "position": [
-        -608,
-        -384
-      ],
-      "id": "0e180a88-6b21-4d42-9104-f81c08489a3b",
-      "name": "AI Agent1"
-    },
-    {
-      "parameters": {
-        "jsCode": "// Get raw output from the AI node\nlet raw = $json.output || $json.text || \"\";\n\n// Ensure raw is a string\nif (typeof raw !== \"string\") {\n  raw = JSON.stringify(raw);\n}\n\n// Clean markdown fences\nlet cleaned = raw.replace(/```json|```/g, \"\").trim();\n\nlet result = {\n  subject: \"Untitled Newsletter\",\n  content: \"\"\n};\n\ntry {\n  // Try parsing full JSON\n  const parsed = JSON.parse(cleaned);\n\n  if (parsed.subject && typeof parsed.subject === \"string\") {\n    result.subject = parsed.subject.trim();\n  }\n\n  if (parsed.content && typeof parsed.content === \"string\") {\n    result.content = parsed.content;\n  }\n} catch (e) {\n  // Regex fallback\n  const subjectMatch = cleaned.match(/\"subject\"\\s*:\\s*\"([^\"]+)\"/);\n  const contentMatch = cleaned.match(/\"content\"\\s*:\\s*\"([\\s\\S]+)\"/);\n\n  if (subjectMatch) {\n    result.subject = subjectMatch[1];\n  }\n\n  if (contentMatch) {\n    result.content = contentMatch[1];\n  } else {\n    result.content = cleaned;\n  }\n}\n\n// Last-resort subject: derive from content\nif (!result.subject || result.subject === \"Untitled Newsletter\") {\n  if (result.content) {\n    // Try first <h3>\n    const h3Match = result.content.match(/<h3[^>]*>(.*?)<\\/h3>/i);\n    if (h3Match) {\n      result.subject = h3Match[1].trim();\n    } else {\n      // Otherwise use first 80 chars of content\n      result.subject = result.content.replace(/<[^>]*>/g, \"\").slice(0, 77) + \"...\";\n    }\n  }\n}\n\n// Enforce subject ≤ 80 chars\nif (result.subject.length > 80) {\n  result.subject = result.subject.substring(0, 77) + \"...\";\n}\n\nreturn [result];"
-      },
-      "type": "n8n-nodes-base.code",
-      "typeVersion": 2,
-      "position": [
-        208,
-        -384
-      ],
-      "id": "a49c9616-b242-4354-9707-dfe6568767dd",
-      "name": "Code"
-    },
-    {
-      "parameters": {
-        "sendTo": "={{ $node[\"On form submission\"].json[\"Email ID \"] }}",
-        "subject": "={{ $json.subject }}",
-        "message": "={{ $json.content }}",
-        "options": {
-          "appendAttribution": false
-        }
-      },
-      "type": "n8n-nodes-base.gmail",
-      "typeVersion": 2.1,
-      "position": [
-        -32,
-        -128
-      ],
-      "id": "50f06e0d-7e28-45ab-802f-7c14f4456400",
-      "name": "Send a message",
-      "webhookId": "c4c83f39-1935-4571-930c-7bbb808dad8a",
-      "credentials": {
-        "gmailOAuth2": {
-          "id": "FEAgLqo7QaX0plaE",
-          "name": "Gmail account 4"
-        }
-      }
-    },
-    {
-      "parameters": {
-        "formTitle": "INPUT FIXED( same result just for test )",
-        "formDescription": "Due to less credit \n(Newsletter 📰)",
-        "formFields": {
-          "values": [
-            {
-              "fieldLabel": "Email ID ",
-              "fieldType": "email",
-              "placeholder": "Enter your email ID ",
-              "requiredField": true
-            }
-          ]
-        },
-        "options": {}
-      },
-      "type": "n8n-nodes-base.formTrigger",
-      "typeVersion": 2.2,
-      "position": [
-        -608,
-        -608
-      ],
-      "id": "592bd16f-d7e8-46ad-be69-fa13c10ec6a9",
-      "name": "On form submission",
-      "webhookId": "d9388c93-5ece-406f-8d9a-b8bd32859765"
-    }
-  ],
-  "pinData": {},
-  "connections": {
-    "Research": {
-      "main": [
-        [
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "operation": "createChatCompletion",
+        "messages": [
           {
-            "node": "AI Agent",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenRouter Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Structured Output Parser": {
-      "ai_outputParser": [
-        [
-          {
-            "node": "AI Agent",
-            "type": "ai_outputParser",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "AI Agent": {
-      "main": [
-        [
-          {
-            "node": "Split Out",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Split Out": {
-      "main": [
-        [
-          {
-            "node": "Research Topic",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "Research Topic": {
-      "main": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
-    },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
+            "role": "system",
+            "content": "You classify if the user wants a NEW_ARTICLE or FOLLOW_UP based on prior context summary. Return JSON {action:string}."
           },
           {
-            "node": "AI Agent2",
-            "type": "ai_languageModel",
-            "index": 0
+            "role": "user",
+            "content": "={{$json[\"message\"][\"text\"]}}"
           }
-        ]
-      ]
+        ],
+        "temperature": 0
+      },
+      "notes": "Lightweight routing (could skip initially).",
+      "notesInFlow": true
     },
-    "Aggregate": {
-      "main": [
-        [
-          {
-            "node": "AI Agent2",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+    {
+      "id": "3",
+      "name": "Embed Prompt",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [720, 120],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/embeddings",
+        "authentication": "predefinedCredentialType",
+        "jsonParameters": true,
+        "options": {},
+        "bodyParametersJson": "={\n  \"input\": $json.message.text,\n  \"model\": \"text-embedding-3-small\"\n}"
+      },
+      "notes": "Generates 1536-d vector for retrieval.",
+      "notesInFlow": true,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "openai-api-key",
+          "name": "OpenAI API Key"
+        }
+      }
     },
-    "AI Agent1": {
-      "main": [
-        [
-          {
-            "node": "Aggregate",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+    {
+      "id": "4",
+      "name": "Vector Retrieval (Supabase RPC)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [960, 120],
+      "parameters": {
+        "method": "POST",
+        "url": "={{$env.SUPABASE_URL}}/rest/v1/rpc/match_documents",
+        "jsonParameters": true,
+        "authentication": "none",
+        "headers": {
+          "Content-Type": "application/json",
+          "apikey": "={{$env.SUPABASE_SERVICE_KEY}}",
+          "Authorization": "Bearer {{$env.SUPABASE_SERVICE_KEY}}"
+        },
+        "options": {},
+        "bodyParametersJson": "={\n  \"query_embedding\": $json.data[0].embedding,\n  \"match_count\": 8\n}"
+      },
+      "notes": "Calls stored procedure to get top 8 semantic chunks.",
+      "notesInFlow": true
     },
-    "AI Agent2": {
-      "main": [
-        [
-          {
-            "node": "Code",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+    {
+      "id": "5",
+      "name": "Assemble Prompt",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 1,
+      "position": [1200, 120],
+      "parameters": {
+        "functionCode": "// Build structured prompt with sections, tone, citations\nconst chunks = items[0].json;\nconst context = (Array.isArray(chunks) ? chunks : [chunks])\n  .map((c,i)=>`[${i+1}] ${c.content}`)\n  .join('\n');\nreturn [{ json: { structuredPrompt: `You are a content generator...\n\nCONTEXT:\n${context}\n\nTASK: Produce JSON {title:string, summary:string, sections:[{heading:string, text:string, citations:number[]}]}` } }];"
+      },
+      "notes": "Condenses retrieved chunks + instructions.",
+      "notesInFlow": true
     },
-    "Code": {
-      "main": [
-        [
-          {
-            "node": "Send a message",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+    {
+      "id": "6",
+      "name": "Draft Generation (LLM)",
+      "type": "n8n-nodes-base.openai",
+      "typeVersion": 3,
+      "position": [1440, 120],
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "operation": "createChatCompletion",
+        "messages": [
+          {"role": "system", "content": "Respond ONLY with valid JSON."},
+          {"role": "user", "content": "={{$json[\"structuredPrompt\"]}}"}
+        ],
+        "temperature": 0.4
+      },
+      "notes": "Creates first JSON draft.",
+      "notesInFlow": true
     },
-    "On form submission": {
-      "main": [
-        [
-          {
-            "node": "Research",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+    {
+      "id": "7",
+      "name": "Draft Review Classifier",
+      "type": "n8n-nodes-base.openai",
+      "typeVersion": 3,
+      "position": [1680, 120],
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "operation": "createChatCompletion",
+        "messages": [
+          {"role": "system", "content": "You classify if JSON draft needs REVISION or is APPROVED. Return {status:string}."},
+          {"role": "user", "content": "={{$json[\"choices\"][0][\"message\"][\"content\"]}}"}
+        ],
+        "temperature": 0
+      },
+      "notes": "HITL gate can optionally precede this; here simplified.",
+      "notesInFlow": true
+    },
+    {
+      "id": "8",
+      "name": "IF Needs Revision",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [1920, 120],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.choices[0].message.content}}",
+              "operation": "contains",
+              "value2": "REVISION"
+            }
+          ]
+        }
+      },
+      "notes": "Branch on classifier output.",
+      "notesInFlow": true
+    },
+    {
+      "id": "9",
+      "name": "Revision Agent (LLM)",
+      "type": "n8n-nodes-base.openai",
+      "typeVersion": 3,
+      "position": [2160, 40],
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "operation": "createChatCompletion",
+        "messages": [
+          {"role": "system", "content": "Revise only weak sections based on feedback; preserve good content."},
+          {"role": "user", "content": "Draft: {{$json.prevDraft}}\nFeedback: {{$json.reviewerNotes || 'Improve clarity and add citations where missing.'}}"}
+        ],
+        "temperature": 0.5
+      },
+      "notes": "Selective regeneration loop (cap externally).",
+      "notesInFlow": true
+    },
+    {
+      "id": "10",
+      "name": "Formatter Agent",
+      "type": "n8n-nodes-base.openai",
+      "typeVersion": 3,
+      "position": [2400, 120],
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "operation": "createChatCompletion",
+        "messages": [
+          {"role": "system", "content": "Normalize structure, heading levels, consistent citation markers; return JSON only."},
+          {"role": "user", "content": "={{$json.draft || $json.choices[0].message.content}}"}
+        ],
+        "temperature": 0.2
+      },
+      "notes": "Applies layout normalization.",
+      "notesInFlow": true
+    },
+    {
+      "id": "11",
+      "name": "Quality / Critic Agent",
+      "type": "n8n-nodes-base.openai",
+      "typeVersion": 3,
+      "position": [2640, 120],
+      "parameters": {
+        "resource": "chat",
+        "model": "gpt-4o-mini",
+        "operation": "createChatCompletion",
+        "messages": [
+          {"role": "system", "content": "Validate JSON schema fields present, each section length 120-400 words, every section has >=1 citation reference. Return {status:'PASS'|'FAIL', issues:[string], fixedDraft?:string}."},
+          {"role": "user", "content": "={{$json.choices[0].message.content}}"}
+        ],
+        "temperature": 0
+      },
+      "notes": "Quality gate with optional fix path.",
+      "notesInFlow": true
+    },
+    {
+      "id": "12",
+      "name": "IF Quality Fail",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [2880, 120],
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.choices[0].message.content}}",
+              "operation": "contains",
+              "value2": "FAIL"
+            }
+          ]
+        }
+      },
+      "notes": "Branch if additional corrective loop required.",
+      "notesInFlow": true
+    },
+    {
+      "id": "13",
+      "name": "Telegram Send Final",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [3120, 120],
+      "parameters": {
+        "operation": "sendMessage",
+        "text": "={{$json.finalArticle || $json.choices[0].message.content}}"
+      },
+      "notes": "Delivers final JSON / formatted output back to user.",
+      "notesInFlow": true
     }
+  ],
+  "connections": {
+    "Telegram Trigger": {"main": [[{"node": "Classify Intent / Action", "type": "main", "index": 0}]]},
+    "Classify Intent / Action": {"main": [[{"node": "Embed Prompt", "type": "main", "index": 0}]]},
+    "Embed Prompt": {"main": [[{"node": "Vector Retrieval (Supabase RPC)", "type": "main", "index": 0}]]},
+    "Vector Retrieval (Supabase RPC)": {"main": [[{"node": "Assemble Prompt", "type": "main", "index": 0}]]},
+    "Assemble Prompt": {"main": [[{"node": "Draft Generation (LLM)", "type": "main", "index": 0}]]},
+    "Draft Generation (LLM)": {"main": [[{"node": "Draft Review Classifier", "type": "main", "index": 0}]]},
+    "Draft Review Classifier": {"main": [[{"node": "IF Needs Revision", "type": "main", "index": 0}]]},
+    "IF Needs Revision": {"main": [[{"node": "Formatter Agent", "type": "main", "index": 0}], [{"node": "Revision Agent (LLM)", "type": "main", "index": 0}]]},
+    "Revision Agent (LLM)": {"main": [[{"node": "Formatter Agent", "type": "main", "index": 0}]]},
+    "Formatter Agent": {"main": [[{"node": "Quality / Critic Agent", "type": "main", "index": 0}]]},
+    "Quality / Critic Agent": {"main": [[{"node": "IF Quality Fail", "type": "main", "index": 0}]]},
+    "IF Quality Fail": {"main": [[{"node": "Telegram Send Final", "type": "main", "index": 0}], [{"node": "Formatter Agent", "type": "main", "index": 0}]]},
+    "Telegram Send Final": {"main": [[]]}
   },
-  "active": true,
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "51998eb2-fbe0-4070-a1a0-fc16defc97e5",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "1dc8898ad655b1b98eae0a406060c8040a3ee7d232bcda23e4a9bcd5ad9da6f1"
-  },
-  "id": "0ahfBGxlsxK8vvjW",
-  "tags": []
+  "tags": [
+    {"name": "content-automation"},
+    {"name": "rag"}
+  ],
+  "pinData": {},
+  "versionId": "0001-initial-export",
+  "id": "content-automation-rag-pipeline"
 }

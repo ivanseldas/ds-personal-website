@@ -160,6 +160,17 @@
   .clear-skills-btn { margin:12px 0 0; font-size:var(--fs-xs); background:transparent; border:1px dashed var(--border); padding:6px 14px; border-radius:999px; color:var(--muted); cursor:pointer; transition:.2s; display:none; }
   .clear-skills-btn.visible { display:inline-block; }
   .clear-skills-btn:hover { border-color:var(--accent); color:#000; background:var(--accent); }
+  /* ======================================
+    PROJECT LOCAL VIDEO HOVER PREVIEW
+    ====================================== */
+  #projects .video-wrapper { position:relative; width:100%; aspect-ratio:16/9; background:#000; border-radius:14px; overflow:hidden; border:1px solid var(--border); }
+  #projects .video-wrapper video { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; border:none; background:#000; opacity:0; transition:opacity .4s ease, filter .3s ease; }
+  #projects .video-wrapper.ready video { opacity:1; }
+  #projects .video-wrapper::after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,rgba(0,0,0,.18),rgba(0,0,0,.45)); pointer-events:none; transition:opacity .4s; opacity:.55; }
+  #projects .video-wrapper.playing::after { opacity:0; }
+  #projects .video-wrapper:focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+  #projects .video-wrapper:hover video { filter:brightness(1.05); }
+  @media (prefers-reduced-motion: reduce){ #projects .video-wrapper video { transition:none; } }
   /* Skills grouping */
   .skill-intro { color:var(--muted); font-size:var(--fs-base); max-width:820px; line-height:1.6; margin:4px 0 18px; }
   .skill-groups { display:grid; gap:16px; }
@@ -175,7 +186,6 @@
   .skill-group.card-compact { background:#111; border:1px solid var(--border); border-radius:10px; padding:10px 12px 8px; }
   .skill-group.card-compact h4 { margin:0 0 4px; font-size:var(--fs-xs); letter-spacing:.75px; text-transform:uppercase; color:#bdbdbd; font-weight:600; }
   .skill-group.card-compact .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
-  .skill-group.card-compact .tags .tag { font-size:var(--fs-xs); padding:4px 8px; }
   /* Six-column layout */
   .skill-columns { display:grid; gap:10px 28px; align-items:start; grid-auto-rows:minmax(0,auto); }
   .skill-columns .skill-col { padding:0; background:transparent; border:none; display:flex; flex-direction:column; gap:6px; }
@@ -217,24 +227,7 @@
   .card .row { display:flex; gap:18px; flex-direction:column; }
   .card .media { display:flex; flex-direction:column; }
     .card img { width:100%; border-radius:12px; border:1px solid var(--border); will-change:transform; transition:transform .3s ease; }
-  /* Video wrapper (only applied to first project for now) */
-  .card .media .video-wrapper { position:relative; width:100%; aspect-ratio:16/9; background:#111; border:1px solid var(--border); border-radius:12px; overflow:hidden; display:block; }
-  /* Removed padding-top fallback to avoid double height; aspect-ratio widely supported */
-  .card .media .video-wrapper iframe { position:absolute; inset:0; width:100%; height:100%; border:0; opacity:0; transition:opacity .4s ease; }
-  .card .media .video-wrapper .video-thumb { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; background:#000; display:block; border-radius:inherit; }
-  /* Neutralize any external parallax transforms inside video wrapper */
-  .card .media .video-wrapper .video-thumb,
-  .card .media .video-wrapper iframe { transform:none !important; }
-  .card .media .video-wrapper { line-height:0; font-size:0; }
-  /* Remove inner image/iframe borders to avoid double border offset */
-  .card .media .video-wrapper .video-thumb,
-  .card .media .video-wrapper iframe { border:none !important; background:#000; }
-  .card .media .video-wrapper .play-overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:radial-gradient(circle at 50% 50%, rgba(0,0,0,0.15), rgba(0,0,0,0.55)); color:#fff; border:0; cursor:pointer; transition:background .3s; }
-  .card .media .video-wrapper .play-overlay:hover { background:radial-gradient(circle at 50% 50%, rgba(0,0,0,0.1), rgba(0,0,0,0.4)); }
-  .card .media .video-wrapper .play-overlay:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
-  .card .media .video-wrapper .play-overlay .icon { width:62px; height:62px; border-radius:50%; background:rgba(0,0,0,0.55); backdrop-filter:blur(2px); display:flex; align-items:center; justify-content:center; border:2px solid rgba(255,255,255,0.18); transition:transform .25s, background .3s; }
-  .card .media .video-wrapper .play-overlay .icon svg { width:30px; height:30px; fill:#fff; }
-  .card .media .video-wrapper:hover .play-overlay .icon { transform:scale(1.08); background:rgba(0,0,0,0.65); }
+  /* Remove legacy iframe-based video styles; simplified above for local MP4 */
     @media (min-width:900px){
       .card .media { display:flex; flex-direction:column; align-items:center; justify-content:flex-start; }
       .card .media img { width:100%; height:auto; object-fit:contain; }
@@ -600,23 +593,24 @@
     <div class="container">
       <div class="section-title">Selected Work</div>
 
-      <!-- PROJECT 1B: Content Automation Workflow -->
+  <!-- PROJECT 1B: Automated Content Generator - Agentic RAG Workflow -->
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3><a href="projects/content-automation/index.html" class="project-link" aria-label="Open case study: Content Automation Workflow">Content Automation Workflow</a></h3>
-            <p class="microhook-line" style="margin-top:2px;">From Telegram prompt to structured, sourced article — automated with n8n, Supabase and RAG.</p>
+            <h3><a href="projects/content-automation/index.html" class="project-link" aria-label="Open case study: Automated Content Generator - Agentic RAG Workflow">Automated Content Generator - Agentic RAG Workflow</a></h3>
+            <p class="microhook-line" style="margin-top:2px;">Manual drafts are slow. Generate long-form, cited content from your internal docs. </p>
             <div class="desc-block" style="margin-top:-2px;">
               <ul class="desc-list" style="margin:4px 0 6px;">
-                <li><strong>Automated</strong> research and drafting with <strong>Agentic RAG</strong> grounded in Supabase documents.</li>
-                <li><strong>Delivered</strong> JSON‑structured long‑form content ready for CMS or app ingestion.</li>
+                <li><strong>Automated research and article generation </strong> using your own content base, retrieved from a vectorized PostgreSQL database.</li>
+                <li><strong>Delivered</strong> structured, verifiable content with citation tracking and quality controls.</li>
               </ul>
             </div>
             <div class="results-block" style="margin:6px 0 14px;">
               <div class="results-inline-label">Results</div>
               <ul class="desc-list arrow" style="margin:6px 0 0 0;">
-                <li><span class="metric">Source‑grounded</span> drafts with inline citations and missing‑data callouts.</li>
-                <li>Consistent <em>JSON schema</em> outputs enabling downstream automation.</li>
+                <li><span class="metric">Reduces</span> content creation <span class="metric">time</span> to a minimum</li>
+                <li>Maintains content <span class="metric">structure</span> and <span class="metric">quality standards</span></li>
+                <li>Only <span class="metric">stored docs</span> + citations (no hallucination)</li>
               </ul>
             </div>
             <div class="links-block" style="margin-top:4px;">
@@ -625,11 +619,9 @@
             </div>
           </div>
           <div class="media">
-            <picture>
-              <img src="images/skills_bg_placeholder.svg"
-                   alt="Content Automation Workflow — illustration placeholder"
-                   loading="lazy" />
-            </picture>
+            <div class="video-wrapper" aria-label="Video demo: Automated Content Generator - Agentic RAG Workflow">
+              <video class="project-video" muted loop playsinline preload="metadata" data-src="videos/projects/content_automation_demo_720.mp4"></video>
+            </div>
             <div class="tag-block tags" style="margin-top:28px;">
               <span class="tag" data-skill="n8n">n8n</span>
               <span class="tag" data-skill="LangChain">LangChain</span>
@@ -1203,6 +1195,64 @@
       document.body.appendChild(ripple);
       setTimeout(()=> ripple.remove(), 500);
     });
+
+    /* Local video hover playback (lazy src + autoplay fallback + desktop click) */
+    (function(){
+      const vids = document.querySelectorAll('#projects .video-wrapper video.project-video');
+      if(!vids.length) return;
+      vids.forEach(video=>{
+        const wrapper = video.closest('.video-wrapper');
+        let loaded = false;
+        let attempted = false;
+        const ensureSrc = ()=>{
+          if(!loaded && video.dataset.src){
+            video.src = video.dataset.src;
+            video.load();
+            loaded = true;
+          }
+        };
+        const tryPlay = ()=>{
+          attempted = true;
+          ensureSrc();
+          video.muted = true; // ensure autoplay allowed
+            if(!video.hasAttribute('autoplay')) video.setAttribute('autoplay','');
+          const p = video.play();
+          if(p && typeof p.then==='function'){
+            p.then(()=>{ wrapper.classList.add('playing','ready'); })
+             .catch(err=>{
+               // Hover not considered a user gesture sometimes; mark ready so first frame shows
+               wrapper.classList.add('ready');
+               wrapper.dataset.playError = err.name || 'PlayError';
+             });
+          } else {
+            wrapper.classList.add('playing','ready');
+          }
+        };
+        const pause = ()=>{ if(!video.paused) video.pause(); wrapper.classList.remove('playing'); };
+        // Hover / focus start
+        wrapper.addEventListener('mouseenter', tryPlay);
+        wrapper.addEventListener('focusin', tryPlay);
+        // Leave stops (only if not touch)
+        wrapper.addEventListener('mouseleave', ()=>{ if(window.matchMedia('(hover:hover)').matches) pause(); });
+        wrapper.addEventListener('focusout', pause);
+        // Always allow click toggle (desktop & mobile)
+        wrapper.addEventListener('click', (e)=>{
+          e.preventDefault();
+          if(video.paused) { tryPlay(); }
+          else { pause(); }
+        });
+        // Mark ready when metadata arrives (first frame visible even if play blocked)
+        video.addEventListener('loadeddata', ()=> wrapper.classList.add('ready'));
+        // Preload when near viewport for faster hover start
+        const io = new IntersectionObserver(entries=>{
+          entries.forEach(en=>{
+            if(en.isIntersecting){ ensureSrc(); io.disconnect(); }
+          });
+        }, { rootMargin:'200px' });
+        io.observe(wrapper);
+      });
+    })();
+
 
     /* Mobile nav toggle */
     (function(){

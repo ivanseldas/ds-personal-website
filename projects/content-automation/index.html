@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Content Automation Workflow — Case Study</title>
+  <title>Automated Content Generator - Agentic RAG Workflow — Case Study</title>
   <meta name="description" content="End-to-end automated workflow for structured long-form content: Telegram UI, n8n orchestration, Supabase vector DB, and Agentic RAG (LangChain + GPT-4o-mini)." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,9 @@
     .logo{font-family:'Playfair Display',serif;font-weight:700}
     .back a{color:var(--muted);text-decoration:none;border:1px solid var(--border);padding:8px 14px;border-radius:999px;background:#111}
     .back a:hover{background:var(--accent);color:#000;border-color:var(--accent)}
-  main{padding:0 0 40px}
+  /* Added extra top padding so the H1 isn't tight under the sticky header */
+  main{padding:58px 0 40px}
+  @media (max-width:680px){ main{padding:70px 0 40px;} }
     h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,6vw,2.4rem);line-height:1.15;margin:10px 0 12px}
     .sub{color:var(--muted);margin:0 0 14px;line-height:1.68;max-width:900px}
     .hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 20px}
@@ -61,6 +63,34 @@
   pre.code.json .s{ color:#a3e635; }
   pre.code.json .n{ color:#fbbf24; }
   pre.code.json .b{ color:#f472b6; }
+  /* Store setup list refinement */
+  ul.store-setup{margin:6px 0 10px 18px; padding:0; list-style:disc; font-size:0.8rem; line-height:1.5; color:#c7c7c7; max-width:700px}
+  ul.store-setup li{margin:0 0 6px}
+  ul.store-setup code{font-size:0.72rem; background:#181818; padding:2px 4px; border-radius:4px; border:1px solid #222}
+  /* Unified small list utility */
+  .mini-list{margin:6px 0 8px 18px; padding:0; list-style:disc; font-size:0.75rem; line-height:1.5; color:#c9c9c9; max-width:720px}
+  /* Stylized workflow index block (Option C) */
+  .workflow-index-block{margin:18px 0 30px; padding:8px 0 10px 16px; border-left:3px solid var(--accent); background:linear-gradient(90deg, rgba(125,211,252,0.07), rgba(125,211,252,0) 65%); max-width:780px}
+  .workflow-index-label{font-size:0.55rem; letter-spacing:1.6px; font-weight:600; color:#8fb7c3; text-transform:uppercase; margin:0 0 6px}
+  .workflow-index-list{margin:0; padding:0 0 0 20px; list-style:decimal; font-size:0.8rem; line-height:1.46; color:#cfd4d6}
+  .workflow-index-list li{margin:3px 0}
+  .workflow-index-list li strong{color:#ffffff; font-weight:600}
+  /* Retrieval flow list */
+  ul.retrieval-flow{margin:8px 0 10px 18px; padding:0; list-style:disc; font-size:0.78rem; line-height:1.45; color:#c9c9c9; max-width:720px}
+  ul.retrieval-flow li{margin:4px 0}
+  /* Lightbox for images */
+  .image-lightbox-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.86);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:1100;padding:40px 26px}
+  .image-lightbox-overlay.open{display:flex}
+  .image-lightbox-overlay img{max-width:92vw;max-height:88vh;border:1px solid var(--border);border-radius:14px;background:#000;box-shadow:0 12px 48px -6px rgba(0,0,0,0.7)}
+  .image-lightbox-overlay button{position:absolute;top:14px;right:18px;background:#111;border:1px solid var(--border);color:#ddd;font-size:0.7rem;letter-spacing:.5px;padding:6px 10px;border-radius:999px;cursor:pointer}
+  .image-lightbox-overlay button:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+  figure img.enlargeable{cursor:zoom-in;transition:transform .15s ease, box-shadow .15s ease}
+  figure img.enlargeable:hover{transform:scale(1.01);box-shadow:0 4px 20px -4px rgba(0,0,0,0.6)}
+  /* Tag (bubble) styles aligned with main portfolio */
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 2px;max-width:780px}
+  .tag{padding:6px 10px;border-radius:999px;border:1px solid var(--border);color:#bdbdbd;font-size:.65rem;letter-spacing:.6px;text-transform:uppercase;background:#111;transition:.18s ease;cursor:pointer}
+  .tag:hover{background:var(--accent);color:#000;border-color:var(--accent);transform:translateY(-1px)}
+  .tag:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
   </style>
   </head>
 <body>
@@ -73,97 +103,167 @@
     </div>
   </header>
   <main class="container">
-    <h1>Content Automation Workflow: From Telegram Prompt to Structured, Sourced Article</h1>
-    <p class="microhook-line" style="margin-top:2px;">Turn a Telegram prompt into a structured, sourced article with an agentic RAG pipeline.</p>
-    <p class="sub">This project is an end-to-end automated system for generating long‑form, structured content based on user prompts. Built with <strong>n8n</strong>, it combines <strong>Telegram</strong> as a user interface, <strong>Supabase</strong> as a document vector database, and an <strong>Agentic RAG</strong> pipeline using <strong>LangChain</strong> with <strong>GPT‑4o‑mini</strong>.</p>
-    <p class="sub">Users send a topic or question via Telegram and receive a complete article draft in a consistent JSON schema. The workflow ensures outputs are grounded in real documents retrieved from Supabase and follow a technical writing style with citations and data awareness.</p>
+  <h1>Automated Content Generator – Agentic RAG Workflow</h1>
+  <p class="microhook-line" style="margin-top:2px;">From Telegram prompt to structured, sourced article — grounded in your own documents</p>
+  <p class="sub">Producing consistent, high‑quality content at speed is hard. Manual workflows are slow, unstructured, and consume valuable review time. This project solves that using Retrieval‑Augmented Generation (RAG) and low‑code orchestration.</p>
 
-    <section id="overview">
-      <h2>Workflow Overview</h2>
-      <div class="img-slot" aria-label="Workflow overview placeholder">Workflow overview (diagram or screenshot)</div>
+    <section id="solution">
+      <h2>Solution</h2>
+  <p class="sub">Fully automated pipeline: a single prompt becomes a publication‑ready article. It grounds generation in internal documents (vector store retrieval) and returns structured JSON with citations and quality flags.</p>
+  <p class="sub" style="font-weight:600; text-align:center; margin:12px 0 26px; color:var(--fg); letter-spacing:.3px;">One workflow. One prompt. Structured, sourced content — in seconds.</p>
     </section>
 
-    <section>
-      <h2>The Problem</h2>
-      <p>Producing consistent, long‑form content that is source‑grounded, technically styled, and structured for downstream use (apps, CMS, analytics) is hard to scale. This workflow automates research, drafting, and structuring while keeping outputs verifiable.</p>
-    </section>
-
-    <section>
-      <h2>The Approach</h2>
-      <p>The system orchestrates a multi‑step pipeline that handles session memory, document retrieval, prompt templating, and JSON‑structured generation.</p>
-      <ol>
-        <li><strong>Telegram Bot — User Interface</strong>
-          <p class="tech-detail">Users initiate generation by sending prompts to a Telegram bot. The workflow uses the message (or chat) ID to manage sessions and memory.</p>
-          <div class="img-slot" aria-label="Image placeholder">Screenshot: Telegram input and result</div>
+    <section id="workflow">
+      <h2>How It Works</h2>
+      <figure style="margin:0 0 16px;">
+        <video id="workflow-demo" style="width:100%; aspect-ratio:16/9; border:1px solid var(--border); border-radius:12px; background:#000;" playsinline muted loop preload="metadata" controls aria-label="Automated Content Generator - Agentic RAG Workflow end-to-end run demo video">
+          <source src="../../videos/projects/content_automation_demo_1080.mp4" type="video/mp4" media="(min-width:900px)">
+          <source src="../../videos/projects/content_automation_demo_720.mp4" type="video/mp4">
+        </video>
+        <figcaption style="font-size:0.7rem; letter-spacing:.5px; color:var(--muted); margin-top:6px; text-align:left;">End‑to‑end run: prompt → retrieval → generation → structured JSON.</figcaption>
+      </figure>
+      <div class="workflow-index-block" aria-label="Workflow index">
+        <div class="workflow-index-label">Index</div>
+        <ol class="workflow-index-list" start="0">
+          <li><strong>Ingestion (Supabase Preload)</strong></li>
+          <li><strong>Prompt Collection (Telegram)</strong></li>
+          <li><strong>Retrieval, Prompt Conditioning & Draft Generation</strong></li>
+          <li><strong>Draft Review (HITL)</strong></li>
+          <li><strong>Format & Quality Validation</strong></li>
+          <li><strong>Final Review (Second HITL)</strong></li>
+        </ol>
+      </div>
+      <p class="sub" style="margin-top:0;">This system is composed of modular steps orchestrated via <strong>n8n</strong>, integrating <strong>Supabase</strong> (PostgreSQL + vector embeddings), <strong>LangChain</strong>, and <strong>OpenAI GPT‑4o‑mini</strong>. Each stage is optimized for memory handling, content grounding, and structured output formatting.</p>
+      <ol start="0">
+        <li id="step-0">
+          <strong>Ingestion (Supabase Preload)</strong>
+          <p class="tech-detail" style="margin-top:4px;">Internal documents (Markdown, PDFs, HTML exports, knowledge articles) are normalized and chunked with a recursive <em>TextSplitter</em> (1000 token chunks, 200 overlap) before any prompt arrives.</p>
+          <p class="tech-detail" style="margin-top:4px;">Each chunk is embedded via <code>text-embedding-3-small</code> and inserted into a Supabase table with columns: <code>id</code>, <code>content</code>, <code>tokens</code>, <code>embedding</code> (vector(1536)), <code>filename</code>, <code>section</code>, <code>updated_at</code>.</p>
+          <figure style="margin:10px 0 4px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image 0.png" alt="Supabase documents table with embedded document chunks (vector(1536))" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">Embedded document chunks stored in Supabase (vector(1536)).</figcaption>
+          </figure>
+            <div class="tech-detail" style="margin-top:10px; font-weight:600;">Vector Store (Supabase) setup:</div>
+          <ul class="store-setup">
+            <li><strong>Extension:</strong> enable pgvector → <code>CREATE EXTENSION IF NOT EXISTS vector;</code> (adds vector type + similarity operators)</li>
+            <li><strong>Table:</strong> <code>documents</code> stores each chunk + metadata (<code>jsonb</code>) incl. <code>embedding vector(1536)</code></li>
+            <li><strong>Embedding model:</strong> OpenAI <code>text-embedding-3-small</code> → 1536‑dim vector stored in <code>embedding</code></li>
+            <li><strong>Function:</strong> <code>match_documents()</code> = semantic similarity + optional <code>jsonb</code> filter + top‑N limit</li>
+          </ul>
+          <p class="tech-detail" style="margin:4px 0 0; font-size:0.74rem; color:#9fa6a8;">We turn documents into vectors once, then a function handles semantic searches for every user prompt.</p>
+          <figure style="margin:8px 0 6px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image_supabase.png" alt="Supabase view of embedded knowledge base ready for vector similarity search" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">Supabase view – vectors pre‑computed for fast semantic retrieval.</figcaption>
+          </figure>
         </li>
-        <li><strong>Supabase — Knowledge Store</strong>
-          <p class="tech-detail">Documents live in PostgreSQL on Supabase and are indexed as vectors. On each request, a similarity search retrieves the most relevant chunks, injected into the prompt context.</p>
-          <div class="img-slot" aria-label="Image placeholder">Screenshot: Supabase table with chunks + metadata</div>
+  <li id="step-1">
+          <strong>Prompt Collection (Telegram)</strong>
+          <p class="tech-detail">User sends a message to a Telegram bot via the Telegram Bot API. Each prompt is associated with a session using the unique <code>chat_id</code>, enabling memory persistence across turns.</p>
+          <figure style="margin:10px 0 4px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image 1.0.png" alt="Telegram interface capturing initial user prompt with chat_id context" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">Prompt captured via Telegram (session anchored by chat_id).</figcaption>
+          </figure>
         </li>
-        <li><strong>n8n Workflow — Orchestration</strong>
-          <p class="tech-detail">n8n manages memory, prompt templating, context merging, and post‑processing. LangChain <em>BufferMemory</em> keeps multi‑turn coherence. GPT‑4o‑mini receives structured context and outputs JSON.</p>
+  <li id="step-2">
+    <strong>Retrieval, Prompt Conditioning &amp; Draft Generation</strong>
+          <p class="tech-detail" style="margin-top:4px;">The prompt is embedded (1536‑dim, OpenAI <code>text-embedding-3-small</code>)—the same space used for stored chunks. A pgvector similarity search (<code>embedding <-> :prompt_embedding</code>) yields the most relevant context beyond keywords.</p>
+          <ul class="retrieval-flow" style="margin-top:6px;">
+            <li><strong>Embed once:</strong> prompt → 1536‑dim vector.</li>
+            <li><strong>Semantic rank:</strong> <code>embedding <-> :prompt_embedding</code> orders closest chunks first.</li>
+            <li><strong>Keep top 8:</strong> optional source / recency filters; metadata preserved for citations.</li>
+          </ul>
+          <pre class="code" style="margin-top:8px;">SELECT content, metadata
+FROM documents
+ORDER BY embedding <-> :prompt_embedding
+LIMIT 8;</pre>
+  <p class="tech-detail" style="margin-top:4px;">Retrieved context from the vector store is injected into a predefined prompt (sections, tone, citation style, missing‑data notes) to produce the first draft. Simple memory ensures follow‑ups refine instead of restart.</p>
+          <figure style="margin:10px 0 4px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image 1.1.png" alt="Top 8 retrieved semantic chunks with metadata prior to generation" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">AI Agent Simple Memory for chat history and Supabase Vector Store for info retrieval.</figcaption>
+          </figure>
+  <p class="tech-detail" style="margin-top:6px;">LangChain <code>LLMChain</code> calls GPT‑4o‑mini, returning one JSON string validated against a schema; on mismatch a controlled reprompt path triggers (capped retries).</p>
+        </li>
+  <li id="step-3">
+          <strong>Draft Review (HITL)</strong>
+          <p class="tech-detail" style="margin-top:4px;">The first JSON draft (summary + section outline) is returned to Telegram for feedback. A lightweight classifier decides whether it is approved or needs revision:</p>
+          <ul class="mini-list">
+            <li><strong>If approved:</strong> Draft is frozen and moves directly to <em>Format & Quality Validation</em>.</li>
+            <li><strong>If suggested improvements:</strong> Classifier flags revision → Revision Agent regenerates using (prompt + prior draft + structured feedback) and sends the new version back here.</li>
+          </ul>
+          <figure style="margin:8px 0 4px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image 3.png" alt="Draft review interface showing outline with approve or revise options" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">Draft outline reviewed: approve or provide revision notes.</figcaption>
+          </figure>
+        </li>
+  <li id="step-4">
+          <strong>Format &amp; Quality Validation</strong>
+          <p class="tech-detail" style="margin-top:4px;">After human approval the draft enters an automated loop orchestrated by two AI agents:</p>
+          <ul class="mini-list">
+            <li><strong>Formatter Agent:</strong> normalizes layout, heading levels, section completeness, citation style, and removes redundancy.</li>
+            <li><strong>Quality / Critic Agent:</strong> checks JSON schema, citation coverage, length & tone targets, and flags missing evidence.</li>
+          </ul>
+          <p class="tech-detail" style="margin-top:4px;">If a check fails, only the affected sections are regenerated, then re‑evaluated until both pass (or a safety limit). Result: consistent, publish‑ready content without extra manual polishing.</p>
+          <figure style="margin:10px 0 10px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image 4.0.png" alt="Quality rule evaluation flow prior to formatting" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">The approved draft is sent to the Formatter & Critic agents for final checks.</figcaption>
+          </figure>
+          <figure style="margin:10px 0 10px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image_formatter_critic.png" alt="Formatter and critic agent workflow diagram" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">Formatter & Critic Workflow: schema check, style normalization, rule enforcement.</figcaption>
+          </figure>
+        </li>
+  <li id="step-5">
+          <strong>Final Review (Second HITL)</strong>
+          <p class="tech-detail" style="margin-top:4px;">The near‑final article is sent to the reviewer for approval or last comments (same pattern as the first HITL). If revisions are requested, a constrained regeneration loop runs until approval or a max attempt cap. The final article is delivered via Telegram once approved.</p>
+          <figure style="margin:10px 0 4px;">
+            <img loading="lazy" src="../../assets/images/projects/content-automation/image 4.png" alt="Second human approval interface after automated quality gate" style="width:100%;max-width:760px;border:1px solid var(--border);border-radius:10px;display:block;background:#111;">
+            <figcaption style="font-size:0.65rem;letter-spacing:.5px;color:var(--muted);margin-top:4px;">Final human sign‑off before distribution.</figcaption>
+          </figure>
         </li>
       </ol>
-      <h3>Output Format Example</h3>
-      <p class="tech-detail">Responses returned to Telegram follow a consistent schema:</p>
-      <pre class="code json">{
-  <span class="k">"title"</span>: <span class="s">"How AI is Transforming Urban Planning"</span>,
-  <span class="k">"summary"</span>: <span class="s">"This article explores how AI technologies, particularly generative and predictive models, are shaping the future of urban development."</span>,
-  <span class="k">"sections"</span>: [
-    {
-      <span class="k">"h2"</span>: <span class="s">"Introduction to Urban AI"</span>,
-      <span class="k">"paras"</span>: [
-        <span class="s">"AI is increasingly being integrated into the planning processes of cities worldwide..."</span>,
-        <span class="s">"From traffic optimization to zoning analysis, its applications are broadening rapidly."</span>
-      ]
-    },
-    {
-      <span class="k">"h2"</span>: <span class="s">"Key Technologies in Use"</span>,
-      <span class="k">"paras"</span>: [
-        <span class="s">"Machine learning models are being used to simulate population growth and resource needs..."</span>,
-        <span class="s">"Geospatial data combined with predictive models enhances infrastructure planning."</span>
-      ]
-    }
-  ],
-  <span class="k">"metrics"</span>: [<span class="s">"Projected cost savings"</span>, <span class="s">"Planning efficiency gains"</span>],
-  <span class="k">"citations"</span>: [
-    { <span class="k">"section_path"</span>: <span class="s">"sections[0]"</span>, <span class="k">"quote"</span>: <span class="s">"AI is already helping cities model growth scenarios."</span> }
-  ],
-  <span class="k">"missing_data"</span>: [<span class="s">"No data found for zoning impacts post-2023"</span>]
-}</pre>
     </section>
 
-    <section>
-      <h2>Tech Stack</h2>
-      <h3>Workflow &amp; Orchestration</h3>
-      <ul class="edu-like">
-        <li><strong>n8n:</strong><small> flow control, retries, branching, post‑processing</small></li>
-        <li><strong>LangChain:</strong><small> BufferMemory, RAG chain, prompt templates</small></li>
-      </ul>
-      <h3>Interfaces &amp; Models</h3>
-      <ul class="edu-like">
-        <li><strong>Telegram Bot API:</strong><small> prompt input and response delivery</small></li>
-        <li><strong>OpenAI GPT‑4o‑mini:</strong><small> generation with structured JSON outputs</small></li>
-      </ul>
-      <h3>Knowledge &amp; Retrieval</h3>
-      <ul class="edu-like">
-        <li><strong>Supabase (PostgreSQL):</strong><small> document storage + metadata</small></li>
-        <li><strong>Vector search:</strong><small> embeddings‑based similarity to ground responses</small></li>
-      </ul>
-    </section>
-
-    <section>
+    <section id="results">
       <h2>Key Results</h2>
       <ul class="edu-like">
-        <li><strong>Structured outputs:</strong><small> JSON schema ready for CMS or app integration</small></li>
-        <li><strong>Grounded content:</strong><small> citations from Supabase‑retrieved documents</small></li>
-        <li><strong>Agentic flow:</strong><small> multi‑turn memory and controlled prompt scaffolding</small></li>
+  <li><strong>90% time reduction</strong><small>vs manual drafting</small></li>
+  <li><strong>Consistent quality</strong><small>publish‑ready structure</small></li>
+  <li><strong>~60s turnaround</strong><small>usable draft for non‑technical users</small></li>
       </ul>
+    </section>
+
+    <section id="stack">
+      <h2>Tech Stack</h2>
+      <div class="tags" aria-label="Technologies used">
+        <span class="tag" tabindex="0">Python</span>
+        <span class="tag" tabindex="0">LangChain</span>
+        <span class="tag" tabindex="0">OpenAI GPT‑4o‑mini</span>
+        <span class="tag" tabindex="0">Supabase</span>
+        <span class="tag" tabindex="0">PostgreSQL</span>
+        <span class="tag" tabindex="0">pgvector</span>
+        <span class="tag" tabindex="0">Embeddings</span>
+        <span class="tag" tabindex="0">RAG</span>
+        <span class="tag" tabindex="0">n8n</span>
+        <span class="tag" tabindex="0">Telegram Bot API</span>
+      </div>
+    </section>
+
+    <section id="demo">
+      <h2>Demo &amp; Reuse</h2>
+  <p class="sub" style="margin:0 0 10px;">Demo‑ready, adaptable base for content automation, documentation generation, and internal knowledge assistants.</p>
+      <div class="hero-actions" style="margin-top:0;">
+  <a class="btn" href="../../assets/projects/content-creation/content-automation-workflow.json" download>DOWNLOAD FREE WORKFLOW (n8n JSON)</a>
+        <a class="btn" href="mailto:ivanseldasp@gmail.com?subject=Content%20Generator%20Demo" target="_blank" rel="noopener">Request Live Demo</a>
+      </div>
     </section>
   </main>
   <footer>
     <div class="container">© <span id="year"></span> Iván Seldas</div>
   </footer>
+  <div class="image-lightbox-overlay" id="imgLightbox" aria-modal="true" role="dialog" aria-label="Expanded image viewer">
+    <button type="button" id="lightboxClose" aria-label="Close expanded image">CLOSE</button>
+    <img id="lightboxImg" alt="Expanded visual" />
+  </div>
   <script>
     const y=document.getElementById('year'); if(y) y.textContent=new Date().getFullYear();
     function sizeAppFrame(){
@@ -179,6 +279,37 @@
     window.addEventListener('resize', sizeAppFrame);
     window.addEventListener('orientationchange', sizeAppFrame);
     document.addEventListener('DOMContentLoaded', sizeAppFrame);
+
+    // Lightbox logic
+    (function(){
+      const overlay = document.getElementById('imgLightbox');
+      const lightboxImg = document.getElementById('lightboxImg');
+      const closeBtn = document.getElementById('lightboxClose');
+      if(!overlay || !lightboxImg) return;
+      function openLightbox(src, alt){
+        lightboxImg.src = src;
+        lightboxImg.alt = alt || 'Expanded image';
+        overlay.classList.add('open');
+        closeBtn.focus();
+        document.body.style.overflow='hidden';
+      }
+      function closeLightbox(){
+        overlay.classList.remove('open');
+        document.body.style.overflow='';
+      }
+      closeBtn && closeBtn.addEventListener('click', closeLightbox);
+      overlay && overlay.addEventListener('click', (e)=>{ if(e.target===overlay) closeLightbox(); });
+      document.addEventListener('keydown', (e)=>{ if(e.key==='Escape' && overlay.classList.contains('open')) closeLightbox(); });
+      // Make existing images enlargeable
+      document.querySelectorAll('figure img').forEach(img=>{
+        img.classList.add('enlargeable');
+        img.addEventListener('click', ()=> openLightbox(img.src, img.alt));
+        img.setAttribute('tabindex','0');
+        img.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' ') { e.preventDefault(); openLightbox(img.src, img.alt); }});
+        img.setAttribute('role','button');
+        img.setAttribute('aria-label','Open enlarged image');
+      });
+    })();
   </script>
   </body>
 </html>
