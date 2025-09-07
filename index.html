@@ -689,25 +689,23 @@
       <article class="card">
         <div class="row">
           <div class="col">
-            <h3><a href="projects/churn/index.html" class="project-link" aria-label="Open case study: Telecom Churn Prediction">Telecom Churn Prediction</a></h3>
-            <p class="microhook-line" style="margin-top:2px;">Predict churn with high recall to power targeted, cost‑effective retention.<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">Structured data + supervised models (LogReg, Random Forest, XGBoost) to identify customers most likely to leave.</span></p>
+            <h3><a href="projects/churn/index.html" class="project-link" aria-label="Open case study: Telecom Churn Prediction">Clients Churn Prediction</a></h3>
+            <p class="microhook-line" style="margin-top:2px;">Can you predict when a customer is about to churn?<br> <span class="intro-story" style="display:inline; font-style:normal; background:none; background-clip:initial; color:#dcdcdc; -webkit-background-clip:initial; filter:none;">I developed a supervised ML pipeline (LogReg, Random Forest, XGBoost) to detect and rank customers at highest risk of churn.</span></p>
             <div class="desc-block">
               <ul class="desc-list">
                 <li><strong>EDA + Feature Engineering</strong> to expose churn patterns across categorical and numeric signals.</li>
-                <li><strong>Recall-first modeling</strong> with Logistic Regression, Random Forest, and XGBoost to catch churners.</li>
+                <li><strong>Trained and tuned</strong> Logistic Regression, Random Forest, and XGBoost models optimizing for recall and ROC-AUC.</li>
               </ul>
             </div>
             <div class="results-block" style="margin:6px 0 14px;">
               <div class="results-inline-label">Results</div>
               <ul class="desc-list arrow" style="margin:6px 0 0 0;">
-                <li><span class="metric">Recall 0.84</span> on validation (best of Logistic Regression, Random Forest, XGBoost).</li>
-                <li>Top <span class="metric">500</span> at‑risk customers ranked — potential churn reduction <span class="metric">59.5% (95% CI)</span>.</li>
+                <li><span class="metric">Recall 0.773, Precision 0.94, ROC-AUC 0.928</span> on validation data (tuned XGBoost).</li>
+                <li>Potential <span class="metric">20% churn reduction</span> by applying a 30% effectiveness campaign to the <span class="metric">top 500 high-risk customers</span> ranked by the model.</li>
               </ul>
             </div>
             <div class="links-block">
-              <a class="btn" href="#">Demo</a>
               <a class="btn" href="#">GitHub</a>
-              <a class="btn" href="projects/churn/index.html">Case Study</a>
             </div>
           </div>
           <div class="media">
