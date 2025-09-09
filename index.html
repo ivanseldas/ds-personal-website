@@ -97,10 +97,12 @@
     .hero img.profile-pic { width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid var(--border); margin:0 auto 28px; display:block; }
   .hero h1 { font-family:'Playfair Display',serif; font-size:var(--fs-xl); line-height:1.15; letter-spacing:.5px; margin:0 auto 26px; max-width:880px; font-weight:700; }
   .hero p { color:var(--muted); font-size:var(--fs-base); max-width:700px; line-height:var(--lh-body); margin:0 auto 32px; }
-  .hero p.subhead { font-size:var(--fs-lg); line-height:1.5; }
+  /* Slightly reduced subhead so each sentence fits on a single line (2 total lines with <br>) */
+  .hero p.subhead { font-size:1.1rem; line-height:1.45; margin-bottom:20px; }
+  @media (max-width:680px){ .hero p.subhead { font-size:1.03rem; line-height:1.42; margin-bottom:18px; } }
   .hero .pre-head { font-size:var(--fs-xs); letter-spacing:1px; text-transform:uppercase; color:var(--muted); margin:0 auto 18px; max-width:860px; font-weight:600; }
     .cta-buttons { display:flex; flex-wrap:wrap; gap:14px; justify-content:center; margin:0 auto 22px; max-width:760px; }
-    .cta-buttons a { border:1px solid var(--border); padding:12px 20px; border-radius:10px; background:#111; transition:.2s; position:relative; }
+  .cta-buttons a { border:1px solid var(--border); padding:12px 22px; border-radius:10px; background:#111; transition:.2s; position:relative; display:inline-flex; align-items:center; justify-content:center; line-height:1; }
     .cta-buttons a:hover { background:#191919; }
   .trust-microcopy { margin:4px auto 0; font-size:var(--fs-xs); letter-spacing:.6px; text-transform:uppercase; color:var(--muted); max-width:880px; line-height:1.4; }
     @media (max-width:680px){
@@ -127,17 +129,7 @@
       .section[data-depth]::before { opacity:.75; }
     }
   .section-title { font-size:var(--fs-sm); text-transform:uppercase; letter-spacing:1px; color:var(--muted); margin-bottom:20px; }
-  .recruiter-microcopy { font-size:var(--fs-xs); letter-spacing:.4px; text-transform:uppercase; color:var(--muted); margin:-4px auto 10px; line-height:1.35; max-width:880px; text-align:center; }
-  .add-missing-skill-btn { margin-left:10px; font-size:var(--fs-xs); background:transparent; border:1px solid var(--border); padding:4px 10px; border-radius:999px; cursor:pointer; color:var(--muted); transition:.2s; }
-  .add-missing-skill-btn:hover { background:var(--accent); color:#000; border-color:var(--accent); }
-   .skill-suggest-cta { text-align:center; margin:6px 0 4px; }
-   .skill-suggest-cta .add-missing-skill-btn { margin-left:0; }
-   .skill-extra-line { font-size:var(--fs-xs); color:var(--muted); text-align:center; opacity:.8; margin:4px 0 4px; }
-  .add-skill-form { margin:8px 0 6px; display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  .add-skill-form input { background:#111; border:1px solid var(--border); border-radius:8px; padding:6px 10px; color:var(--fg); font-size:var(--fs-xs); min-width:220px; }
-  .add-skill-form button { font-size:var(--fs-xs); background:#111; border:1px solid var(--border); padding:6px 12px; border-radius:999px; cursor:pointer; color:var(--muted); }
-  .add-skill-form button:hover { background:var(--accent); color:#000; border-color:var(--accent); }
-  .skill-suggest-success { font-size:var(--fs-xs); color:var(--accent); margin:4px 0 0; text-align:center; display:none; }
+  /* Removed missing skill suggestion styles */
   /* Condensed height just for Skills section */
   /* Integrated skills: no top padding, only bottom to separate from next section */
   #skills { padding:0 0 var(--space-skills-bottom); position:relative; overflow:hidden; }
@@ -186,18 +178,15 @@
   .skill-group.card-compact { background:#111; border:1px solid var(--border); border-radius:10px; padding:10px 12px 8px; }
   .skill-group.card-compact h4 { margin:0 0 4px; font-size:var(--fs-xs); letter-spacing:.75px; text-transform:uppercase; color:#bdbdbd; font-weight:600; }
   .skill-group.card-compact .tags { display:flex; flex-wrap:wrap; gap:6px; margin-top:2px; }
-  /* Six-column layout */
-  .skill-columns { display:grid; gap:10px 28px; align-items:start; grid-auto-rows:minmax(0,auto); }
-  .skill-columns .skill-col { padding:0; background:transparent; border:none; display:flex; flex-direction:column; gap:6px; }
-  .skill-columns .skill-col h4 { margin:0; font-size:var(--fs-xs); letter-spacing:.75px; color:#a0a0a0; font-weight:600; line-height:1.2; }
-  .skill-columns .skill-col h4::after { content:''; display:block; width:100%; height:1px; background:linear-gradient(90deg,var(--border),transparent); margin-top:4px; opacity:.8; }
-  .skill-columns .skill-col .tags { align-self:flex-start; }
-  .skill-columns .tags { display:flex; flex-wrap:wrap; gap:6px; }
-  .skill-columns .tag { font-size:var(--fs-xs); padding:4px 8px; }
-  @media (min-width:680px){ .skill-columns { grid-template-columns:repeat(2,1fr); } }
-  @media (min-width:960px){ .skill-columns { grid-template-columns:repeat(3,1fr); } }
-  /* Keep 6 columns but give the last (specialized techniques) extra width for long labels */
-  @media (min-width:1280px){ .skill-columns { grid-template-columns:repeat(5,1fr) 1.45fr; } }
+  /* Unified skill columns layout */
+  .skill-columns { display:grid; gap:14px 28px; align-items:start; grid-auto-rows:minmax(0,auto); grid-template-columns:repeat(auto-fit,minmax(190px,1fr)); }
+  @media (min-width:1080px){ .skill-columns { grid-template-columns:repeat(6,1fr); } }
+  .skill-columns .skill-col { display:flex; flex-direction:column; padding:0; background:transparent; border:none; }
+  .skill-columns .skill-col h4 { margin:0 0 4px; font-size:calc(var(--fs-xs) * 0.95); letter-spacing:.6px; color:#bdbdbd; font-weight:600; line-height:1.25; display:-webkit-box; -webkit-line-clamp:2; line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; min-height:2.5em; }
+  .skill-columns .skill-col h4::after { content:none; }
+  .skill-columns .tags { display:flex; flex-direction:column; flex-wrap:nowrap; gap:6px; align-items:flex-start; border-top:1px solid var(--border); padding-top:8px; margin-top:2px; }
+  .skill-columns .tags .tag { padding:4px 9px; font-size:var(--fs-xs); line-height:1.2; white-space:nowrap; display:inline-block; border-radius:999px; }
+  /* Responsive auto-fit layout ensures wider columns; removes fixed breakpoints */
   /* Prevent wrapping of long tag text */
   #skills .tag[data-skill="Hyperparameter Tuning"] { white-space:nowrap; }
   @media (min-width:860px){ .skill-groups.compact-cards { grid-template-columns:repeat(2,1fr); } }
@@ -498,12 +487,12 @@
         loading="lazy"
       />
   <div class="pre-head">DATA SCIENTIST & ARCHITECT</div>
-  <h1>NEED A DATA SCIENTIST WHO SPEAKS YOUR CLIENT'S LANGUAGE?</h1>
-  <p class="subhead">I build end-to-end ML projects that clients understand – ensuring results are business-relevant.</p>
+  <h1>Hi, I'm Iván Seldas. <br>Welcome to my Portfolio.</h1>
+  <p class="subhead">I discovered my passion for data while designing a Data Center. <br>Since then, I've been building Data Science solutions with today's AI and ML tools.</p>
       <div class="cta-buttons" aria-label="Primary call to action">
-        <a href="#projects">SEE HOW I DELIVER RESULTS</a>
+        <a href="#projects">SELECTED WORK</a>
       </div>
-  <div class="trust-microcopy">Available for freelance projects & full-time roles · Business-ready impact · Live demos & repos</div>
+  <div class="trust-microcopy">Let’s work together • ML projects ready for deployment • Live Demos & Code Available</div>
     </div>
   </section>
 
@@ -511,80 +500,67 @@
   <section class="section" id="skills">
     <div class="container">
       <div class="skill-columns" id="skill-groups">
-        <div class="skill-col" data-group="languages">
-          <h4>LANGUAGES</h4>
+        <div class="skill-col" data-group="programming">
+          <h4>PROGRAMMING</h4>
           <div class="tags">
             <span class="tag" data-skill="Python">Python</span>
             <span class="tag" data-skill="SQL">SQL</span>
             <span class="tag" data-skill="PySpark">PySpark</span>
+            <span class="tag" data-skill="C">C</span>
           </div>
         </div>
-        <div class="skill-col" data-group="ml-modeling">
-          <h4>ML & MODELING</h4>
+        <div class="skill-col" data-group="ml-stat">
+          <h4>MACHINE LEARNING & STATISTICAL MODELING</h4>
           <div class="tags">
-            <span class="tag" data-skill="scikit-learn">scikit-learn</span>
-            <span class="tag" data-skill="XGBoost">XGBoost</span>
-            <span class="tag" data-skill="Random Forest">Random Forest</span>
-            <span class="tag" data-skill="K-Means">K-means</span>
-            <span class="tag" data-skill="DBScan">DBScan</span>
-            <span class="tag" data-skill="Statsmodels">Statsmodels</span>
+            <span class="tag" data-skill="Classification">Classification</span>
+            <span class="tag" data-skill="Regression">Regression</span>
+            <span class="tag" data-skill="Clustering">Clustering</span>
+            <span class="tag" data-skill="A/B Testing">A/B Testing</span>
+            <span class="tag" data-skill="Time Series Forecasting">Time Series Forecasting</span>
           </div>
         </div>
-        <div class="skill-col" data-group="nlp-ai">
-          <h4>NLP & AI</h4>
+        <div class="skill-col" data-group="nlp-applied-ai">
+          <h4>NLP & APPLIED AI</h4>
           <div class="tags">
-            <span class="tag" data-skill="Hugging Face">Hugging Face</span>
             <span class="tag" data-skill="Transformers">Transformers</span>
             <span class="tag" data-skill="RoBERTa">RoBERTa</span>
-            <span class="tag" data-skill="LangChain">LangChain</span>
-            <span class="tag" data-skill="OpenAI">OpenAI</span>
+            <span class="tag" data-skill="LLM Fine-Tuning">LLM Fine-Tuning</span>
             <span class="tag" data-skill="Embeddings">Embeddings</span>
-            <span class="tag" data-skill="RAG">RAG</span>
+            <span class="tag" data-skill="Semantic Search">Semantic Search</span>
+            <span class="tag" data-skill="RAG Pipelines">RAG Pipelines</span>
+            <span class="tag" data-skill="AI Agents">AI Agents</span>
           </div>
         </div>
-        <div class="skill-col" data-group="cloud">
-          <h4>CLOUD & BIG DATA</h4>
+        <div class="skill-col" data-group="data-visualization">
+          <h4>VISUALIZATION</h4>
           <div class="tags">
-            <span class="tag" data-skill="AWS">AWS</span>
-            <span class="tag" data-skill="GCP">GCP</span>
-            <span class="tag" data-skill="Airflow">AirFlow</span>
+            <span class="tag" data-skill="Tableau">Tableau</span>
+            <span class="tag" data-skill="Power BI">Power BI</span>
+            <span class="tag" data-skill="Plotly">Plotly</span>
+            <span class="tag" data-skill="Matplotlib">Matplotlib</span>
+          </div>
+        </div>
+        <div class="skill-col" data-group="cloud-data-eng">
+          <h4>CLOUD & DATA ENGINEERING</h4>
+          <div class="tags">
+            <span class="tag" data-skill="PostgreSQL">PostgreSQL</span>
             <span class="tag" data-skill="Supabase">Supabase</span>
-            <span class="tag" data-skill="Vector DB">Vector DB</span>
+            <span class="tag" data-skill="Snowflake">Snowflake</span>
+            <span class="tag" data-skill="Google Cloud Platform">Google Cloud Platform</span>
           </div>
         </div>
-        <div class="skill-col" data-group="deployment">
-          <h4>DEPLOYMENT & APIS</h4>
+        <div class="skill-col" data-group="automation-mlops">
+          <h4>AUTOMATION & MLOPS</h4>
           <div class="tags">
-            <span class="tag" data-skill="FastAPI">Fast API</span>
-            <span class="tag" data-skill="Streamlit">Streamlit</span>
             <span class="tag" data-skill="Docker">Docker</span>
+            <span class="tag" data-skill="CI/CD">CI/CD</span>
+            <span class="tag" data-skill="Git">Git</span>
             <span class="tag" data-skill="n8n">n8n</span>
-            <span class="tag" data-skill="Telegram Bot">Telegram Bot</span>
-          </div>
-        </div>
-        <div class="skill-col" data-group="specialized">
-          <h4>SPECIALIZED TECHNIQUES</h4>
-          <div class="tags">
-            <span class="tag" data-skill="Time Series">Time Series</span>
-            <span class="tag" data-skill="SARIMA">SARIMA</span>
-            <span class="tag" data-skill="Recommender Systems">Recomender Systems</span>
-            <span class="tag" data-skill="Feature Store">Feature Stores</span>
-            <span class="tag" data-skill="Hyperparameter Tuning">Hyperparameter Tuning</span>
           </div>
         </div>
       </div>
   <button id="clear-skills-btn" type="button" class="clear-skills-btn" aria-hidden="true" aria-label="Clear selected skills">Clear selected skills ✕ <span id="skill-match-count" style="display:none;opacity:.8;font-weight:500;">(0 matches)</span></button>
-  <p class="recruiter-microcopy" style="margin-top:10px; text-transform:none;">Missing a skill? Not a problem — I'll <strong>master it in 7 days.</strong></p>
-  <div class="skill-suggest-cta">
-    <button id="add-missing-skill-btn" type="button" class="add-missing-skill-btn">Suggest a Skill</button>
-  </div>
-  <form id="add-missing-skill-form" class="add-skill-form" style="display:none; justify-content:center;">
-        <label for="new-skill-input" class="visually-hidden" style="position:absolute;left:-9999px;">New skill</label>
-        <input id="new-skill-input" type="text" placeholder="Enter skill (comma separated allowed)" />
-        <button type="submit">Save</button>
-        <button type="button" id="cancel-add-skill">Cancel</button>
-      </form>
-  <div class="skill-suggest-success" id="skill-suggest-success">Saved. Total suggestions: <span id="suggest-count">0</span>. <button id="export-skill-suggestions" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:4px 10px;border-radius:999px;cursor:pointer;">Export</button></div>
+  <!-- Missing skill suggestion section removed -->
     </div>
   </section>
 
@@ -624,13 +600,12 @@
             </div>
             <div class="tag-block tags" style="margin-top:28px;">
               <span class="tag" data-skill="n8n">n8n</span>
-              <span class="tag" data-skill="LangChain">LangChain</span>
-              <span class="tag" data-skill="OpenAI">OpenAI</span>
-              <span class="tag" data-skill="Telegram Bot">Telegram Bot</span>
+              <span class="tag" data-skill="AI Agents">AI Agents</span>
+              <span class="tag" data-skill="LLM Fine-Tuning">LLM Fine-Tuning</span>
               <span class="tag" data-skill="Supabase">Supabase</span>
-              <span class="tag" data-skill="Vector DB">Vector DB</span>
+              <span class="tag" data-skill="Semantic Search">Semantic Search</span>
               <span class="tag" data-skill="Embeddings">Embeddings</span>
-              <span class="tag" data-skill="RAG">RAG</span>
+              <span class="tag" data-skill="RAG Pipelines">RAG Pipelines</span>
             </div>
           </div>
         </div>
@@ -660,25 +635,19 @@
             </div>
           </div>
           <div class="media">
-            <picture>
-              <source type="image/webp" srcset="images/projects/recommender_800.webp 800w">
-              <img src="images/projects/recommender_800.jpg"
-                   srcset="images/projects/recommender_800.jpg 800w, images/projects/recommender_1200.jpg 1200w"
-                   sizes="(min-width:900px) 50vw, 100vw"
-                   alt="Screenshot of the Sentiment-Driven Video Recommendation app"
-                   loading="lazy" />
-            </picture>
+            <div class="video-wrapper" aria-label="Video demo: Sentiment-Driven Video Recommendation System">
+              <video class="project-video" muted loop playsinline preload="metadata" data-src="videos/projects/video_recommendation_demo_720.mp4"></video>
+            </div>
             <div class="tag-block tags" style="margin-top:28px;">
               <span class="tag" data-skill="Python">Python</span>
               <span class="tag" data-skill="RoBERTa">RoBERTa</span>
               <span class="tag" data-skill="Transformers">Transformers</span>
-              <span class="tag" data-skill="scikit-learn">scikit-learn</span>
+              <span class="tag" data-skill="Classification">Classification</span>
               <span class="tag" data-skill="Docker">Docker</span>
-              <span class="tag" data-skill="GCP">GCP</span>
-              <span class="tag" data-skill="FastAPI">FastAPI</span>
-              <span class="tag" data-skill="Vector DB">Vector DB</span>
+              <span class="tag" data-skill="Google Cloud Platform">Google Cloud Platform</span>
+              <span class="tag" data-skill="Semantic Search">Semantic Search</span>
               <span class="tag" data-skill="Embeddings">Embeddings</span>
-              <span class="tag" data-skill="MLOps">MLOps</span>
+              <span class="tag" data-skill="CI/CD">CI/CD</span>
             </div>
           </div>
         </div>
@@ -718,18 +687,9 @@
                    loading="lazy" />
             </picture>
             <div class="tag-block tags" style="margin-top:24px;">
-              <span class="tag" data-skill="ML">ML</span>
-              <span class="tag" data-skill="MLOps">MLOps</span>
-              <span class="tag" data-skill="Feature Store">Feature Store</span>
-              <span class="tag" data-skill="Streamlit">Streamlit</span>
-              <span class="tag" data-skill="FastAPI">FastAPI</span>
+              <span class="tag" data-skill="Classification">Classification</span>
               <span class="tag" data-skill="Docker">Docker</span>
-              <span class="tag" data-skill="ETL">ETL</span>
-              <span class="tag" data-skill="Hyperparameter Tuning">Hyperparameter Tuning</span>
-              <span class="tag" data-skill="Monitoring">Monitoring</span>
-              <span class="tag" data-skill="XGBoost">XGBoost</span>
-              <span class="tag" data-skill="Random Forest">Random Forest</span>
-              <span class="tag" data-skill="Logistic Regression">Logistic Regression</span>
+              <span class="tag" data-skill="CI/CD">CI/CD</span>
             </div>
           </div>
         </div>
@@ -791,15 +751,7 @@
                    loading="lazy" />
             </picture>
             <div class="tag-block tags" style="margin-top:24px;">
-              <span class="tag" data-skill="Time Series">Time Series</span>
-              <span class="tag" data-skill="SARIMA">SARIMA</span>
-              <span class="tag" data-skill="XGBoost">XGBoost</span>
-              <span class="tag" data-skill="Geo">Geo</span>
-              <span class="tag" data-skill="Statsmodels">Statsmodels</span>
-              <span class="tag" data-skill="Feature Store">Feature Store</span>
-              <span class="tag" data-skill="ETL">ETL</span>
-              <span class="tag" data-skill="MAPE / RMSE">MAPE / RMSE</span>
-              <span class="tag" data-skill="Monitoring">Monitoring</span>
+              <span class="tag" data-skill="Time Series Forecasting">Time Series Forecasting</span>
             </div>
           </div>
         </div>
@@ -861,13 +813,8 @@
             </picture>
             <div class="tag-block tags" style="margin-top:24px;">
               <span class="tag" data-skill="Python">Python</span>
-              <span class="tag" data-skill="Pandas">Pandas</span>
-              <span class="tag" data-skill="scikit-learn">scikit-learn</span>
-              <span class="tag" data-skill="ETL">ETL</span>
+              <span class="tag" data-skill="Regression">Regression</span>
               <span class="tag" data-skill="Tableau">Tableau</span>
-              <span class="tag" data-skill="Data Visualization">Data Visualization</span>
-              <span class="tag" data-skill="MAE">MAE</span>
-              <span class="tag" data-skill="Risk Modeling">Risk Modeling</span>
             </div>
           </div>
         </div>
@@ -896,9 +843,9 @@
       <div class="about-bio">
         <h3 style="margin:0 0 10px; font-size:var(--fs-lg); letter-spacing:.3px;">Who I Am</h3>
         <div class="bio-block" style="margin-top:4px;">
-          <p>I’m a <strong>Data Scientist</strong>, and an Architect.<p>It all began with my <a class="inline-link" href="https://www.youtube.com/watch?v=LzyZGEFMM0M&t=314s" target="_blank" rel="noopener noreferrer">Master's thesis in Architecture</a>, where I designed a data center. To make it real, I had to understand how data actually worked… and I got hooked.</p>
-          <p>That spark pushed me to reinvent my career — first at 42 Madrid, learning to code from zero, then at Ironhack, diving deep into Machine Learning and AI.</p>
-          <p>As an architect, I helped design and build two residential developments in Sydney. Today, I’m still building — not with concrete and steel, but with data solutions that stand the test of business reality.</p>
+          <p>I’m a <strong>Data Scientist</strong>, and an Architect.<p>It all started during my <a class="inline-link" href="https://www.youtube.com/watch?v=LzyZGEFMM0M&t=314s" target="_blank" rel="noopener noreferrer">Master's thesis in Architecture</a>, where I designed a data center. To do it properly, I had to understand how data actually worked… and that's when I knew I wanted to work with data.</p>
+          <p>That moment was the start of a new chapter for me. I began learning to code from scratch at 42 Madrid (Telefónica), then specialised in Data Science, Machine Learning, and AI at Ironhack — where I trained to become a Data Scientist.</p>
+          <p>I've always built things - I guess that's what I do best. Now, I build with data. In the end, the goal has remained the same: to make life a little better for people.</p>
         </div>
       </div>
       <div class="about-grid-wrapper">
@@ -914,19 +861,21 @@
           <div class="about-detail">
             <div class="about-experience">
               <h3>Experience</h3>
-              <p style="margin:0 0 6px; font-size:0.9rem; line-height:1.4; color:#d0d0d0;"><strong>Team Leader — Marchese Partners | LIFE3A</strong><br><small>2019 – Present · Madrid<small></small></p>
+              <p style="margin:0 0 6px; font-size:0.9rem; line-height:1.4; color:#d0d0d0;"><strong>Team Leader & BIM Architect — Marchese Partners | LIFE3A</strong><br><small>2019 – Present · Madrid<small></small></p>
               <ul>
-                <li>Led a 10+ member team across international offices, delivering projects with 200+ residential units.</li>
-                <li>Increased productivity by 15% through workshops on new tools and methodologies.</li>
-                <li>Reduced delivery time by 40% via workflow optimization and process automation.</li>
+                <li>Led the interior architecture team in Madrid for senior living projects in Sydney (200+ units), coordinating development with the Australian office.</li>
+                <li>Planned project documentation across all phases, managing timelines and resources.</li>
+                <li>Integrated AI into creative processes, documentation workflows, and quality assurance.</li>
+                <li>Automated BIM workflows using Dynamo and Python scripts.</li>
+                <li>Key projects: Akoya (SYD), Newgreens Chatswood (SYD), Cumberland Country Golf Club (SYD).</li>
               </ul>
             </div>
             <div class="about-edu">
               <h3>Education &amp; Certifications</h3>
               <ul>
                 <li><strong>Data Science &amp; Machine Learning Bootcamp</strong><br><small>2024 · Ironhack, Barcelona</small></li>
-                <li><strong>Google Advanced Data Analytics Certificate</strong><br><small>2024 · Online</small></li>
                 <li><strong>IBM Data Science Professional Certificate</strong><br><small>2025 · Online</small></li>
+                <li><strong>Google Advanced Data Analytics Certificate</strong><br><small>2024 · Online</small></li>
                 <li><strong>42 Madrid Programming Campus</strong><br><small>2022–2023 · Campus Telefónica</small></li>
                 <li><strong>Master’s Degree in Architecture</strong><br><small>2019–2021 · Universidad Politécnica de Madrid</small></li>
                 <li><strong>Bachelor’s Degree in Architecture</strong><br><small>2013–2019 · Universidad Politécnica de Madrid<br>2017-2018 · Karlsruhe Institute of Technology</small></li>
@@ -943,7 +892,7 @@
     <div class="container contact-block">
       <div class="section-title">Contact</div>
       <div class="contact-intro">
-  <p class="bio-block" style="font-size:0.78rem; line-height:1.55; margin:14px 0 0; color:#bdbdbd;">Based in <strong>Madrid</strong>, collaborating remotely across Europe. Always open to coffee chats about <em>AI</em> & architecture.</p>
+  <p class="bio-block" style="font-size:0.78rem; line-height:1.55; margin:14px 0 0; color:#bdbdbd;">Based in <strong>Madrid</strong>. Always open to coffee chats about AI & data.</p>
       </div>
       <div class="contact-grid">
         <div class="contact-primary">
@@ -1132,57 +1081,7 @@
       updateClearButton();
     })();
 
-    /* Missing skill suggestion — store only (localStorage) */
-    (function(){
-      const triggerBtn = document.getElementById('add-missing-skill-btn');
-      const form = document.getElementById('add-missing-skill-form');
-      const input = document.getElementById('new-skill-input');
-      const cancel = document.getElementById('cancel-add-skill');
-      const successBox = document.getElementById('skill-suggest-success');
-      const countEl = document.getElementById('suggest-count');
-      const exportBtn = document.getElementById('export-skill-suggestions');
-      if(!triggerBtn || !form || !input || !cancel) return;
-
-      const STORAGE_KEY = 'suggestedSkills';
-      const load = () => {
-        try { return JSON.parse(localStorage.getItem(STORAGE_KEY)||'[]'); } catch(e){ return []; }
-      };
-      const save = list => { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(list)); } catch(e){} };
-      const updateCount = () => { const list = load(); if(countEl){ countEl.textContent = list.length; } };
-      updateCount();
-
-      triggerBtn.addEventListener('click', ()=>{
-        const show = form.style.display==='none';
-        form.style.display = show ? 'flex' : 'none';
-        if(show){ input.focus(); }
-      });
-      cancel.addEventListener('click', ()=>{ form.style.display='none'; input.value=''; });
-      form.addEventListener('submit', (e)=>{
-        e.preventDefault();
-        const raw = input.value.trim();
-        if(!raw) return;
-        const parts = raw.split(',').map(s=>s.trim()).filter(Boolean);
-        if(parts.length===0) return;
-        const current = load();
-        parts.forEach(p=>{ if(!current.map(c=>c.toLowerCase()).includes(p.toLowerCase())) current.push(p); });
-        save(current);
-        input.value='';
-        form.style.display='none';
-        updateCount();
-        if(successBox){ successBox.style.display='block'; successBox.classList.add('flash'); setTimeout(()=> successBox.style.display='none', 3000); }
-      });
-      if(exportBtn){
-        exportBtn.addEventListener('click', ()=>{
-          const data = load();
-          const blob = new Blob([JSON.stringify({ exportedAt:new Date().toISOString(), skills:data }, null, 2)], { type:'application/json' });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url; a.download = 'suggested_skills.json';
-          document.body.appendChild(a); a.click(); a.remove();
-          setTimeout(()=> URL.revokeObjectURL(url), 1000);
-        });
-      }
-    })();
+  /* Removed missing skill suggestion script */
 
     /* Click ripple feedback (aligned with pointer using clientX/Y) */
     document.addEventListener('click',(e)=>{
